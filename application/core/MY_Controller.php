@@ -27,6 +27,7 @@ class MY_Controller extends MX_Controller{
         $this->load->model('discussions/discussions_m', 'discussions');
 
         // Load Language Files.
+        $this->lang->load('messages', 'english');
 
     }
 }
@@ -57,7 +58,7 @@ class Front_Controller extends MY_Controller{
     public function render( $page_data=array(), $page_title, $page_template )
     {
         // Get the categories for the sidebar.
-        $categories = $this->categories->sidebar_categories();
+        $categories = $this->categories->get_categories();
 
         if( !empty($categories) )
         {
@@ -65,7 +66,7 @@ class Front_Controller extends MY_Controller{
             {
                 $data['categories'] = array(
                     array(
-                        'name' => anchor( site_url('categories/'.$row->slug.''), $row->name ),
+                        'name' => anchor( site_url('categories/'.$row->category_slug.''), $row->name ),
                         'discussion_count' => $row->discussion_count,
                     ),
                 );

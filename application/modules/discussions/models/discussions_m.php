@@ -78,4 +78,31 @@ class Discussions_m extends CI_Model {
             return FALSE;
         }
     }
+
+    public function get_singleton($discussion_slug)
+    {
+        // Query.
+        $query = $this->db->select('discussions.discussion_id, discussions.name as discussion_name,
+        discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
+        discussions.comment_count, categories.name as category_name, categories.slug as category_slug,
+        users.username, users.id as user_id, users.email')
+            ->where('discussions.slug', $discussion_slug)
+            ->join('categories', 'categories.category_id = discussions.category_id')
+            ->join('users', 'users.id = discussions.insert_user_id')
+            ->get('discussions');
+
+        // Result.
+        if( $query->num_rows() > 0 )
+        {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function update($data=array(), $discussion_id)
+    {
+        $this->db->where('discussion_id', $discussion_id)
+            ->update('discussions', $data);
+    }
 }

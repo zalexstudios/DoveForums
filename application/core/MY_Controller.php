@@ -6,7 +6,7 @@ class MY_Controller extends MX_Controller{
     // Set the autoload array.
     public $autoload = array(
         'helper'    => array( 'array', 'html', 'url' ),
-        'libraries' => array( 'database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs' ),
+        'libraries' => array( 'database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar' ),
         'config'    => array( 'forums', 'messageci' ),
     );
 
@@ -25,6 +25,7 @@ class MY_Controller extends MX_Controller{
         // Load Models.
         $this->load->model('categories/categories_m', 'categories');
         $this->load->model('discussions/discussions_m', 'discussions');
+        $this->load->model('comments/comments_m', 'comments');
 
         // Load Language Files.
         $this->lang->load('messages', 'english');

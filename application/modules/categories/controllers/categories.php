@@ -111,7 +111,6 @@ class Categories extends Front_Controller {
         }
 
         // Build the page breadcrumbs.
-        $this->crumbs->add('categories', 'categories');
         $this->crumbs->add($category[0]->name);
 
         // Define the page data.

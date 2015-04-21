@@ -8,4 +8,4 @@ $config['gravatar_default_image'] = 'mm';
 $config['gravatar_size'] = 50;
 $config['default_timezone'] = 'Europe/London';
 $config['discussions_per_page'] = 10;
-$config['comments_per_page'] = 10;
+$config['comments_per_page'] = 2;

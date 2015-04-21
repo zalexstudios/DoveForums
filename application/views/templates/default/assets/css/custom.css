@@ -6,6 +6,11 @@ body {
     text-align: center;
 }
 
-.no-top-margin {
+.pagination-toolbar {
     margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.no-margin {
+    margin: 0;
 }

@@ -6,7 +6,7 @@
 
 </div>
 
-<div class="btn-toolbar no-top-margin" role="toolbar">
+<div class="btn-toolbar pagination-toolbar" role="toolbar">
 
     <div class="btn-group pull-left">
 
@@ -146,7 +146,7 @@
 
     {/comments}
 
-    <div class="btn-toolbar no-top-margin" role="toolbar">
+    <div class="btn-toolbar pagination-toolbar" role="toolbar">
 
         <div class="btn-group pull-left">
 

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Comments_m extends CI_Model {
 
-    public function get_comments($discussion_id)
+    public function get_comments($discussion_id, $limit=NULL, $offset=NULL)
     {
         // Query.
         $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, users.id as user_id, users.username, users.email')
@@ -11,6 +11,7 @@ class Comments_m extends CI_Model {
             ->where('comments.discussion_id', $discussion_id)
             ->where('comments.flag', 0)
             ->where('comments.delete_user_id', NULL)
+            ->limit($limit, $offset)
             ->get('comments');
 
         // Result.

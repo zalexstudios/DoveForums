@@ -1,8 +1,34 @@
 {breadcrumbs}
 
-<div class="well well-sm"><strong>{discussion_name}</strong></div>
+<div class="well well-sm">
 
-<div class="panel panel-default">
+    <strong>{discussion_name}</strong>
+
+</div>
+
+<div class="btn-toolbar no-top-margin" role="toolbar">
+
+    <div class="btn-group pull-left">
+
+        {pagination}
+
+    </div>
+
+    <div class="btn-group pull-right">
+
+        {reply_button}
+
+    </div>
+
+    <div class="btn-group pull-right">
+
+        {new_discussion_button}
+
+    </div>
+
+</div>
+
+<div class="panel panel-info" id="{comment_id}">
 
     <div class="panel-heading">
 
@@ -22,7 +48,21 @@
 
             <div class="media-body">
 
-                <p class="small text-muted">{date_created}</p>
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <p class="text-muted">{created_date}</p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p class="pull-right"><strong>{comment_id_link}</strong></p>
+
+                    </div>
+
+                </div>
 
                 <hr />
 
@@ -31,6 +71,14 @@
             </div>
 
         </div>
+
+    </div>
+
+    <div class="panel-footer">
+
+        {pm_button}
+        {thumbs_up_button}
+        {report_button}
 
     </div>
 
@@ -88,6 +136,8 @@
 
         <div class="panel-footer">
 
+            {pm_button}
+            {thumbs_up_button}
             {report_button}
 
         </div>
@@ -95,6 +145,28 @@
     </div>
 
     {/comments}
+
+    <div class="btn-toolbar no-top-margin" role="toolbar">
+
+        <div class="btn-group pull-left">
+
+            {pagination}
+
+        </div>
+
+        <div class="btn-group pull-right">
+
+            {reply_button}
+
+        </div>
+
+        <div class="btn-group pull-right">
+
+            {new_discussion_button}
+
+        </div>
+
+    </div>
 
 <?php } else { ?>
 
@@ -105,26 +177,39 @@
 <!-- Check if the user is logged in -->
 <?php if($this->ion_auth->logged_in() === TRUE) { ?>
 
-    <h4><small>Leave a comment</small></h4>
+    <div class="panel panel-warning" id="quick_reply">
 
-    <div id="new_comment">
+        <div class="panel-heading">
 
-        {form_open}
-
-        <div class="form-group">
-
-            {comment_field}
+            <p class="panel-title">Quick Reply:</p>
 
         </div>
 
-        <div class="form-group">
+        <div class="panel-body">
 
-            {discussion_id_field_hidden}
-            {post_comment_button}
+            <div id="new_comment">
+
+                {form_open}
+
+                <div class="form-group <?php if(form_error('comment')){echo 'has-error';} ?>">
+
+                    {comment_field}
+                    {comment_error}
+
+                </div>
+
+                <div class="form-group">
+
+                    {discussion_id_field_hidden}
+                    {post_comment_button}
+
+                </div>
+
+                {form_close}
+
+            </div>
 
         </div>
-
-        {form_close}
 
     </div>
 

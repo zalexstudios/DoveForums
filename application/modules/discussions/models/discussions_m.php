@@ -82,9 +82,9 @@ class Discussions_m extends CI_Model {
     public function get_singleton($discussion_slug)
     {
         // Query.
-        $query = $this->db->select('discussions.discussion_id, discussions.name as discussion_name,
+        $query = $this->db->select('discussions.discussion_id, discussions.name as discussion_name, discussions.insert_user_id,
         discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
-        discussions.comment_count, categories.name as category_name, categories.slug as category_slug,
+        discussions.comment_count, discussions.first_comment_id, categories.name as category_name, categories.slug as category_slug,
         users.username, users.id as user_id, users.email')
             ->where('discussions.slug', $discussion_slug)
             ->join('categories', 'categories.category_id = discussions.category_id')

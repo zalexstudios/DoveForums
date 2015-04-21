@@ -6,7 +6,7 @@ class MY_Controller extends MX_Controller{
     // Set the autoload array.
     public $autoload = array(
         'helper'    => array( 'array', 'html', 'url' ),
-        'libraries' => array( 'database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar' ),
+        'libraries' => array( 'database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination' ),
         'config'    => array( 'forums', 'messageci' ),
     );
 
@@ -30,6 +30,8 @@ class MY_Controller extends MX_Controller{
 
         // Load Language Files.
         $this->lang->load('messages', 'english');
+        $this->lang->load('buttons', 'english');
+        $this->lang->load('rules', 'english');
 
     }
 }
@@ -125,6 +127,7 @@ class Front_Controller extends MY_Controller{
             'js' => array(
                 array( 'script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>' ),
                 array( 'script' => '<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>' ),
+                array( 'script' => '<script src="'.base_url('application/views/templates/'.$this->theme.'/assets/js/forums.js').'"></script>' ),
             ),
             // Page Title.
             'title' => ''.$this->site_name.' - '.$page_title.'',

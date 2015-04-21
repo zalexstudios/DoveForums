@@ -22,7 +22,6 @@ class Discussions extends Front_Controller {
                 'name' => 'comment',
                 'class' => 'form-control',
                 'type' => 'text',
-                'placeholder' => 'Enter comment.',
             ),
         ),
     );
@@ -41,8 +40,16 @@ class Discussions extends Front_Controller {
             // Update the discussion view count.
             $this->discussions->update(array('view_count' => ++$discussion[0]->view_count), $discussion[0]->discussion_id);
 
+            // Setup the Pagination.
+            $config['base_url'] = site_url('discussions/'.$category_slug.'/'.$discussion_slug.'');
+            $config['total_rows'] = count( $this->comments->get_comments( $discussion[0]->discussion_id ) );
+            $config['per_page'] = $this->config->item('comments_per_page');
+            $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+            $this->pagination->initialize($config);
+
             // Get the comments.
-            $comments = $this->comments->get_comments($discussion[0]->discussion_id);
+            $comments = $this->comments->get_comments($discussion[0]->discussion_id, $config['per_page'], $page);
 
             // Define the page title.
             $data['title'] = ucwords($discussion[0]->discussion_name);
@@ -66,7 +73,9 @@ class Discussions extends Front_Controller {
                         'body' => nl2br($row->body),
                         'avatar' => img( element('avatar', $data) ),
                         'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
-                        'report_button' => anchor( site_url('comment/report/'.$row->comment_id.''), '<i class=""></i> Report', array('class' => 'btn btn-default btn-sm pu')),
+                        'report_button' => anchor( site_url('comments/report/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
+                        'pm_button' => anchor( site_url('users/pm/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
+                        'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
                     );
 
                     $has_comments = 1;
@@ -93,25 +102,36 @@ class Discussions extends Front_Controller {
             // Build the page data.
             $data['page'] = array(
                 // Form Data.
-                'form_open' => form_open( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') ),
+                'form_open' => form_open( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#quick_reply') ),
                 'form_close' => form_close(),
                 // Fields.
                 'comment_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
                 'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion[0]->discussion_id),
+                // Errors.
+                'comment_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
-                'post_comment_button' => form_submit('submit', 'Post Comment', 'class="btn btn-primary"'),
+                'post_comment_button' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
+                'report_button' => anchor( site_url('discussions/report/'.$discussion[0]->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
+                'pm_button' => anchor( site_url('users/pm/'.$discussion[0]->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+                'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion[0]->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
+                'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+                'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
                 // Discussion Data.
+                'comment_id' => '#0',
+                'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#0'), '#0'),
                 'discussion_name' => $discussion[0]->discussion_name,
                 'created_by' => anchor( site_url('users/profile/'.$discussion[0]->user_id), ucwords( $discussion[0]->username ) ),
                 'body' => nl2br($discussion[0]->body),
                 'avatar' => img( element('avatar', $data ) ),
-                'date_created' => date('jS M Y - h:i:s A', strtotime( $discussion[0]->insert_date )),
+                'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion[0]->insert_date )),
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
                 'has_comments' => $has_comments,
                 'breadcrumbs' => $this->crumbs->output(),
                 'login_link' => anchor( site_url('users/login'), 'Login'),
+                // Other.
+                'pagination' => $this->pagination->create_links(),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );

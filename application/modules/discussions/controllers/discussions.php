@@ -59,13 +59,14 @@ class Discussions extends Front_Controller {
                         'src' => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                     );
 
-                    $data['comments'] = array(
-                        array(
-                            'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), $row->username),
-                            'body' => nl2br($row->body),
-                            'avatar' => img( element('avatar', $data) ),
-                            'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
-                        ),
+                    $data['comments'][] = array(
+                        'comment_id' => $row->comment_id,
+                        'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$row->comment_id.''), '#'.$row->comment_id.''),
+                        'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
+                        'body' => nl2br($row->body),
+                        'avatar' => img( element('avatar', $data) ),
+                        'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
+                        'report_button' => anchor( site_url('comment/report/'.$row->comment_id.''), '<i class=""></i> Report', array('class' => 'btn btn-default btn-sm pu')),
                     );
 
                     $has_comments = 1;
@@ -82,7 +83,7 @@ class Discussions extends Front_Controller {
             // Build the discussion starters avatar.
             $data['avatar'] = array(
                 'src' => $this->gravatar->get_gravatar($discussion[0]->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
-                'class' => 'media-object',
+                'class' => 'media-object'
             );
 
             // Build the page breadcrumbs.
@@ -102,8 +103,7 @@ class Discussions extends Front_Controller {
                 'post_comment_button' => form_submit('submit', 'Post Comment', 'class="btn btn-primary"'),
                 // Discussion Data.
                 'discussion_name' => $discussion[0]->discussion_name,
-                'category_name' => anchor( site_url('categories/'.$discussion[0]->category_slug), $discussion[0]->category_name ),
-                'created_by' => anchor( site_url('users/profile/'.$discussion[0]->user_id), $discussion[0]->username ),
+                'created_by' => anchor( site_url('users/profile/'.$discussion[0]->user_id), ucwords( $discussion[0]->username ) ),
                 'body' => nl2br($discussion[0]->body),
                 'avatar' => img( element('avatar', $data ) ),
                 'date_created' => date('jS M Y - h:i:s A', strtotime( $discussion[0]->insert_date )),
@@ -111,15 +111,74 @@ class Discussions extends Front_Controller {
                 'comments' => element( 'comments', $data ),
                 'has_comments' => $has_comments,
                 'breadcrumbs' => $this->crumbs->output(),
+                'login_link' => anchor( site_url('users/login'), 'Login'),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
         }
-        else
-        {
+        else {
+            // Set the timezone.
+            date_default_timezone_set($this->config->item('default_timezone'));
+
+            // Get the discussion from the database.
+            $discussion = $this->discussions->get_singleton($discussion_slug);
+
+            // Get the category info from the database.
+            $category = $this->categories->get_singleton($category_slug);
+
+            // Form has been submitted, sanitie the data.
+            $comment = strip_tags($this->security->xss_clean($this->input->post('comment')));
+
+            // Build the data to insert into the database.
+            $data = array(
+                'discussion_id' => $this->input->post('discussion_id'),
+                'insert_user_id' => $this->session->userdata('user_id'),
+                'body' => $comment,
+                'insert_date' => date('Y-m-d G:i:s', time()),
+                'insert_ip' => $this->input->ip_address(),
+            );
+
+            // Insert into the comments table.
+            $this->comments->insert($data);
+
+            $comment_id = $this->db->insert_id();
+
+            // Build the data for the discussions table.
+            $data = array(
+                'last_comment_id' => $comment_id,
+                'last_comment_user_id' => $this->session->userdata('user_id'),
+                'comment_count' => ++$discussion[0]->comment_count,
+                'last_comment_date' => date('Y-m-d H:i:s', time()),
+            );
+
+            // Update the discussions table.
+            $this->discussions->update($data, $discussion[0]->discussion_id);
+
+            // Build the data for the categories table.
+            $data = array(
+                'comment_count' => ++$category[0]->comment_count,
+                'last_comment_id' => $comment_id,
+                'last_comment_date' => date('Y-m-d G:i:s', time()),
+            );
+
+            // Update the categories table.
+            if ($this->categories->update($data, $category[0]->category_id) === TRUE) {
+
+                // Create a message.
+                $this->messageci->set(lang('success_creating_comment'), 'success');
+
+                // Redirect.
+                redirect(site_url('discussions/' . $category_slug . '/' . $discussion_slug . ''));
+            } else {
+                // Create a message.
+                $this->messageci->set(lang('error_creating_comment'), 'error');
+
+                // Redirect.
+                redirect(site_url('discussions/' . $category_slug . '/' . $discussion_slug . ''));
+            }
 
         }
 
-
     }
+
 }

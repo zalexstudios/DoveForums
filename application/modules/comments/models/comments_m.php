@@ -6,7 +6,7 @@ class Comments_m extends CI_Model {
     public function get_comments($discussion_id)
     {
         // Query.
-        $query = $this->db->select('comments.body, comments.insert_date, users.id as user_id, users.username, users.email')
+        $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, users.id as user_id, users.username, users.email')
             ->join('users', 'users.id = comments.insert_user_id')
             ->where('comments.discussion_id', $discussion_id)
             ->where('comments.flag', 0)
@@ -27,7 +27,7 @@ class Comments_m extends CI_Model {
         // Query.
         $this->db->insert('comments', $data);
 
-        if( $this->db->affected_rows() > 0 )
+        if ($this->db->affected_rows() > 0)
         {
             return TRUE;
         } else {

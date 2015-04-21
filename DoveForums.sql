@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.38)
 # Database: DoveForums
-# Generation Time: 2015-04-15 14:10:07 +0000
+# Generation Time: 2015-04-21 10:50:20 +0000
 # ************************************************************
 
 
@@ -36,6 +36,7 @@ CREATE TABLE `categories` (
   `update_user_id` int(11) DEFAULT NULL,
   `date_inserted` datetime DEFAULT NULL,
   `date_updated` datetime DEFAULT NULL,
+  `last_comment_date` datetime DEFAULT NULL,
   `last_comment_id` int(11) DEFAULT NULL,
   `last_discussion_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`category_id`)
@@ -44,11 +45,47 @@ CREATE TABLE `categories` (
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 
-INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_id`, `last_discussion_id`)
+INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`)
 VALUES
-	(1,1,0,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,NULL,1);
+	(1,1,5,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-04-21 10:56:44',5,1);
 
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table comments
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `comments`;
+
+CREATE TABLE `comments` (
+  `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `discussion_id` int(11) DEFAULT NULL,
+  `insert_user_id` int(11) DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `delete_user_id` int(11) DEFAULT NULL,
+  `body` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `insert_date` datetime DEFAULT NULL,
+  `delete_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `insert_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `flag` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+
+INSERT INTO `comments` (`comment_id`, `discussion_id`, `insert_user_id`, `update_user_id`, `delete_user_id`, `body`, `insert_date`, `delete_date`, `update_date`, `insert_ip`, `update_ip`, `flag`)
+VALUES
+	(1,1,1,NULL,NULL,'This is a test comment to the First Discussion.','2015-04-21 10:37:59',NULL,NULL,'::1',NULL,0),
+	(2,1,1,NULL,NULL,'And a second test comment after updating some code.','2015-04-21 10:44:15',NULL,NULL,'::1',NULL,0),
+	(3,1,1,NULL,NULL,'And another test.','2015-04-21 10:46:38',NULL,NULL,'::1',NULL,0),
+	(4,1,1,NULL,NULL,'And a final test after more code tweaks.','2015-04-21 10:54:55',NULL,NULL,'::1',NULL,0),
+	(5,1,1,NULL,NULL,'And one more test.','2015-04-21 10:56:44',NULL,NULL,'::1',NULL,0);
+
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -87,7 +124,7 @@ LOCK TABLES `discussions` WRITE;
 
 INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`)
 VALUES
-	(1,1,1,NULL,NULL,NULL,'First Discussion','first-discussion','This is a testing first discussion.',0,0,0,0,0,0,'2015-04-15 15:00:00',NULL,NULL,NULL,NULL,1);
+	(1,1,1,NULL,NULL,5,'First Discussion','first-discussion','This is a testing first discussion.',5,0,89,0,0,0,'2015-04-15 15:00:00',NULL,NULL,NULL,'2015-04-21 10:56:44',1);
 
 /*!40000 ALTER TABLE `discussions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -155,15 +192,16 @@ CREATE TABLE `users` (
   `last_name` varchar(50) DEFAULT NULL,
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `visit_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`)
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`)
 VALUES
-	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1268889823,1,'Admin','istrator','ADMIN','0');
+	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1429608646,1,'Admin','istrator','ADMIN','0',4);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -13,7 +13,7 @@ class Categories_m extends CI_Model {
      * @author Chris Baines
      * @since 0.0.1
      */
-    public function get_categories()
+    public function get_categories ()
     {
         // Query.
         $query = $this->db->select('categories.category_id, categories.discussion_count, categories.comment_count,
@@ -43,7 +43,7 @@ class Categories_m extends CI_Model {
      * @author Chris Baines
      * @since 0.0.1
      */
-    public function get_singleton($category_slug)
+    public function get_singleton ($category_slug)
     {
         // Query.
         $query = $this->db->select('category_id, discussion_count, comment_count, name, slug as category_slug, description')
@@ -56,6 +56,26 @@ class Categories_m extends CI_Model {
             return $query->result();
         } else {
             return FALSE;
+        }
+    }
+
+    public function update ($data=array(), $category_id)
+    {
+        // Start the transaction.
+        $this->db->trans_begin();
+
+        $this->db->where('category_id', $category_id)
+            ->update('categories', $data);
+
+        if ($this->db->trans_status() === FALSE)
+        {
+            // Roll back the changes.
+            $this->db->trans_rollback();
+            return FALSE;
+        } else {
+            // Commit the changes.
+            $this->db->trans_commit();
+            return TRUE;
         }
     }
 }

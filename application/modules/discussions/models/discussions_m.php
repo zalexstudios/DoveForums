@@ -102,7 +102,21 @@ class Discussions_m extends CI_Model {
 
     public function update($data=array(), $discussion_id)
     {
+        // Start the transaction.
+        $this->db->trans_begin();
+
         $this->db->where('discussion_id', $discussion_id)
             ->update('discussions', $data);
+
+        if ($this->db->trans_status() === FALSE)
+        {
+            // Roll back the changes.
+            $this->db->trans_rollback();
+            return FALSE;
+        } else {
+            // Commit the changes.
+            $this->db->trans_commit();
+            return TRUE;
+        }
     }
 }

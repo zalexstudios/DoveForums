@@ -26,6 +26,7 @@ class MY_Controller extends MX_Controller{
         $this->load->model('categories/categories_m', 'categories');
         $this->load->model('discussions/discussions_m', 'discussions');
         $this->load->model('comments/comments_m', 'comments');
+        $this->load->model('users/users_m', 'users');
 
         // Load Language Files.
         $this->lang->load('messages', 'english');

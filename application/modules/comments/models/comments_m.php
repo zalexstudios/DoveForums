@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Comments_m extends CI_Model {
 
+    /**
+     * Get Comments
+     *
+     * @param       integer     $discussion_id
+     * @param       integer     $limit
+     * @param       integer     $offset
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function get_comments($discussion_id, $limit=NULL, $offset=NULL)
     {
         // Query.
@@ -23,6 +33,14 @@ class Comments_m extends CI_Model {
         }
     }
 
+    /**
+     * Insert
+     *
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function insert( $data=array() )
     {
         // Query.
@@ -35,4 +53,35 @@ class Comments_m extends CI_Model {
             return FALSE;
         }
     }
+
+    /**
+     * Add Comment
+     *
+     * @param       integer     $discussion_id
+     * @param       integer     $user_id
+     * @param       string      $body
+     * @param       string      $insert_ip
+     * @return      integer
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function add_comment( $discussion_id, $user_id, $body, $insert_ip )
+    {
+        // Set the timezone.
+        date_default_timezone_set($this->config->item('default_timezone'));
+
+        $insert['discussion_id'] = $discussion_id;
+        $insert['insert_user_id'] = $user_id;
+        $insert['body'] = $body;
+        $insert['insert_date'] = date('Y-m-d G:i:s', time());
+        $insert['insert_ip'] = $insert_ip;
+
+        $insert_id = $this->db->insert('comments', $insert );
+
+        return $this->db->insert_id();
+    }
+
+    //-----------------------------------------------------------------------
+    // Private functions
+    //-----------------------------------------------------------------------
 }

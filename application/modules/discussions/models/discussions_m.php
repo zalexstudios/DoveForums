@@ -3,15 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Discussions_m extends CI_Model {
 
+    //-----------------------------------------------------------------------
+    // Public functions
+    //-----------------------------------------------------------------------
+
     /**
      * Count All
      *
-     * This function counts all the discussions
-     * in the database.
-     *
-     * @return int
-     * @author Chris Baines
-     * @since 0.0.1
+     * @return      int
+     * @author      Chris Baines
+     * @since       0.0.1
      */
     public function count_all()
     {
@@ -33,14 +34,14 @@ class Discussions_m extends CI_Model {
      *
      * This function grabs the discussions from the database
      *
-     * @var category_id
-     * @var filter
-     * @var order
-     * @var limit
-     * @var offset
-     * @return object
-     * @author Chris Baines
-     * @since 0.0.1
+     * @param       integer     category_id
+     * @param       string      filter
+     * @param       string      order
+     * @param       integer     limit
+     * @param       integer     offset
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
      */
     public function get_discussions($category_id=NULL, $filter=NULL, $order=NULL, $limit=NULL, $offset=NULL)
     {
@@ -79,6 +80,14 @@ class Discussions_m extends CI_Model {
         }
     }
 
+    /**
+     * Get Singleton
+     *
+     * @param       string      $discussion_slug
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function get_singleton($discussion_slug)
     {
         // Query.
@@ -100,6 +109,15 @@ class Discussions_m extends CI_Model {
         }
     }
 
+    /**
+     * Update
+     *
+     * @param       array       $data
+     * @param       integer     $discussion_id
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function update($data=array(), $discussion_id)
     {
         // Start the transaction.
@@ -118,5 +136,55 @@ class Discussions_m extends CI_Model {
             $this->db->trans_commit();
             return TRUE;
         }
+    }
+
+    /**
+     * Update Discussion
+     *
+     * @param       integer     $discussion_id
+     * @param       integer     $comment_id
+     * @param       integer     $user_id
+     * @return      integer
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function update_discussion( $discussion_id, $comment_id, $user_id )
+    {
+        // Set the timezone.
+        date_default_timezone_set($this->config->item('default_timezone'));
+
+        $comment_count = $this->_get_row( 'comment_count', $discussion_id );
+
+        $update['last_comment_id'] = $comment_id;
+        $update['last_comment_user_id'] = $user_id;
+        $update['comment_count'] = ++$comment_count;
+        $update['last_comment_date'] = date('Y-m-d G:i:s', time());
+
+        $this->db->where( 'discussion_id', $discussion_id )->update( 'discussions', $update );
+
+        return $this->db->affected_rows();
+    }
+
+    //-----------------------------------------------------------------------
+    // Private functions
+    //-----------------------------------------------------------------------
+
+    /**
+     * Get Row
+     *
+     * @param       string      $row
+     * @param       string      $discussion_id
+     * @return      mixed
+     */
+    private function _get_row( $row, $discussion_id )
+    {
+        $query = $this->db->select($row)->get_where('discussions', array('discussion_id' => $discussion_id));
+
+        if($query->num_rows())
+        {
+            return $query->row()->$row;
+        }
+
+        return 0;
     }
 }

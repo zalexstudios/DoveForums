@@ -78,4 +78,76 @@ class Categories_m extends CI_Model {
             return TRUE;
         }
     }
+
+    /**
+     * Update Category.
+     *
+     * @param       integer     $discussion_id
+     * @param       integer     $comment_id
+     * @return      integer
+     */
+    public function update_category( $discussion_id, $comment_id )
+    {
+        // Set the timezone.
+        date_default_timezone_set($this->config->item('default_timezone'));
+
+        // Get the category id.
+        $category_id = $this->_get_category_id_from_discussion( $discussion_id );
+
+        // Get the current comment count.
+        $comment_count = $this->_get_row( 'comment_count', $category_id );
+
+        $update['comment_count'] = ++$comment_count;
+        $update['last_comment_id'] = $comment_id;
+        $update['last_comment_date'] = date('Y-m-d G:i:s', time());
+
+        $this->db->where( 'category_id', $category_id )->update( 'categories', $update );
+
+        return $this->db->affected_rows();
+    }
+
+    //-----------------------------------------------------------------------
+    // Private functions
+    //-----------------------------------------------------------------------
+
+    /**
+     * Get Category ID from Discussion
+     *
+     * @param       integer     $discussion_id
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    private function _get_category_id_from_discussion( $discussion_id )
+    {
+        $query = $this->db->select('category_id')->get_where('categories', array('discussion_id', $discussion_id));
+
+        if ($query->num_rows())
+        {
+            return $query->row()->category_id;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Get Row
+     *
+     * @param       string      $row
+     * @param       string      $category_id
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    private function _get_row( $row, $category_id )
+    {
+        $query = $this->db->select($row)->get_where('categories', array('category_id' => $category_id));
+
+        if($query->num_rows())
+        {
+            return $query->row()->$row;
+        }
+
+        return FALSE;
+    }
 }

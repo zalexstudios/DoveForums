@@ -74,7 +74,7 @@ class Discussions extends Front_Controller {
                         'avatar' => img( element('avatar', $data) ),
                         'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
                         'report_button' => anchor( site_url('comments/report/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
-                        'pm_button' => anchor( site_url('users/pm/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
+                        'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
                         'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
                     );
 
@@ -108,12 +108,13 @@ class Discussions extends Front_Controller {
                 'comment_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
                 'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion[0]->discussion_id),
+
                 // Errors.
                 'comment_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
                 'post_comment_button' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
                 'report_button' => anchor( site_url('discussions/report/'.$discussion[0]->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
-                'pm_button' => anchor( site_url('users/pm/'.$discussion[0]->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+                'pm_button' => anchor( site_url('messages/send/'.$discussion[0]->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
                 'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion[0]->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
                 'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
                 'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
@@ -137,64 +138,45 @@ class Discussions extends Front_Controller {
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
         }
         else {
-            // Set the timezone.
-            date_default_timezone_set($this->config->item('default_timezone'));
 
-            // Get the discussion from the database.
-            $discussion = $this->discussions->get_singleton($discussion_slug);
+            // Get the data required.
+            $user_id = $this->session->userdata('user_id');
+            $discussion_id = $this->input->post('discussion_id');
+            $body = strip_tags( $this->security->xss_clean( $this->input->post('comment') ) );
+            $insert_ip = $this->input->ip_address();
 
-            // Get the category info from the database.
-            $category = $this->categories->get_singleton($category_slug);
+            // Start database transaction.
+            $this->db->trans_start();
 
-            // Form has been submitted, sanitie the data.
-            $comment = strip_tags($this->security->xss_clean($this->input->post('comment')));
+            // Add Comment.
+            $comment_id = $this->comments->add_comment( $discussion_id, $user_id, $body, $insert_ip );
 
-            // Build the data to insert into the database.
-            $data = array(
-                'discussion_id' => $this->input->post('discussion_id'),
-                'insert_user_id' => $this->session->userdata('user_id'),
-                'body' => $comment,
-                'insert_date' => date('Y-m-d G:i:s', time()),
-                'insert_ip' => $this->input->ip_address(),
-            );
+            // Update Discussion.
+            $this->discussions->update_discussion( $discussion_id, $comment_id, $user_id );
 
-            // Insert into the comments table.
-            $this->comments->insert($data);
+            // Update Category.
+            $this->categories->update_category( $discussion_id, $comment_id );
 
-            $comment_id = $this->db->insert_id();
+            // End database transaction.
+            $this->db->trans_complete();
 
-            // Build the data for the discussions table.
-            $data = array(
-                'last_comment_id' => $comment_id,
-                'last_comment_user_id' => $this->session->userdata('user_id'),
-                'comment_count' => ++$discussion[0]->comment_count,
-                'last_comment_date' => date('Y-m-d H:i:s', time()),
-            );
-
-            // Update the discussions table.
-            $this->discussions->update($data, $discussion[0]->discussion_id);
-
-            // Build the data for the categories table.
-            $data = array(
-                'comment_count' => ++$category[0]->comment_count,
-                'last_comment_id' => $comment_id,
-                'last_comment_date' => date('Y-m-d G:i:s', time()),
-            );
-
-            // Update the categories table.
-            if ($this->categories->update($data, $category[0]->category_id) === TRUE) {
+            if($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
 
                 // Create a message.
-                $this->messageci->set(lang('success_creating_comment'), 'success');
+                $this->messageci->set( lang('error_creating_comment'), 'error' );
 
                 // Redirect.
-                redirect(site_url('discussions/' . $category_slug . '/' . $discussion_slug . ''));
-            } else {
+                redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+            }
+            else
+            {
                 // Create a message.
-                $this->messageci->set(lang('error_creating_comment'), 'error');
+                $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                 // Redirect.
-                redirect(site_url('discussions/' . $category_slug . '/' . $discussion_slug . ''));
+                redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
             }
 
         }

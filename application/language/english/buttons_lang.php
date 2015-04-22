@@ -7,3 +7,5 @@ $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i> PM';
 $lang['btn_report'] = '<i class="fa fa-bullhorn"></i> Report';
 $lang['btn_post_comment'] = 'Post Reply';
+$lang['btn_register'] = 'Register';
+$lang['btn_send_pm'] = 'Send PM';

@@ -54,9 +54,8 @@ class Comments extends Front_Controller {
         {
             $this->db->trans_rollback();
 
-
             // Create a message.
-            $this->messageci->set( lang('error_soft_delete_comment'), 'error' );
+            $this->messageci->set( lang('error_delete_comment'), 'error' );
 
             // Redirect.
             redirect( 'discussions/'.$category_slug.'/'.$discussion_slug.'' );
@@ -64,7 +63,7 @@ class Comments extends Front_Controller {
         else
         {
             // Create a message.
-            $this->messageci->set( lang('success_soft_delete_comment'), 'success' );
+            $this->messageci->set( lang('success_delete_comment'), 'success' );
 
             // Redirect.
             redirect( 'discussions/'.$category_slug.'/'.$discussion_slug.'' );

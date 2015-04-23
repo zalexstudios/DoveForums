@@ -53,7 +53,7 @@ class Categories_m extends CI_Model {
         // Result.
         if( $query->num_rows() > 0 )
         {
-            return $query->result();
+            return $query->row();
         } else {
             return FALSE;
         }

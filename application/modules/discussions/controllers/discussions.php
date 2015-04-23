@@ -12,10 +12,27 @@ class Discussions extends Front_Controller {
                 'label' => 'lang:rules_comment',
             ),
         ),
+        'new_reply' => array(
+            //0
+            array(
+                'field' => 'comment',
+                'rules' => 'required',
+                'label' => 'lang:rules_comment',
+            ),
+        )
     );
 
     private $form_fields = array(
         'new_comment' => array(
+            //0
+            array(
+                'id' => 'comment',
+                'name' => 'comment',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
+        'new_reply' => array(
             //0
             array(
                 'id' => 'comment',
@@ -38,21 +55,21 @@ class Discussions extends Front_Controller {
             $discussion = $this->discussions->get_singleton($discussion_slug);
 
             // Update the discussion view count.
-            $this->discussions->update(array('view_count' => ++$discussion[0]->view_count), $discussion[0]->discussion_id);
+            $this->discussions->update(array('view_count' => ++$discussion->view_count), $discussion->discussion_id);
 
             // Setup the Pagination.
             $config['base_url'] = site_url('discussions/'.$category_slug.'/'.$discussion_slug.'');
-            $config['total_rows'] = count( $this->comments->get_comments( $discussion[0]->discussion_id ) );
+            $config['total_rows'] = count( $this->comments->get_comments( $discussion->discussion_id ) );
             $config['per_page'] = $this->config->item('comments_per_page');
             $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
             $this->pagination->initialize($config);
 
             // Get the comments.
-            $comments = $this->comments->get_comments($discussion[0]->discussion_id, $config['per_page'], $page);
+            $comments = $this->comments->get_comments($discussion->discussion_id, $config['per_page'], $page);
 
             // Define the page title.
-            $data['title'] = ucwords($discussion[0]->discussion_name);
+            $data['title'] = ucwords($discussion->discussion_name);
 
             // Define the page template.
             $data['template'] = 'pages/discussions/view';
@@ -91,13 +108,13 @@ class Discussions extends Front_Controller {
 
             // Build the discussion starters avatar.
             $data['avatar'] = array(
-                'src' => $this->gravatar->get_gravatar($discussion[0]->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                'src' => $this->gravatar->get_gravatar($discussion->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                 'class' => 'media-object'
             );
 
             // Build the page breadcrumbs.
-            $this->crumbs->add($discussion[0]->category_name, 'categories/'.$category_slug.'');
-            $this->crumbs->add($discussion[0]->discussion_name, 'discussions/'.$category_slug.'/'.$discussion_slug.'');
+            $this->crumbs->add($discussion->category_name, 'categories/'.$category_slug.'');
+            $this->crumbs->add($discussion->discussion_name, 'discussions/'.$category_slug.'/'.$discussion_slug.'');
 
             // Build the page data.
             $data['page'] = array(
@@ -107,25 +124,25 @@ class Discussions extends Front_Controller {
                 // Fields.
                 'comment_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
-                'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion[0]->discussion_id),
+                'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->discussion_id),
 
                 // Errors.
                 'comment_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
                 'post_comment_button' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
-                'report_button' => anchor( site_url('discussions/report/'.$discussion[0]->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
-                'pm_button' => anchor( site_url('messages/send/'.$discussion[0]->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
-                'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion[0]->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
+                'report_button' => anchor( site_url('discussions/report/'.$discussion->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm pull-right', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
+                'pm_button' => anchor( site_url('messages/send/'.$discussion->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+                'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
                 'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
                 'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
                 // Discussion Data.
                 'comment_id' => '#0',
                 'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#0'), '#0'),
-                'discussion_name' => $discussion[0]->discussion_name,
-                'created_by' => anchor( site_url('users/profile/'.$discussion[0]->user_id), ucwords( $discussion[0]->username ) ),
-                'body' => nl2br($discussion[0]->body),
+                'discussion_name' => $discussion->discussion_name,
+                'created_by' => anchor( site_url('users/profile/'.$discussion->user_id), ucwords( $discussion->username ) ),
+                'body' => nl2br($discussion->body),
                 'avatar' => img( element('avatar', $data ) ),
-                'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion[0]->insert_date )),
+                'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion->insert_date )),
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
                 'has_comments' => $has_comments,
@@ -181,6 +198,44 @@ class Discussions extends Front_Controller {
 
         }
 
+    }
+
+    /**
+     * Reply
+     *
+     * @param       string      $category_slug
+     * @param       string      $discussion_slug
+     * @return      boolean
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function reply($category_slug, $discussion_slug)
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['new_reply']);
+
+        // See if the form has been run.
+        if( $this->form_validation->run() === FALSE )
+        {
+            // Define the page title.
+            $data['title'] = 'Post a New Reply';
+
+            // Define the page template.
+            $data['template'] = 'pages/discussions/reply';
+
+            // Get the discussion info.
+            $discussion = $this->discussions->get_singleton($discussion_slug);
+
+            $data['page'] = array(
+
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+        }
+        else
+        {
+
+        }
     }
 
 }

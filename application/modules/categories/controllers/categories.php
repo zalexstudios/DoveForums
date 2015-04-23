@@ -73,13 +73,13 @@ class Categories extends Front_Controller {
         $category = $this->categories->get_singleton($category_slug);
 
         // Define the page title.
-        $data['title'] = $category[0]->name;
+        $data['title'] = $category->name;
 
         // Define the template.
         $data['template'] = 'pages/categories/view';
 
         // Get the discussions for this category.
-        $discussions = $this->discussions->get_discussions($category[0]->category_id);
+        $discussions = $this->discussions->get_discussions($category->category_id);
 
         // Loop through the discussions.
         if ( is_array($discussions) )
@@ -111,15 +111,15 @@ class Categories extends Front_Controller {
         }
 
         // Build the page breadcrumbs.
-        $this->crumbs->add($category[0]->name);
+        $this->crumbs->add($category->name);
 
         // Define the page data.
         $data['page'] = array(
             'discussions' => element('discussions', $data),
             'has_discussions' => $has_discussions,
             'breadcrumbs' => $this->crumbs->output(),
-            'name' => $category[0]->name,
-            'description' => $category[0]->description,
+            'name' => $category->name,
+            'description' => $category->description,
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );

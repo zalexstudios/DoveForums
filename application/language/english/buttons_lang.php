@@ -9,3 +9,7 @@ $lang['btn_report'] = '<i class="fa fa-bullhorn"></i> Report';
 $lang['btn_post_comment'] = 'Post Reply';
 $lang['btn_register'] = 'Register';
 $lang['btn_send_pm'] = 'Send PM';
+$lang['btn_edit_discussion'] = '<i class="fa fa-pencil"></i> Edit';
+$lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Delete';
+$lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Edit';
+$lang['btn_delete_comment'] = '<i class="fa fa-trash-o"></i> Delete';

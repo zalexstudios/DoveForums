@@ -112,30 +112,21 @@ class Discussions_m extends CI_Model {
     /**
      * Update
      *
+     * @param       string      $field
+     * @param       string      $where
      * @param       array       $data
-     * @param       integer     $discussion_id
-     * @return      bool
-     * @author      Chris Baines
-     * @since       0.0.1
+     * @return bool
      */
-    public function update($data=array(), $discussion_id)
+    public function update( $field, $where, $data )
     {
-        // Start the transaction.
-        $this->db->trans_begin();
+        $this->db->where( $field, $where )->update( 'discussions', $data );
 
-        $this->db->where('discussion_id', $discussion_id)
-            ->update('discussions', $data);
-
-        if ($this->db->trans_status() === FALSE)
+        if( $this->db->affected_rows() > 0 )
         {
-            // Roll back the changes.
-            $this->db->trans_rollback();
-            return FALSE;
-        } else {
-            // Commit the changes.
-            $this->db->trans_commit();
             return TRUE;
         }
+
+        return FALSE;
     }
 
     /**

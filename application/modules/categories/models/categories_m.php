@@ -59,24 +59,24 @@ class Categories_m extends CI_Model {
         }
     }
 
-    public function update ($data=array(), $category_id)
+    /**
+     * Update
+     *
+     * @param       string      $field
+     * @param       string      $where
+     * @param       array       $data
+     * @return bool
+     */
+    public function update( $field, $where, $data )
     {
-        // Start the transaction.
-        $this->db->trans_begin();
+        $this->db->where( $field, $where )->update( 'categories', $data );
 
-        $this->db->where('category_id', $category_id)
-            ->update('categories', $data);
-
-        if ($this->db->trans_status() === FALSE)
+        if( $this->db->affected_rows() > 0 )
         {
-            // Roll back the changes.
-            $this->db->trans_rollback();
-            return FALSE;
-        } else {
-            // Commit the changes.
-            $this->db->trans_commit();
             return TRUE;
         }
+
+        return FALSE;
     }
 
     /**
@@ -95,7 +95,7 @@ class Categories_m extends CI_Model {
         $category_id = $this->_get_category_id_from_discussion( $discussion_id );
 
         // Get the current comment count.
-        $comment_count = $this->_get_row( 'comment_count', $category_id );
+        $comment_count = $this->_get_row( 'comment_count', 'category_id', $category_id );
 
         $update['comment_count'] = ++$comment_count;
         $update['last_comment_id'] = $comment_id;
@@ -134,20 +134,19 @@ class Categories_m extends CI_Model {
      * Get Row
      *
      * @param       string      $row
-     * @param       string      $category_id
+     * @param       string      $field
+     * @param       string      $where
      * @return      mixed
-     * @author      Chris Baines
-     * @since       0.0.1
      */
-    private function _get_row( $row, $category_id )
+    private function _get_row( $row, $field, $where )
     {
-        $query = $this->db->select($row)->get_where('categories', array('category_id' => $category_id));
+        $query = $this->db->select($row)->get_where('categories', array($field => $where));
 
         if($query->num_rows())
         {
             return $query->row()->$row;
         }
 
-        return FALSE;
+        return 0;
     }
 }

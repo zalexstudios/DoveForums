@@ -28,7 +28,7 @@
 
 </div>
 
-<div class="panel panel-info" id="{comment_id}">
+<div class="panel panel-danger" id="{comment_id}">
 
     <div class="panel-heading">
 
@@ -76,9 +76,24 @@
 
     <div class="panel-footer">
 
-        {pm_button}
-        {thumbs_up_button}
-        {report_button}
+        <div class="btn-toolbar">
+
+            <div class="btn-group">
+
+                {pm_button}
+                {thumbs_up_button}
+
+            </div>
+
+            <div class="btn-group pull-right">
+
+                {delete_discussion_button}
+                {edit_discussion_button}
+                {report_button}
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -136,9 +151,24 @@
 
         <div class="panel-footer">
 
-            {pm_button}
-            {thumbs_up_button}
-            {report_button}
+            <div class="btn-toolbar">
+
+                <div class="btn-group">
+
+                    {pm_button}
+                    {thumbs_up_button}
+
+                </div>
+
+                <div class="btn-group pull-right">
+
+                    {delete_comment_button}
+                    {edit_comment_button}
+                    {report_button}
+
+                </div>
+
+            </div>
 
         </div>
 

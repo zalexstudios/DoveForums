@@ -14,3 +14,12 @@ body {
 .no-margin {
     margin: 0;
 }
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.dashed {
+    border-style: dashed;
+}

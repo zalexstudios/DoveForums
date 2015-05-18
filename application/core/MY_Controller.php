@@ -33,6 +33,8 @@ class MY_Controller extends MX_Controller{
         $this->lang->load('buttons', 'english');
         $this->lang->load('rules', 'english');
 
+        $this->output->enable_profiler(TRUE);
+
     }
 }
 

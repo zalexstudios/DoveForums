@@ -11,7 +11,6 @@ The project goal is a simple one.  To make Bulletin Board software that is easy 
 - <a href="http://www.ericlbarnes.com">Eric Barnes</a> - Slug
 - <a href="http://www.kylenoland.com">Kyle Noland</a> - MessageCI
 - <a href="http://www.irealms.co.uk">Ryan Marshal<a/> - Gravatar
-- <a href="http://jamierumbelow.net">Jamie Rumbelow</a> - MY_Model
 
 Thank you to all mentioned above for the great work on these libraries. 
 

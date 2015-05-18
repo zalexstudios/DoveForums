@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MY_Controller extends MX_Controller{
-
-    // Set the autoload array.
-    public $autoload = array(
-        'helper'    => array( 'array', 'html', 'url' ),
-        'libraries' => array( 'database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination' ),
-        'config'    => array( 'forums', 'messageci' ),
-    );
+class MY_Controller extends CI_Controller{
 
     /**
      * Construct Functions
@@ -23,10 +16,10 @@ class MY_Controller extends MX_Controller{
         parent::__construct();
 
         // Load Models.
-        $this->load->model('categories/categories_m', 'categories');
-        $this->load->model('discussions/discussions_m', 'discussions');
-        $this->load->model('comments/comments_m', 'comments');
-        $this->load->model('users/users_m', 'users');
+        $this->load->model('categories_m', 'categories');
+        $this->load->model('discussions_m', 'discussions');
+        $this->load->model('comments_m', 'comments');
+        $this->load->model('users_m', 'users');
 
         // Load Language Files.
         $this->lang->load('messages', 'english');

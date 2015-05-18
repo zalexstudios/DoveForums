@@ -6,7 +6,6 @@ After nearly 3 years away from development due to work and home life, I have dec
 
 The project goal is a simple one.  To make Bulletin Board software that is easy to use, install and customize and best of all Free!.  I am also trying to keep as much as I can native to CI without having too many external libraries cluttering up the code.  The following external libraries are going to be used as a starting point:
 
-- <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">WireDesignz</a> - HMVC 
 - <a href="http://www.benedmunds.com">Ben Edmunds</a> - Ion Auth
 - <a href="http://www.ericlbarnes.com">Eric Barnes</a> - Slug
 - <a href="http://www.kylenoland.com">Kyle Noland</a> - MessageCI

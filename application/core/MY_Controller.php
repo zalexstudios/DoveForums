@@ -112,7 +112,7 @@ class Front_Controller extends MY_Controller{
             'css' => array(
                 array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">' ),
                 array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">' ),
-                array( 'link' => '<link href="'.base_url('application/views/templates/'.$this->theme.'/assets/css/custom.css').'", rel="stylesheet">' ),
+                array( 'link' => '<link href="'.base_url('templates/'.$this->theme.'/assets/css/custom.css').'", rel="stylesheet">' ),
                 array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">' ),
             ),
             'meta' => array(
@@ -121,7 +121,7 @@ class Front_Controller extends MY_Controller{
             'js' => array(
                 array( 'script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>' ),
                 array( 'script' => '<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>' ),
-                array( 'script' => '<script src="'.base_url('application/views/templates/'.$this->theme.'/assets/js/forums.js').'"></script>' ),
+                array( 'script' => '<script src="'.base_url('templates/'.$this->theme.'/assets/js/forums.js').'"></script>' ),
             ),
             // Page Title.
             'title' => ''.$this->site_name.' - '.$page_title.'',

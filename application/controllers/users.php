@@ -283,4 +283,14 @@ class Users extends Front_Controller {
         // Redirect.
         redirect( site_url('forums') );
     }
+
+    public function thumbs_up ( $user_id )
+    {
+        /* TODO */
+    }
+
+    public function send_pm( $user_id )
+    {
+        /* TODO */
+    }
 }

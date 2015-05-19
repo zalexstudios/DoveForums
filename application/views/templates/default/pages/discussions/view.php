@@ -20,11 +20,16 @@
 
     </div>
 
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
     <div class="btn-group pull-right">
 
         {new_discussion_button}
 
     </div>
+
+    <?php } ?>
 
 </div>
 
@@ -85,6 +90,9 @@
 
             </div>
 
+            <!-- Check the user is logged in -->
+            <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
             <div class="btn-group pull-right">
 
                 {delete_discussion_button}
@@ -92,6 +100,8 @@
                 {report_button}
 
             </div>
+
+            <?php } ?>
 
         </div>
 
@@ -160,6 +170,9 @@
 
                 </div>
 
+                <!-- Check the user is logged in -->
+                <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
+
                 <div class="btn-group pull-right">
 
                     {delete_comment_button}
@@ -167,6 +180,8 @@
                     {report_button}
 
                 </div>
+
+                <?php } ?>
 
             </div>
 

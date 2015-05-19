@@ -286,12 +286,45 @@ class Forums_M extends CI_Model {
             return TRUE;
         }
 
+    }
 
+    public function get_previous_comment( $discussion_id )
+    {
+        // Query.
+        $query = $this->db->select('comment_id')
+            ->where('discussion_id', $discussion_id)
+            ->order_by('comment_id', 'desc')
+            ->limit(1)
+            ->get($this->tables['comments']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row()->comment_id : NULL;
     }
 
     /*****************************************************************************************
      * User Functions
      *****************************************************************************************/
+
+    /**
+     * Update User Visit Count
+     *
+     * Updates the user visit count.
+     *
+     * @param       string      $user_id
+     * @param       string      $visit_count
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function update_visit_count ( $user_id, $visit_count )
+    {
+        // Query.
+        $this->db->where('id', $user_id)
+            ->update($this->tables['users'], array('visit_count' => $visit_count));
+
+        // Result.
+        return $this->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
 
     /*****************************************************************************************
      * Misc Functions
@@ -413,6 +446,11 @@ class Forums_M extends CI_Model {
         date_default_timezone_set ($this->config->item('default_timezone') );
 
         return date('Y-m-d G:i:s', time());
+    }
+
+    private function _delete()
+    {
+
     }
 
 }

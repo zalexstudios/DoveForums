@@ -19,7 +19,21 @@ class Discussions extends Front_Controller {
                 'rules' => 'required',
                 'label' => 'lang:rules_comment',
             ),
-        )
+        ),
+        'new_discussion' => array(
+            //0
+            array(
+                'field' => 'name',
+                'rules' => 'required',
+                'label' => 'lang:rules_comment',
+            ),
+            //1
+            array(
+                'field' => 'body',
+                'rules' => 'required',
+                'label' => 'lang:rules_body',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -41,8 +55,34 @@ class Discussions extends Front_Controller {
                 'type' => 'text',
             ),
         ),
+        'new_discussion' => array(
+            //0
+            array(
+                'id' => 'name',
+                'name' => 'name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'body',
+                'name' => 'body',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
     );
 
+    /**
+     * View
+     *
+     * View a discussion and all its comments.
+     *
+     * @param       string      $category_slug
+     * @param       string      $discussion_slug
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function view($category_slug, $discussion_slug)
     {
         // Set the form validation rules.
@@ -80,21 +120,21 @@ class Discussions extends Front_Controller {
                 {
                     // build the users avatar.
                     $data['avatar'] = array(
-                        'src' => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                        'src'       => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                     );
 
                     $data['comments'][] = array(
-                        'comment_id' => $row->comment_id,
-                        'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$row->comment_id.''), '#'.$row->comment_id.''),
-                        'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
-                        'body' => nl2br($row->body),
-                        'avatar' => img( element('avatar', $data) ),
-                        'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
-                        'report_button' => anchor( site_url('comments/report/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
-                        'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
-                        'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
-                        'edit_comment_button' => anchor( site_url( 'comments/edit_comment/'.$row->comment_id.'/'.$category_slug.'/'.$discussion_slug.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ),
-                        'delete_comment_button' => anchor( site_url( 'comments/delete_comment/'.$row->comment_id.'/'.$category_slug.'/'.$discussion_slug.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ),
+                        'comment_id'                => $row->comment_id,
+                        'comment_id_link'           => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$row->comment_id.''), '#'.$row->comment_id.''),
+                        'created_by'                => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
+                        'body'                      => nl2br($row->body),
+                        'avatar'                    => img( element('avatar', $data) ),
+                        'created_date'              => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
+                        'report_button'             => anchor( site_url('comments/report_comment/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
+                        'pm_button'                 => anchor( site_url('messages/send/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
+                        'thumbs_up_button'          => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
+                        'edit_comment_button'       => anchor( site_url( 'comments/edit_comment/'.$row->comment_id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ),
+                        'delete_comment_button'     => anchor( site_url( 'comments/delete_comment/'.$row->comment_id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ),
                     );
 
                     $has_comments = 1;
@@ -110,8 +150,8 @@ class Discussions extends Front_Controller {
 
             // Build the discussion starters avatar.
             $data['avatar'] = array(
-                'src' => $this->gravatar->get_gravatar($discussion->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
-                'class' => 'media-object'
+                'src'       => $this->gravatar->get_gravatar($discussion->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                'class'     => 'media-object'
             );
 
             // Build the page breadcrumbs.
@@ -121,39 +161,39 @@ class Discussions extends Front_Controller {
             // Build the page data.
             $data['page'] = array(
                 // Form Data.
-                'form_open' => form_open( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#quick_reply') ),
-                'form_close' => form_close(),
+                'form_open'                     => form_open( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#quick_reply') ),
+                'form_close'                    => form_close(),
                 // Fields.
-                'comment_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
+                'comment_field'                 => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
-                'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->discussion_id),
-                'category_id_field_hidden' => form_hidden('category_id', $discussion->category_id),
+                'discussion_id_field_hidden'    => form_hidden('discussion_id', $discussion->discussion_id),
+                'category_id_field_hidden'      => form_hidden('category_id', $discussion->category_id),
                 // Errors.
-                'comment_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'comment_error'                 => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
-                'post_comment_button' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
-                'report_button' => anchor( site_url('discussions/report/'.$discussion->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
-                'pm_button' => anchor( site_url('messages/send/'.$discussion->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
-                'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
-                'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-                'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
-                'edit_discussion_button' => anchor( site_url( 'discussions/edit_discussion/'.$category_slug.'/'.$discussion_slug.''), lang('btn_edit_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Discussion') ),
-                'delete_discussion_button' => anchor( site_url( 'discussions/delete_discussion/'.$category_slug.'/'.$discussion_slug.''), lang('btn_delete_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Discussion') ),
+                'post_comment_button'           => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
+                'report_button'                 => anchor( site_url('discussions/report_discussion/'.$discussion->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
+                'pm_button'                     => anchor( site_url('messages/send/'.$discussion->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+                'thumbs_up_button'              => anchor( site_url('users/thumbs_up/'.$discussion->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
+                'new_discussion_button'         => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+                'reply_button'                  => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
+                'edit_discussion_button'        => anchor( site_url( 'discussions/edit_discussion/'.$discussion->discussion_id), lang('btn_edit_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Discussion') ),
+                'delete_discussion_button'      => anchor( site_url( 'discussions/delete_discussion/'.$discussion->discussion_id), lang('btn_delete_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Discussion') ),
                 // Discussion Data.
-                'comment_id' => '#0',
-                'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#0'), '#0'),
-                'discussion_name' => $discussion->discussion_name,
-                'created_by' => anchor( site_url('users/profile/'.$discussion->user_id), ucwords( $discussion->username ) ),
-                'body' => nl2br($discussion->body),
-                'avatar' => img( element('avatar', $data ) ),
-                'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion->insert_date )),
+                'comment_id'                    => '#0',
+                'comment_id_link'               => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#0'), '#0'),
+                'discussion_name'               => $discussion->discussion_name,
+                'created_by'                    => anchor( site_url('users/profile/'.$discussion->user_id), ucwords( $discussion->username ) ),
+                'body'                          => nl2br($discussion->body),
+                'avatar'                        => img( element('avatar', $data ) ),
+                'created_date'                  => date('jS M Y - h:i:s A', strtotime( $discussion->insert_date )),
                 // Comment Data.
-                'comments' => element( 'comments', $data ),
-                'has_comments' => $has_comments,
-                'breadcrumbs' => $this->crumbs->output(),
-                'login_link' => anchor( site_url('users/login'), 'Login'),
+                'comments'                      => element( 'comments', $data ),
+                'has_comments'                  => $has_comments,
+                'breadcrumbs'                   => $this->crumbs->output(),
+                'login_link'                    => anchor( site_url('users/login'), 'Login'),
                 // Other.
-                'pagination' => $this->pagination->create_links(),
+                'pagination'                    => $this->pagination->create_links(),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
@@ -196,9 +236,10 @@ class Discussions extends Front_Controller {
     /**
      * Reply
      *
+     * Create a full reply to the discussion.
+     *
      * @param       string      $category_slug
      * @param       string      $discussion_slug
-     * @return      boolean
      * @author      Chris Baines
      * @since       0.0.1
      */
@@ -277,6 +318,93 @@ class Discussions extends Front_Controller {
             }
 
         }
+    }
+
+    /**
+     * New Discussion
+     *
+     * Allows the user to create a new discussion.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function new_discussion()
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['new_discussion']);
+
+        // See if the form has been run.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Create a new Discussion';
+
+            // Define the page template.
+            $data['template'] = 'pages/discussions/new';
+
+            // Build the page breadcrumbs.
+            $this->crumbs->add('Create Discussion');
+
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open('discussions/new_discussion'),
+                'form_close' => form_close(),
+                // Fields.
+
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+        }
+    }
+
+    public function report_discussion ( $discussion_id = NULL )
+    {
+        // Check a discussion ID was supplied.
+        if ( empty($discussion_id) || $discussion_id === NULL )
+        {
+            // Create a message.
+            $this->messageci->set ( lang('error_invalid_id'), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+
+        /* TODO */
+    }
+
+    public function edit_discussion ( $discussion_id = NULL )
+    {
+        // Check a discussion ID was supplied.
+        if ( empty($discussion_id) || $discussion_id === NULL )
+        {
+            // Create a message.
+            $this->messageci->set ( lang('error_invalid_id'), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+
+        /* TODO */
+
+    }
+
+    public function delete_discussion ( $discussion_id = NULL )
+    {
+        // Check a discussion ID was supplied.
+        if ( empty($discussion_id) || $discussion_id === NULL )
+        {
+            // Create a message.
+            $this->messageci->set ( lang('error_invalid_id'), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+
+        /* TODO */
     }
 
 }

@@ -51,8 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 // Discussions
+$route['discussions/delete_discussion/(:any)'] = 'discussions/delete_discussion/$1';
+$route['discussions/edit_discussion/(:any)'] = 'discussions/edit_discussion/$1';
 $route['discussions/reply/(:any)/(:any)'] = 'discussions/reply/$1/$2';
 $route['discussions/(:any)/(:any)'] = 'discussions/view/$1/$2';
+
+// Comments
 
 // Categories
 $route['categories/(:any)'] = 'categories/view/$1';

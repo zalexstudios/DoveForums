@@ -15,3 +15,4 @@ $lang['error_posting_comment'] = 'There has been a problem entering the comment 
 $lang['error_register'] = 'There has been a problem registering, please try again!.';
 $lang['error_login_required'] = 'Sorry, you need to be logged in to perform this action!.';
 $lang['error_delete_comment'] = 'There has been a problem deleting the comment!.';
+$lang['error_invalid_id'] = 'Invalid ID supplied!.';

@@ -16,10 +16,6 @@ class MY_Controller extends CI_Controller{
         parent::__construct();
 
         // Load Models.
-        $this->load->model('categories_m', 'categories');
-        $this->load->model('discussions_m', 'discussions');
-        $this->load->model('comments_m', 'comments');
-        $this->load->model('users_m', 'users');
         $this->load->model('forums_m', 'forums');
 
         // Load Language Files.
@@ -74,7 +70,7 @@ class Front_Controller extends MY_Controller{
                 );
             }
 
-            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), 'All Categories'), 'discussion_count' => $this->discussions->count_all() ) );
+            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), 'All Categories'), 'discussion_count' => $this->forums->count_discussions() ) );
         } else {
             $data['categories'] = array(
                 array(

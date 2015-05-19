@@ -98,6 +98,7 @@ class Forums_M extends CI_Model {
             discussions.last_comment_date, discussions.last_comment_user_id, discussions.insert_user_id,
             discussions.category_id, discussions.view_count, discussions.slug as discussion_slug,
             users.username, users.id as user_id, categories.name as category_name, categories.slug as category_slug,')
+            ->where('discussions.flag', 0)
             ->join($this->tables['users'], 'users.id = discussions.last_comment_user_id')
             ->join($this->tables['categories'], 'categories.category_id = discussions.category_id');
 
@@ -142,12 +143,33 @@ class Forums_M extends CI_Model {
         discussions.comment_count, discussions.first_comment_id, categories.name as category_name, categories.slug as category_slug,
         users.username, users.id as user_id, users.email')
             ->where('discussions.slug', $discussion_slug)
+            ->where('discussions.flag', 0)
             ->join($this->tables['categories'], 'categories.category_id = discussions.category_id')
             ->join($this->tables['users'], 'users.id = discussions.insert_user_id')
             ->get($this->tables['discussions']);
 
         // Result.
         return $query->num_rows() > 0 ? $query->row() : NULL;
+    }
+
+    /**
+     * Count Discussions
+     *
+     * Counts all the discussion in the database.
+     *
+     * @return      int
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function count_discussions()
+    {
+        // Query.
+        $query = $this->db->select('*')
+            ->where('flag', '0')
+            ->get($this->tables['discussions']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->num_rows() : 0;
     }
 
     /**

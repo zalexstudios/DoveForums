@@ -52,21 +52,21 @@ class Discussions extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Get the discussion info.
-            $discussion = $this->discussions->get_singleton($discussion_slug);
+            $discussion = $this->forums->get_discussion($discussion_slug);
 
             // Update the discussion view count.
-            $this->discussions->update( 'discussion_id', $discussion->discussion_id, array('view_count' => ++$discussion->view_count) );
+            $this->forums->update_discussion_count( $discussion->discussion_id, ++$discussion->view_count );
 
             // Setup the Pagination.
             $config['base_url'] = site_url('discussions/'.$category_slug.'/'.$discussion_slug.'');
-            $config['total_rows'] = count( $this->comments->get_comments( $discussion->discussion_id ) );
+            $config['total_rows'] = count( $this->forums->get_comments( $discussion->discussion_id ) );
             $config['per_page'] = $this->config->item('comments_per_page');
             $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
             $this->pagination->initialize($config);
 
             // Get the comments.
-            $comments = $this->comments->get_comments($discussion->discussion_id, $config['per_page'], $page);
+            $comments = $this->forums->get_comments($discussion->discussion_id, $config['per_page'], $page);
 
             // Define the page title.
             $data['title'] = ucwords($discussion->discussion_name);
@@ -74,7 +74,7 @@ class Discussions extends Front_Controller {
             // Define the page template.
             $data['template'] = 'pages/discussions/view';
 
-            if( is_array( $comments ) )
+            if( !empty( $comments ) )
             {
                 foreach( $comments as $row )
                 {
@@ -127,6 +127,7 @@ class Discussions extends Front_Controller {
                 'comment_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
                 'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->discussion_id),
+                'category_id_field_hidden' => form_hidden('category_id', $discussion->category_id),
                 // Errors.
                 'comment_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -160,32 +161,21 @@ class Discussions extends Front_Controller {
         else {
 
             // Get the data required.
-            $user_id = $this->session->userdata('user_id');
-            $discussion_id = $this->input->post('discussion_id');
-            $body = strip_tags( $this->security->xss_clean( $this->input->post('comment') ) );
-            $insert_ip = $this->input->ip_address();
-
-            // Start database transaction.
-            $this->db->trans_start();
+            $data = array(
+                'user_id'           => $this->session->userdata('user_id'),
+                'discussion_id'     => $this->input->post('discussion_id'),
+                'category_id'       => $this->input->post('category_id'),
+                'body'              => $this->input->post('comment'),
+                'insert_ip'         => $this->input->ip_address(),
+            );
 
             // Add Comment.
-            $comment_id = $this->comments->add_comment( $discussion_id, $user_id, $body, $insert_ip );
+            $add_comment = $this->forums->add_comment( $data );
 
-            // Update Discussion.
-            $this->discussions->update_discussion( $discussion_id, $comment_id, $user_id );
-
-            // Update Category.
-            $this->categories->update_category( $discussion_id, $comment_id );
-
-            // End database transaction.
-            $this->db->trans_complete();
-
-            if($this->db->trans_status() === FALSE)
+            if($add_comment === TRUE)
             {
-                $this->db->trans_rollback();
-
                 // Create a message.
-                $this->messageci->set( lang('error_creating_comment'), 'error' );
+                $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                 // Redirect.
                 redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
@@ -193,7 +183,7 @@ class Discussions extends Front_Controller {
             else
             {
                 // Create a message.
-                $this->messageci->set( lang('success_creating_comment'), 'success' );
+                $this->messageci->set( lang('error_creating_comment'), 'error' );
 
                 // Redirect.
                 redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
@@ -227,7 +217,7 @@ class Discussions extends Front_Controller {
             $data['template'] = 'pages/discussions/reply';
 
             // Get the discussion info.
-            $discussion = $this->discussions->get_singleton($discussion_slug);
+            $discussion = $this->forums->get_discussion($discussion_slug);
 
             // Build the page breadcrumbs.
             $this->crumbs->add($discussion->category_name, 'categories/'.$category_slug.'');
@@ -242,6 +232,7 @@ class Discussions extends Front_Controller {
                 'comment_field' => form_textarea( $this->form_fields['new_reply'][0], set_value( $this->form_fields['new_reply'][0]['name'], $this->input->post('comment') ) ),
                 // Hidden Fields.
                 'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->discussion_id),
+                'category_id_field_hidden' => form_hidden('category_id', $discussion->category_id),
                 // Errors.
                 'comment_error' => form_error($this->form_fields['new_reply'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -256,34 +247,22 @@ class Discussions extends Front_Controller {
         }
         else
         {
-
             // Get the data required.
-            $user_id = $this->session->userdata('user_id');
-            $discussion_id = $this->input->post('discussion_id');
-            $body = strip_tags( $this->security->xss_clean( $this->input->post('comment') ) );
-            $insert_ip = $this->input->ip_address();
-
-            // Start database transaction.
-            $this->db->trans_start();
+            $data = array(
+                'user_id'           => $this->session->userdata('user_id'),
+                'discussion_id'     => $this->input->post('discussion_id'),
+                'category_id'       => $this->input->post('category_id'),
+                'body'              => $this->input->post('comment'),
+                'insert_ip'         => $this->input->ip_address(),
+            );
 
             // Add Comment.
-            $comment_id = $this->comments->add_comment( $discussion_id, $user_id, $body, $insert_ip );
+            $add_comment = $this->forums->add_comment( $data );
 
-            // Update Discussion.
-            $this->discussions->update_discussion( $discussion_id, $comment_id, $user_id );
-
-            // Update Category.
-            $this->categories->update_category( $discussion_id, $comment_id );
-
-            // End database transaction.
-            $this->db->trans_complete();
-
-            if($this->db->trans_status() === FALSE)
+            if($add_comment === TRUE)
             {
-                $this->db->trans_rollback();
-
                 // Create a message.
-                $this->messageci->set( lang('error_creating_comment'), 'error' );
+                $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                 // Redirect.
                 redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
@@ -291,7 +270,7 @@ class Discussions extends Front_Controller {
             else
             {
                 // Create a message.
-                $this->messageci->set( lang('success_creating_comment'), 'success' );
+                $this->messageci->set( lang('error_creating_comment'), 'error' );
 
                 // Redirect.
                 redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );

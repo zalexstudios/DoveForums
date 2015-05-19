@@ -21,10 +21,10 @@ class Categories extends Front_Controller {
         $data['template'] = 'pages/categories/all';
 
         // Get all the categories from the database.
-        $categories = $this->categories->get_categories();
+        $categories = $this->forums->get_categories();
 
         // Check if we have a valid array.
-        if( is_array( $categories ) )
+        if( !empty( $categories ) )
         {
             // Loop through the results.
             foreach( $categories as $row )
@@ -70,7 +70,7 @@ class Categories extends Front_Controller {
     public function view($category_slug)
     {
         // Get the category from the database.
-        $category = $this->categories->get_singleton($category_slug);
+        $category = $this->forums->get_category($category_slug);
 
         // Define the page title.
         $data['title'] = $category->name;
@@ -79,10 +79,10 @@ class Categories extends Front_Controller {
         $data['template'] = 'pages/categories/view';
 
         // Get the discussions for this category.
-        $discussions = $this->discussions->get_discussions($category->category_id);
+        $discussions = $this->forums->get_discussions($category->category_id);
 
         // Loop through the discussions.
-        if ( is_array($discussions) )
+        if ( !empty($discussions) )
         {
             foreach($discussions as $row)
             {

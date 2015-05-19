@@ -20,6 +20,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('discussions_m', 'discussions');
         $this->load->model('comments_m', 'comments');
         $this->load->model('users_m', 'users');
+        $this->load->model('forums_m', 'forums');
 
         // Load Language Files.
         $this->lang->load('messages', 'english');
@@ -35,6 +36,7 @@ class Front_Controller extends MY_Controller{
 
     private $theme;
     private $site_name;
+    public $tables = array();
 
     public function __construct()
     {
@@ -42,6 +44,7 @@ class Front_Controller extends MY_Controller{
 
         $this->theme        = $this->config->item('theme');
         $this->site_name    = $this->config->item('site_name');
+        $this->tables       = $this->config->item('tables');
     }
 
     /**
@@ -57,7 +60,7 @@ class Front_Controller extends MY_Controller{
     public function render( $page_data=array(), $page_title, $page_template )
     {
         // Get the categories for the sidebar.
-        $categories = $this->categories->get_categories();
+        $categories = $this->forums->get_categories();
 
         if( !empty($categories) )
         {

@@ -72,6 +72,7 @@
 
                 {post_comment_button}
                 {discussion_id_field_hidden}
+                {category_id_field_hidden}
 
             </div>
 

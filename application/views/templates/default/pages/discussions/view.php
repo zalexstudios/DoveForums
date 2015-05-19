@@ -231,6 +231,7 @@
                 <div class="form-group">
 
                     {discussion_id_field_hidden}
+                    {category_id_field_hidden}
                     {post_comment_button}
 
                 </div>

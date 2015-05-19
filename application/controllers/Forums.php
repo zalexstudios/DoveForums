@@ -12,7 +12,7 @@ class Forums extends Front_Controller
         $data['template'] = 'pages/home/home';
 
         // Get the discussions from the database.
-        $discussions = $this->discussions->get_discussions();
+        $discussions = $this->forums->get_discussions();
 
         // Loop through the discussions.
         if( !empty($discussions) )

@@ -9,3 +9,10 @@ $config['gravatar_size']            = 50;
 $config['default_timezone']         = 'Europe/London';
 $config['discussions_per_page']     = 10;
 $config['comments_per_page']        = 10;
+
+$config['tables'] = array(
+    'categories'    => 'categories',
+    'discussions'   => 'discussions',
+    'comments'      => 'comments',
+    'users'         => 'users',
+);

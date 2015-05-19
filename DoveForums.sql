@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.38)
 # Database: DoveForums
-# Generation Time: 2015-04-21 10:50:20 +0000
+# Generation Time: 2015-05-19 17:45:06 +0000
 # ************************************************************
 
 
@@ -47,7 +47,7 @@ LOCK TABLES `categories` WRITE;
 
 INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`)
 VALUES
-	(1,1,5,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-04-21 10:56:44',5,1);
+	(1,1,10,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-05-19 11:10:13',10,1);
 
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -83,7 +83,12 @@ VALUES
 	(2,1,1,NULL,NULL,'And a second test comment after updating some code.','2015-04-21 10:44:15',NULL,NULL,'::1',NULL,0),
 	(3,1,1,NULL,NULL,'And another test.','2015-04-21 10:46:38',NULL,NULL,'::1',NULL,0),
 	(4,1,1,NULL,NULL,'And a final test after more code tweaks.','2015-04-21 10:54:55',NULL,NULL,'::1',NULL,0),
-	(5,1,1,NULL,NULL,'And one more test.','2015-04-21 10:56:44',NULL,NULL,'::1',NULL,0);
+	(5,1,1,NULL,NULL,'And one more test.','2015-04-21 10:56:44',NULL,NULL,'::1',NULL,0),
+	(6,1,2,NULL,NULL,'Test as another user.','2015-04-22 11:31:57',NULL,NULL,'::1',NULL,0),
+	(7,1,1,NULL,NULL,'test after all the changes.','2015-04-22 20:12:10',NULL,NULL,'::1',NULL,0),
+	(8,1,1,NULL,NULL,'testing after all the changes.','2015-05-19 11:00:50',NULL,NULL,'::1',NULL,0),
+	(9,1,1,NULL,NULL,'testing after all the changes.','2015-05-19 11:01:13',NULL,NULL,'::1',NULL,0),
+	(10,1,1,NULL,NULL,'test after yet more changes.','2015-05-19 11:10:13',NULL,NULL,'::1',NULL,0);
 
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -99,7 +104,7 @@ CREATE TABLE `discussions` (
   `category_id` int(11) DEFAULT NULL,
   `insert_user_id` int(11) DEFAULT NULL,
   `update_user_id` int(11) DEFAULT NULL,
-  `first_comment_id` int(11) DEFAULT NULL,
+  `first_comment_id` int(11) DEFAULT '0',
   `last_comment_id` int(11) DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -110,6 +115,7 @@ CREATE TABLE `discussions` (
   `closed` tinyint(4) DEFAULT '0',
   `announce` tinyint(4) DEFAULT '0',
   `stick` tinyint(4) DEFAULT '0',
+  `flag` tinyint(4) DEFAULT '0',
   `insert_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   `insert_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -122,9 +128,9 @@ CREATE TABLE `discussions` (
 LOCK TABLES `discussions` WRITE;
 /*!40000 ALTER TABLE `discussions` DISABLE KEYS */;
 
-INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`)
+INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `flag`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`)
 VALUES
-	(1,1,1,NULL,NULL,5,'First Discussion','first-discussion','This is a testing first discussion.',5,0,89,0,0,0,'2015-04-15 15:00:00',NULL,NULL,NULL,'2015-04-21 10:56:44',1);
+	(1,1,1,NULL,0,10,'First Discussion','first-discussion','This is a testing first discussion.',10,0,437,0,0,0,0,'2015-04-15 15:00:00',NULL,NULL,NULL,'2015-05-19 11:10:13',1);
 
 /*!40000 ALTER TABLE `discussions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -169,6 +175,37 @@ CREATE TABLE `login_attempts` (
 
 
 
+# Dump of table pm_conversations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pm_conversations`;
+
+CREATE TABLE `pm_conversations` (
+  `conversation_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subject` varchar(255) DEFAULT NULL,
+  `insert_user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`conversation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table pm_mesages
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pm_mesages`;
+
+CREATE TABLE `pm_mesages` (
+  `message_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `conversation_id` int(11) DEFAULT NULL,
+  `body` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `insert_user_id` int(11) DEFAULT NULL,
+  `date_inserted` datetime DEFAULT NULL,
+  `insert_ip` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table users
 # ------------------------------------------------------------
 
@@ -193,15 +230,18 @@ CREATE TABLE `users` (
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `visit_count` int(11) DEFAULT '0',
+  `comments` int(11) DEFAULT NULL,
+  `discussions` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`)
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`)
 VALUES
-	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1429608646,1,'Admin','istrator','ADMIN','0',4);
+	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432039128,1,'Admin','istrator','ADMIN','0',11,5,1),
+	(2,'::1','TeutonicT3rror','$2y$08$z90jdWX0s/SRPGnfbmv8iOoqbvCSu8W2qrTPQgYvO3LBtkdwLgEQy',NULL,'t3utonict3rror@gmail.com',NULL,NULL,NULL,NULL,1429698688,1430305695,1,NULL,NULL,NULL,NULL,5,NULL,NULL);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -220,8 +260,8 @@ CREATE TABLE `users_groups` (
   UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
   KEY `fk_users_groups_users1_idx` (`user_id`),
   KEY `fk_users_groups_groups1_idx` (`group_id`),
-  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users_groups` WRITE;
@@ -230,7 +270,8 @@ LOCK TABLES `users_groups` WRITE;
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
 VALUES
 	(1,1,1),
-	(2,1,2);
+	(2,1,2),
+	(3,2,2);
 
 /*!40000 ALTER TABLE `users_groups` ENABLE KEYS */;
 UNLOCK TABLES;

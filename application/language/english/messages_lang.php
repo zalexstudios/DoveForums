@@ -16,3 +16,4 @@ $lang['error_register'] = 'There has been a problem registering, please try agai
 $lang['error_login_required'] = 'Sorry, you need to be logged in to perform this action!.';
 $lang['error_delete_comment'] = 'There has been a problem deleting the comment!.';
 $lang['error_invalid_id'] = 'Invalid ID supplied!.';
+$lang['error_admin_required'] = 'You are not a Administrator!';

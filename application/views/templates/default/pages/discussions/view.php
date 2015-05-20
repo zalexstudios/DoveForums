@@ -14,14 +14,14 @@
 
     </div>
 
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
     <div class="btn-group pull-right">
 
         {reply_button}
 
     </div>
-
-    <!-- Check the user is logged in -->
-    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
 
     <div class="btn-group pull-right">
 
@@ -199,6 +199,9 @@
 
         </div>
 
+        <!-- Check the user is logged in -->
+        <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
+
         <div class="btn-group pull-right">
 
             {reply_button}
@@ -210,6 +213,8 @@
             {new_discussion_button}
 
         </div>
+
+        <?php } ?>
 
     </div>
 

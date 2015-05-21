@@ -1,5 +1,15 @@
 {breadcrumbs}
 
+<div class="btn-toolbar pagination-toolbar" role="toolbar">
+
+    <div class="btn-group">
+
+        {btn_add_user}
+
+    </div>
+
+</div>
+
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -10,10 +20,7 @@
 
     <div class="panel-body">
 
-        <div class="media">
-
-
-        </div>
+        {users_table}
 
     </div>
 

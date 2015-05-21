@@ -13,3 +13,8 @@ $lang['btn_edit_discussion'] = '<i class="fa fa-pencil"></i> Edit';
 $lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Delete';
 $lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Edit';
 $lang['btn_delete_comment'] = '<i class="fa fa-trash-o"></i> Delete';
+$lang['btn_add_user'] = 'Add User';
+$lang['btn_edit'] = '<i class="fa fa-pencil"></i>';
+$lang['btn_delete'] = '<i class="fa fa-trash-o"></i>';
+$lang['btn_password'] = '<i class="fa fa-key"></i>';
+$lang['btn_update_user'] = 'Update User';

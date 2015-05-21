@@ -22,8 +22,9 @@ class MY_Controller extends CI_Controller{
         $this->lang->load('messages', 'english');
         $this->lang->load('buttons', 'english');
         $this->lang->load('rules', 'english');
+        $this->lang->load('tables', 'english');
 
-        $this->output->enable_profiler(TRUE);
+        //$this->output->enable_profiler(TRUE);
 
     }
 }

@@ -4,7 +4,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Post a New Reply</h3>
+        <h3 class="panel-title">Create a New Discussion</h3>
 
     </div>
 
@@ -12,13 +12,105 @@
 
         <div class="row">
 
-            <div class="col-md-12">
+            <div class="col-md-3">
 
-                <strong> </strong>
+                <strong>Username:</strong>
+
+            </div>
+
+            <div class="col-md-9">
+
+                {logged_in_user}
 
             </div>
 
         </div>
+
+        <hr class="dashed" />
+
+        {form_open}
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <strong>Subject:</strong>
+
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="form-group  <?php if(form_error('name')){echo 'has-error';} ?>">
+
+                    {name_field}
+                    {name_error}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="dashed" />
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <strong>Category:</strong>
+
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="form-group  <?php if(form_error('category')){echo 'has-error';} ?>">
+
+                    {category_field}
+                    {category_error}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="dashed" />
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <strong>Your Message:</strong>
+
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="form-group <?php if(form_error('body')){echo 'has-error';} ?>">
+
+                    {body_field}
+                    {body_error}
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <hr class="dashed" />
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                {btn_create_discussion}
+
+            </div>
+
+        </div>
+
+        {form_close}
 
     </div>
 

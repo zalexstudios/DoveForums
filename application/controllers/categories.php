@@ -41,16 +41,10 @@ class Categories extends Front_Controller {
                 );
             }
 
-            // Checking variable for view file.
-            $has_categories = 1;
-
         } else {
 
             // Fill with blank data to prevent errors.
             $data['categories'] = '';
-
-            // Checking variable for view file.
-            $has_categories = 0;
         }
 
         // Build the page breadcrumbs.
@@ -60,7 +54,7 @@ class Categories extends Front_Controller {
         // Define the page data.
         $data['page'] = array(
             'categories' => element('categories', $data),
-            'has_categories' => $has_categories,
+            'has_categories' => (!empty($categories)) ? 1 : 0,
             'breadcrumbs' => $this->crumbs->output(),
         );
 
@@ -98,16 +92,9 @@ class Categories extends Front_Controller {
                 );
             }
 
-            // Checking variable for view file.
-            $has_discussions = 1;
-
         } else {
-
             // Fill with blank data to prevent errors.
             $data['discussions'] = '';
-
-            // Checking variable for view file.
-            $has_discussions = 0;
         }
 
         // Build the page breadcrumbs.
@@ -116,7 +103,7 @@ class Categories extends Front_Controller {
         // Define the page data.
         $data['page'] = array(
             'discussions' => element('discussions', $data),
-            'has_discussions' => $has_discussions,
+            'has_discussions' => (!empty($discussions)) ? 1 : 0,
             'breadcrumbs' => $this->crumbs->output(),
             'name' => $category->name,
             'description' => $category->description,

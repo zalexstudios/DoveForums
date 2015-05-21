@@ -18,3 +18,4 @@ $lang['btn_edit'] = '<i class="fa fa-pencil"></i>';
 $lang['btn_delete'] = '<i class="fa fa-trash-o"></i>';
 $lang['btn_password'] = '<i class="fa fa-key"></i>';
 $lang['btn_update_user'] = 'Update User';
+$lang['btn_create_discussion'] = 'Create Discussion';

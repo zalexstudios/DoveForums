@@ -99,6 +99,7 @@ class Forums_M extends CI_Model {
             discussions.category_id, discussions.view_count, discussions.slug as discussion_slug,
             users.username, users.id as user_id, categories.name as category_name, categories.slug as category_slug,')
             ->where('discussions.flag', 0)
+            ->order_by('discussions.discussion_id', 'desc')
             ->join($this->tables['users'], 'users.id = discussions.last_comment_user_id')
             ->join($this->tables['categories'], 'categories.category_id = discussions.category_id');
 
@@ -207,6 +208,42 @@ class Forums_M extends CI_Model {
         // Query.
         $this->db->where('insert_user_id', $user_id)
             ->delete($this->tables['discussions']);
+    }
+
+    public function create_discussion($data)
+    {
+        // Load the slug library.
+        $config = array(
+            'field' => 'slug',
+            'title' => 'name',
+            'table' => 'discussions',
+            'replacement' => 'underscore'
+        );
+
+        $this->load->library('slug', $config);
+
+        $discussion = array(
+            'insert_user_id' => $this->session->userdata('user_id'),
+            'name' => $data['name'],
+            'body' => $data['body'],
+            'category_id' => $data['category'],
+            'slug' => $this->slug->create_uri($data['name']),
+            'insert_date' => $this->_date(),
+            'last_comment_user_id' => $this->session->userdata('user_id'),
+            'last_comment_date' => $this->_date(),
+        );
+
+        $insert = $this->_insert( $this->tables['discussions'], $discussion);
+
+        // Get the discussion count.
+        $discussion_count = $this->_get_row('discussion_count', 'category_id', $data['category'], $this->tables['categories']);
+
+        $category = array(
+            'discussion_count' => ++$discussion_count,
+            'last_discussion_id' => $insert,
+        );
+
+        return $this->_update_category($data['category'], $category) === TRUE ? TRUE : FALSE;
     }
 
     /*****************************************************************************************

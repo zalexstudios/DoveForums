@@ -25,7 +25,7 @@ class Discussions extends Front_Controller {
             array(
                 'field' => 'name',
                 'rules' => 'required',
-                'label' => 'lang:rules_comment',
+                'label' => 'lang:rules_subject',
             ),
             //1
             array(
@@ -33,6 +33,12 @@ class Discussions extends Front_Controller {
                 'rules' => 'required',
                 'label' => 'lang:rules_body',
             ),
+            //2
+            array(
+                'field' => 'category',
+                'rules' => 'required',
+                'label' => 'lang:rules_category',
+            )
         ),
     );
 
@@ -114,9 +120,6 @@ class Discussions extends Front_Controller {
             // Define the page template.
             $data['template'] = 'pages/discussions/view';
 
-            // See if we have comments.
-            $has_comments = (!empty($comments)) ? 1 : 0;
-
             // Loop through the comments.
             if( !empty( $comments ) )
             {
@@ -189,7 +192,7 @@ class Discussions extends Front_Controller {
                 'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion->insert_date )),
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
-                'has_comments' => $has_comments,
+                'has_comments' => (!empty($comments)) ? 1 : 0,
                 'breadcrumbs' => $this->crumbs->output(),
                 'login_link' => anchor( site_url('users/login'), 'Login'),
                 // Other.
@@ -353,18 +356,64 @@ class Discussions extends Front_Controller {
             // Build the page breadcrumbs.
             $this->crumbs->add('Create Discussion');
 
+            // Get all the categories.
+            $categories = $this->forums->get_categories();
+
+            // Build the category dropdown.
+            if(!empty($categories))
+            {
+                $category_options[NULL] = 'Pick Category...';
+
+                foreach($categories as $row)
+                {
+                    $category_options[$row->category_id] = $row->name;
+                }
+            }
+
             $data['page'] = array(
                 // Form Data.
                 'form_open' => form_open('discussions/new_discussion'),
                 'form_close' => form_close(),
                 // Fields.
-
+                'name_field' => form_input( $this->form_fields['new_discussion'][0], set_value( $this->form_fields['new_discussion'][0]['name'], $this->input->post('name') ) ),
+                'body_field' => form_textarea( $this->form_fields['new_discussion'][1], set_value( $this->form_fields['new_discussion'][1]['name'], $this->input->post('body') ) ),
+                'category_field' => form_dropdown('category', $category_options, '0', 'class="form-control"'),
+                // Errors
+                'name_error' => form_error($this->form_fields['new_discussion'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'body_error' => form_error($this->form_fields['new_discussion'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
+                // Buttons
+                'btn_create_discussion' => form_submit('submit', lang('btn_create_discussion'), 'class="btn btn-primary btn-sm"'),
+                // Other.
                 'breadcrumbs' => $this->crumbs->output(),
+                'logged_in_user' => $this->session->userdata('username'),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
 
         } else {
+
+            // Gather the data.
+            $data = array(
+                'name' => $this->input->post('name'),
+                'body' => $this->input->post('body'),
+                'category' => $this->input->post('category'),
+            );
+
+            if ($this->forums->create_discussion($data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_create_discussion'), 'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh' );
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_create_discussion'), 'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
 
         }
     }

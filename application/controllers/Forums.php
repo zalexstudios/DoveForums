@@ -40,9 +40,13 @@ class Forums extends Front_Controller
 
         // Define the page data.
         $data['page'] = array(
+            // Buttons
+            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+            // Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,
             'breadcrumbs' => $this->crumbs->output(),
+            'pagination' => $this->pagination->create_links(),
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );

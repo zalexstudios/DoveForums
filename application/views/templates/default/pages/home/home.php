@@ -1,5 +1,20 @@
 {breadcrumbs}
 
+<div class="btn-toolbar pagination-toolbar" role="toolbar">
+
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
+        <div class="btn-group pull-right">
+
+            {btn_new_discussion}
+
+        </div>
+
+    <?php } ?>
+
+</div>
+
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -51,5 +66,26 @@
         </div>
 
     </div>
+
+</div>
+
+<div class="btn-toolbar pagination-toolbar" role="toolbar">
+
+    <div class="btn-group pull-left">
+
+        {pagination}
+
+    </div>
+
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
+        <div class="btn-group pull-right">
+
+            {btn_new_discussion}
+
+        </div>
+
+    <?php } ?>
 
 </div>

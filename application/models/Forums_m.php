@@ -193,6 +193,22 @@ class Forums_M extends CI_Model {
         return $this->db->affected_rows() > 0 ? TRUE : FALSE;
     }
 
+    /**
+     * Delete Discussions - ** Admin Function **
+     *
+     * Deletes all the discussions created by a user.
+     *
+     * @param       string      $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function delete_discussions($user_id)
+    {
+        // Query.
+        $this->db->where('insert_user_id', $user_id)
+            ->delete($this->tables['discussions']);
+    }
+
     /*****************************************************************************************
      * Comments Functions
      *****************************************************************************************/
@@ -299,6 +315,22 @@ class Forums_M extends CI_Model {
 
         // Result.
         return $query->num_rows() > 0 ? $query->row()->comment_id : NULL;
+    }
+
+    /**
+     * Delete Comments - ** Admin Function **
+     *
+     * Deletes all the comments created by a user.
+     *
+     * @param       string      $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function delete_comments($user_id)
+    {
+        // Query.
+        $this->db->where('insert_user_id', $user_id)
+            ->delete($this->tables['comments']);
     }
 
     /*****************************************************************************************

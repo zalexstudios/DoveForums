@@ -133,6 +133,14 @@ class Dashboard extends Admin_Controller {
      * User Functions
      *****************************************************************************************/
 
+    /**
+     * All Users
+     *
+     * Lists all the users in the database.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function all_users()
     {
         // Define the page title.
@@ -193,6 +201,14 @@ class Dashboard extends Admin_Controller {
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
+    /**
+     * Add User
+     *
+     * Add a new user to the database.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function add_user()
     {
         // Set the form validation rules.
@@ -268,6 +284,15 @@ class Dashboard extends Admin_Controller {
         }
     }
 
+    /**
+     * Edit User
+     *
+     * Edit the supplied user.
+     *
+     * @param       integer      $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function edit_user($user_id)
     {
         if(empty($user_id))
@@ -352,6 +377,17 @@ class Dashboard extends Admin_Controller {
 
     }
 
+    /**
+     * Delete User
+     *
+     * Deletes the specified user from the database
+     * including all related discussions and comments.
+     *
+     * @param       integer      $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     *
+     */
     public function delete_user($user_id)
     {
         if(empty($user_id))
@@ -368,6 +404,12 @@ class Dashboard extends Admin_Controller {
 
         if ($this->ion_auth->delete_user($user_id) === TRUE)
         {
+            // Delete any discussions created by the user.
+            $this->forums->delete_discussions($user_id);
+
+            // Delete any comments created by the user.
+            $this->forums->delete_comments($user_id);
+
             // Create a message.
             $this->messageci->set( sprintf( lang('success_delete_user'), $user->username), 'success');
 
@@ -387,7 +429,7 @@ class Dashboard extends Admin_Controller {
      *
      * Activates the supplied user.
      *
-     * @param       int     $user_id
+     * @param       integer     $user_id
      * @author      Chris Baines
      * @since       0.0.1
      */
@@ -425,7 +467,7 @@ class Dashboard extends Admin_Controller {
      *
      * Deactivates the supplied user.
      *
-     * @param       int     $user_id
+     * @param       integer     $user_id
      * @author      Chris Baines
      * @since       0.0.1
      */
@@ -462,6 +504,14 @@ class Dashboard extends Admin_Controller {
      * Categories Functions
      *****************************************************************************************/
 
+    /**
+     * All Categories
+     *
+     * Lists all the categories in the database.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function all_categories()
     {
         // Define the page title.
@@ -484,6 +534,14 @@ class Dashboard extends Admin_Controller {
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
+    /**
+     * Add Category
+     *
+     * Add a new category to the database.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function add_category()
     {
         // Define the page title.
@@ -506,6 +564,15 @@ class Dashboard extends Admin_Controller {
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
+    /**
+     * Edit Category
+     *
+     * Edit the supplied category.
+     *
+     * @param       integer     $category_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function edit_category($category_id)
     {
         if(empty($category_id))

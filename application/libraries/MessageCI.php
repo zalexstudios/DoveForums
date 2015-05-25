@@ -13,7 +13,7 @@
 
 // ------------------------------------------------------------------------
 
-class MessageCI {
+class Messageci {
     
     var $CI;
     var $messages = array();

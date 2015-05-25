@@ -210,6 +210,11 @@ class Forums_M extends CI_Model {
             ->delete($this->tables['discussions']);
     }
 
+    public function delete_discussion($discussion_id)
+    {
+
+    }
+
     public function create_discussion($data)
     {
         // Load the slug library.

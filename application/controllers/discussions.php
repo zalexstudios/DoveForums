@@ -461,7 +461,12 @@ class Discussions extends Front_Controller {
             redirect( site_url(), 'refresh' );
         }
 
-        /* TODO */
+        if($this->forums->delete_discussion($discussion_id) === TRUE)
+        {
+
+        } else {
+
+        }
     }
 
 }

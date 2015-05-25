@@ -201,6 +201,8 @@ class Admin_Controller extends Front_Controller {
                 'all_categories' => anchor( site_url('dashboard/all_categories'), 'All Categories'),
                 'add_category' => anchor( site_url('dashboard/add_category'), 'Add Category'),
                 'all_discussions' => anchor( site_url('dashboard/all_discussions'), 'All Discussions'),
+                'all_groups' => anchor( site_url('dashboard/all_groups'), 'All Groups'),
+                'add_group' => anchor( site_url('dashboard/add_group'), 'Add Group'),
             ),
             // Footer.
             'footer' => array(

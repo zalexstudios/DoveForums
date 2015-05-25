@@ -501,6 +501,48 @@ class Dashboard extends Admin_Controller {
     }
 
     /*****************************************************************************************
+     * Group Functions
+     *****************************************************************************************/
+
+    public function all_groups()
+    {
+
+    }
+
+    public function add_group()
+    {
+
+    }
+
+    public function edit_group($group_id)
+    {
+
+        if(empty($group_id))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_invalid_id'), 'error');
+
+            // Redirect.
+            redirect($this->agent->referrer());
+        }
+
+    }
+
+    public function delete_group($group_id)
+    {
+
+        if(empty($group_id))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_invalid_id'), 'error');
+
+            // Redirect.
+            redirect($this->agent->referrer());
+        }
+
+    }
+
+    /*****************************************************************************************
      * Categories Functions
      *****************************************************************************************/
 

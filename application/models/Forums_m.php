@@ -73,6 +73,67 @@ class Forums_M extends CI_Model {
         return $query->num_rows() > 0 ? $query->row() : NULL;
     }
 
+    public function get_categories_dropdown()
+    {
+        // Query.
+        $query = $this->db->select('category_id, name')
+            ->get($this->tables['categories']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->result() : NULL;
+    }
+
+    public function delete_category($category_id)
+    {
+        // Move any discussion in the category to the default category.
+        $this->_update('category_id', $category_id, $this->tables['discussions'], array('category_id', 1));
+
+        // Delete the category.
+        return $this->_delete('category_id', $category_id, $this->tables['categories']) === TRUE;
+
+    }
+
+    public function add_category($data)
+    {
+        // Start database transaction.
+        $this->db->trans_start();
+
+        // Load the slug library.
+        $config = array(
+            'field' => 'slug',
+            'title' => 'name',
+            'table' => 'categories',
+            'replacement' => 'underscore'
+        );
+
+        $this->load->library('slug', $config);
+
+        $category = array(
+            'name' => strip_tags($data['name']),
+            'slug' => $this->slug->create_uri(strip_tags($data['name'])),
+            'description' => strip_tags($data['description']),
+            'insert_user_id' => $this->session->userdata('user_id'),
+            'date_inserted' => $this->_date(),
+        );
+
+        $this->_insert( $this->tables['categories'], $category);
+
+        // End database transaction.
+        $this->db->trans_complete();
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+
+    }
+
     /*****************************************************************************************
      * Discussion Functions
      *****************************************************************************************/
@@ -404,6 +465,11 @@ class Forums_M extends CI_Model {
      * Misc Functions
      *****************************************************************************************/
 
+    public function get_row( $row, $field, $where, $table )
+    {
+        return $this->_get_row( $row, $field, $where, $table );
+    }
+
     /*****************************************************************************************
      * Private Functions
      *****************************************************************************************/
@@ -522,9 +588,12 @@ class Forums_M extends CI_Model {
         return date('Y-m-d G:i:s', time());
     }
 
-    private function _delete()
+    private function _delete( $field, $where, $table )
     {
+        $this->db->where($field, $where)
+            ->delete($table);
 
+        return $this->db->affected_rows() > 0 ? TRUE : NULL;
     }
 
 }

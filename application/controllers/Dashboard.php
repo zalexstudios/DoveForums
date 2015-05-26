@@ -38,6 +38,20 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_email',
             ),
         ),
+        'add_category' => array(
+            //0
+            array(
+                'field' => 'name',
+                'rules' => 'required',
+                'label' => 'lang:rules_name',
+            ),
+            //1
+            array(
+                'field' => 'description',
+                'rules' => 'required',
+                'label' => 'lang:rules_description',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -104,6 +118,22 @@ class Dashboard extends Admin_Controller {
             array(
                 'id' => 'last_name',
                 'name' => 'last_name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
+        'add_category' => array(
+            //0
+            array(
+                'id' => 'name',
+                'name' => 'name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'description',
+                'name' => 'description',
                 'class' => 'form-control',
                 'type' => 'text',
             ),
@@ -566,10 +596,51 @@ class Dashboard extends Admin_Controller {
         $this->crumbs->add('Dashboard', 'dashboard');
         $this->crumbs->add('All Categories');
 
-        /* TODO - Build the all categories page. */
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_name'),
+            lang('tbl_slug'),
+            lang('tbl_description'),
+            lang('tbl_discussion_count'),
+            lang('tbl_comment_count'),
+            lang('tbl_action')
+        );
+
+        // Get all the categories.
+        $categories = $this->forums->get_categories();
+
+        print_r($categories);
+
+        if (!empty($categories))
+        {
+            foreach($categories as $row)
+            {
+                $this->table->add_row(
+                    $row->name,
+                    $row->category_slug,
+                    $row->description,
+                    $row->discussion_count,
+                    $row->comment_count,
+                    ''.anchor( site_url('dashboard/edit_category/'.$row->category_id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_category/'.$row->category_id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
 
         // Define the page data.
         $data['page'] = array(
+            // Table.
+            'categories_table' => $this->table->generate(),
+            // Buttons.
+            'btn_add_category' => anchor( site_url('dashboard/add_category'), lang('btn_add_category'), array('class' => 'btn btn-success btn-sm')),
+            // Other
             'breadcrumbs' => $this->crumbs->output(),
         );
 
@@ -586,24 +657,69 @@ class Dashboard extends Admin_Controller {
      */
     public function add_category()
     {
-        // Define the page title.
-        $data['title'] = 'Add Category';
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_category']);
 
-        // Define the page template.
-        $data['template'] = 'pages/dashboard/add_category';
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Add Category';
 
-        // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('Add Category');
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_category';
 
-        /* TODO - Build the add categories page. */
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Add Category');
 
-        // Define the page data.
-        $data['page'] = array(
-            'breadcrumbs' => $this->crumbs->output(),
-        );
+            /* TODO - Build the add categories page. */
 
-        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/add_category') ),
+                'form_close' => form_close(),
+                // Fields
+                'name_field' => form_input( $this->form_fields['add_category'][0], set_value( $this->form_fields['add_category'][0]['name'], $this->input->post('name') ) ),
+                'description_field' => form_input( $this->form_fields['add_category'][1], set_value( $this->form_fields['add_category'][1]['name'], $this->input->post('description') ) ),
+                // Errors.
+                'name_error' => form_error($this->form_fields['add_category'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['add_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'name_label' => form_label('Name:', $this->form_fields['add_category'][0]['id']),
+                'description_label' => form_label('Description:', $this->form_fields['add_category'][1]['id']),
+                // Buttons.
+                'btn_add_category' => form_submit('submit', lang('btn_add_category'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+        } else {
+
+            // Gather the data.
+            $data = array(
+                'name' => $this->input->post('name'),
+                'description' => $this->input->post('description'),
+            );
+
+            if ($this->forums->add_category($data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( sprintf(lang('success_add_category'), $this->input->post('name')), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_categories'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_add_category'), 'error');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_categories'), 'refresh');
+            }
+        }
+
     }
 
     /**
@@ -657,7 +773,33 @@ class Dashboard extends Admin_Controller {
             redirect($this->agent->referrer());
         }
 
-        /* TODO */
+        // See if the category is deletable.
+        $deletable = $this->forums->get_row( 'deletable', 'category_id', $category_id, $this->tables['categories']);
+
+        if ($deletable == 0)
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_not_deletable'), 'error');
+
+            // Redirect
+            redirect( $this->agent->referrer() );
+        }
+
+        // Perform the delete.
+        if ($this->forums->delete_category($category_id) === TRUE)
+        {
+            // Create a message.
+            $this->messageci->set( lang('success_delete_category'), 'success');
+
+            // Redirect.
+            redirect( $this->agent->referrer() );
+        } else {
+            // Create a message.
+            $this->messageci->set( lang('error_delete_category'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer() );
+        }
     }
 
     /*****************************************************************************************

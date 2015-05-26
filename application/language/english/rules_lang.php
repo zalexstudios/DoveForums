@@ -11,3 +11,5 @@ $lang['rules_subject'] = 'Subject';
 $lang['rules_message'] = 'Message';
 $lang['rules_body'] = 'Body';
 $lang['rules_category'] = 'Category';
+$lang['rules_name'] = 'Name';
+$lang['rules_description'] = 'Description';

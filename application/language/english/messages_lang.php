@@ -12,6 +12,8 @@ $lang['success_add_user'] = 'The user has been created.';
 $lang['success_update_user'] = 'The user <strong>%s</strong> has been updated.';
 $lang['success_delete_user'] = 'Ther user <strong>%s</strong> has been deleted.';
 $lang['success_create_discussion'] = 'Your discussion has been created.';
+$lang['success_delete_category'] = 'The category has been deleted.';
+$lang['success_add_category'] = 'The category <strong>%s</strong> has been created.';
 
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
 $lang['error_login'] = 'There has been a problem logging you in, please try again!';
@@ -29,3 +31,6 @@ $lang['error_add_user'] = 'There was a problem creating the user.';
 $lang['error_update_user'] = 'There was a problem updating the user <strong>%s</strong>.';
 $lang['error_delete_user'] = 'There was a problem deleting the user <strong>%s</strong>.';
 $lang['error_create_discussion'] = 'There was a problem creating your discussion.';
+$lang['error_not_deletable'] = 'This item is not deletable.';
+$lang['error_delete_category'] = 'There was a problem removing the category.';
+$lang['error_add_category'] = 'There was a problem creating the category.';

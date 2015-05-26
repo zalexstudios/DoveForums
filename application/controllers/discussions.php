@@ -357,7 +357,7 @@ class Discussions extends Front_Controller {
             $this->crumbs->add('Create Discussion');
 
             // Get all the categories.
-            $categories = $this->forums->get_categories();
+            $categories = $this->forums->get_categories_dropdown();
 
             // Build the category dropdown.
             if(!empty($categories))

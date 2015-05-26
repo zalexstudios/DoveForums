@@ -109,6 +109,14 @@ class Users extends Front_Controller {
         ),
     );
 
+    /**
+     * Register
+     *
+     * Registers a user.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function register()
     {
         // First make sure the user is not logged in.
@@ -180,14 +188,14 @@ class Users extends Front_Controller {
             if($register)
             {
                 // Create a message.
-                $this->messageci->set( lang('register_success'), 'success' );
+                $this->messageci->set( lang('success_register'), 'success' );
 
                 // Redirect.
                 redirect( site_url('forums') );
             } else {
 
                 // Create a message.
-                $this->messageci->set( lang('register_error'), 'error' );
+                $this->messageci->set( lang('error_register'), 'error' );
 
                 // Redirect.
                 redirect( site_url('forums') );
@@ -195,6 +203,14 @@ class Users extends Front_Controller {
         }
     }
 
+    /**
+     * Login
+     *
+     * Logs a user into the site.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function login()
     {
         // First make sure the user is not logged in.
@@ -273,6 +289,14 @@ class Users extends Front_Controller {
         }
     }
 
+    /**
+     * Logout
+     *
+     * Logs out the user.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function logout()
     {
         $this->ion_auth->logout();
@@ -284,12 +308,69 @@ class Users extends Front_Controller {
         redirect( site_url('forums') );
     }
 
-    public function thumbs_up ( $user_id )
+    /**
+     * Activate
+     *
+     * Activates the user.
+     *
+     * @param       integer     $id
+     * @param       bool        $code
+     * @author      Ragash
+     * @since       0.0.1
+     */
+    public function activate($id, $code=false)
+    {
+        if ($code !== false)
+        {
+            $activation = $this->ion_auth->activate($id, $code);
+        }
+        else if ($this->ion_auth->is_admin())
+        {
+            $activation = $this->ion_auth->activate($id);
+        }
+        if ($activation)
+        {
+            // Create a message.
+            $this->messageci->set( $this->ion_auth->messages(), 'success' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+        else
+        {
+            // Create a message.
+            $this->messageci->set( $this->ion_auth->errors(), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+    }
+
+    /**
+     * Thumbs Up
+     *
+     * Awards the user a point for been helpful.
+     *
+     * @param       integer     $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function thumbs_up ($user_id)
     {
         /* TODO */
     }
 
-    public function send_pm( $user_id )
+    /**
+     * Thumbs Down
+     *
+     * Removes a point from a user for been abusive/un-helpful
+     *
+     * @param       integer     $user_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     *
+     */
+    public function thumbs_down ($user_id)
     {
         /* TODO */
     }

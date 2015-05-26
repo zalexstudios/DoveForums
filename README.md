@@ -24,3 +24,23 @@ If you would like to contribute to this project that would be great as I really 
 
 Regards
 Chris
+
+<hr />
+
+<h2>Todo</h2>
+
+Frontend :-
+
+<ul>
+<li>Send PM Function</li>
+<li>Thumbs Up Function</li>
+<li>Delete Discussion Function</li>
+<li>Edit Discussion Function</li>
+<li>Report Discussion Function</li>
+<li>Delete Comments Function</li>
+<li>Edit Comment Function</li>
+<li>Report Comment Function</li>
+</ul>
+
+Backend :-
+

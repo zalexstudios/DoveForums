@@ -44,3 +44,20 @@ Frontend :-
 
 Backend :-
 
+<ul>
+<li>All Discussions Function</li>
+<li>All Groups Function</li>
+<li>Add Group Function</li>
+<li>Edit Group Function</li>
+<li>Delete Group Function</li>
+<li>Settings Function</li>
+<li>View User Function</li>
+<li>View Category Function</li>
+<li>View Group Function</li>
+</ul>
+
+Other :-
+
+<ul>
+<li>Installation Function</li>
+</ul>

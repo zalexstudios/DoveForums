@@ -112,6 +112,28 @@ class Forums_M extends CI_Model {
     }
 
     /**
+     * Get Category - ** Admin Function **
+     *
+     * This function grabs a single category
+     * from the database.
+     *
+     * @param       integer      category_id
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function get_category_admin ($category_id)
+    {
+        // Query.
+        $query = $this->db->select('*')
+            ->where('category_id', $category_id)
+            ->get($this->tables['categories']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row() : NULL;
+    }
+
+    /**
      * Delete Category
      *
      * Deletes the category and moves any discussions to the default
@@ -149,7 +171,7 @@ class Forums_M extends CI_Model {
             'discussion_count' => $default_discussion_count + $discussion_count,
             'comment_count' => $default_comment_count + $comment_count,
         );
-        
+
         // Update the default category.
         $this->_update('category_id', 1, $this->tables['categories'], $category);
 
@@ -207,6 +229,30 @@ class Forums_M extends CI_Model {
             return TRUE;
         }
 
+    }
+
+    public function update_category( $category_id, $data )
+    {
+        // Load the slug library.
+        $config = array(
+            'field' => 'slug',
+            'title' => 'name',
+            'id' => 'category_id',
+            'table' => 'categories',
+            'replacement' => 'underscore'
+        );
+
+        $this->load->library('slug', $config);
+
+        $category = array(
+            'name' => strip_tags($data['name']),
+            'slug' => $this->slug->create_uri(strip_tags($data['name']), $category_id),
+            'description' => strip_tags($data['description']),
+            'update_user_id' => $this->session->userdata('user_id'),
+            'date_updated' => $this->_date(),
+        );
+
+        return $this->_update_category( $category_id, $category) ? TRUE : FALSE;
     }
 
     /*****************************************************************************************
@@ -290,6 +336,34 @@ class Forums_M extends CI_Model {
     }
 
     /**
+     * Get Discussion
+     *
+     * This function grabs a single discussion
+     * from the database.
+     *
+     * @param       string      $discussion_slug
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function get_discussion_by_id ($discussion_id)
+    {
+        // Query.
+        $query = $this->db->select('discussions.discussion_id, discussions.category_id, discussions.name as discussion_name, discussions.insert_user_id,
+        discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
+        discussions.comment_count, discussions.first_comment_id, categories.name as category_name, categories.slug as category_slug,
+        users.username, users.id as user_id, users.email')
+            ->where('discussions.discussion_id', $discussion_id)
+            ->where('discussions.flag', 0)
+            ->join($this->tables['categories'], 'categories.category_id = discussions.category_id')
+            ->join($this->tables['users'], 'users.id = discussions.insert_user_id')
+            ->get($this->tables['discussions']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row() : NULL;
+    }
+
+    /**
      * Count Discussions
      *
      * Counts all the discussion in the database.
@@ -346,18 +420,57 @@ class Forums_M extends CI_Model {
             ->delete($this->tables['discussions']);
     }
 
+    public function get_previous_discussion( $category_id )
+    {
+        // Query.
+        $query = $this->db->select('discussion_id')
+            ->where('category_id', $category_id)
+            ->order_by('discussion_id', 'desc')
+            ->limit(1)
+            ->get($this->tables['discussions']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row()->discussion_id : NULL;
+    }
+
     /**
      * Delete Discussion
      *
      * Deletes the supplied discussion from the database.
      *
      * @param       integer     $discussion_id
+     * @return      mixed
      * @author      Chris Baines
      * @since       0.0.1
      */
     public function delete_discussion($discussion_id)
     {
+        // Get the discussion from the database.
+        $discussion = $this->get_discussion_by_id($discussion_id);
 
+        // Count all comments.
+        $comments = count($this->get_comments($discussion_id));
+
+        // Delete all the comments associated with this discussion.
+        $this->delete_comments_by_discussion_id($discussion_id);
+
+        // Get the current comment count from the category.
+        $comment_count = $this->_get_row('comment_count', 'category_id', $discussion->category_id, $this->tables['categories']);
+
+        // Get the current discussion count from the category.
+        $discussion_count = $this->_get_row('discussion_count', 'category_id', $discussion->category_id, $this->tables['categories']);
+
+        // Delete the discussion.
+        $this->_delete('discussion_id', $discussion_id, $this->tables['discussions']);
+
+        // Update the category to reflect the changes.
+        $category = array(
+            'comment_count' => $comment_count - $comments,
+            'discussion_count' => --$discussion_count,
+            'last_discussion_id' => $this->get_previous_discussion($discussion->category_id),
+        );
+
+        return $this->_update_category($discussion->category_id, $category) ? TRUE : FALSE;
     }
 
     /**
@@ -425,7 +538,7 @@ class Forums_M extends CI_Model {
     public function get_comments($discussion_id, $limit=NULL, $offset=NULL)
     {
         // Query.
-        $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, users.id as user_id, users.username, users.email')
+        $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, comments.insert_user_id, users.id as user_id, users.username, users.email')
             ->join($this->tables['users'], 'users.id = comments.insert_user_id')
             ->where('comments.discussion_id', $discussion_id)
             ->where('comments.flag', 0)
@@ -536,6 +649,13 @@ class Forums_M extends CI_Model {
     {
         // Query.
         $this->db->where('insert_user_id', $user_id)
+            ->delete($this->tables['comments']);
+    }
+
+    public function delete_comments_by_discussion_id($discussion_id)
+    {
+        // Query.
+        $this->db->where('discussion_id', $discussion_id)
             ->delete($this->tables['comments']);
     }
 

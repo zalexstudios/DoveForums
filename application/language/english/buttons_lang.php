@@ -20,3 +20,5 @@ $lang['btn_password'] = '<i class="fa fa-key"></i>';
 $lang['btn_update_user'] = 'Update User';
 $lang['btn_create_discussion'] = 'Create Discussion';
 $lang['btn_add_category'] = 'Add Category';
+$lang['btn_update_category'] = 'Update Category';
+$lang['btn_view'] = '<i class="fa fa-eye"></i>';

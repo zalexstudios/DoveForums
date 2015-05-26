@@ -52,6 +52,26 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_description',
             ),
         ),
+        'edit_category' => array(
+            //0
+            array(
+                'field' => 'name',
+                'rules' => 'required',
+                'label' => 'lang:rules_name',
+            ),
+            //1
+            array(
+                'field' => 'description',
+                'rules' => 'required',
+                'label' => 'lang:rules_description',
+            ),
+            //2
+            array(
+                'field' => 'slug',
+                'rules' => 'required',
+                'label' => 'lang:rules_slug',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -138,6 +158,29 @@ class Dashboard extends Admin_Controller {
                 'type' => 'text',
             ),
         ),
+        'edit_category' => array(
+            //0
+            array(
+                'id' => 'name',
+                'name' => 'name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'description',
+                'name' => 'description',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //2
+            array(
+                'id' => 'slug',
+                'name' => 'slug',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
     );
 
     public function index()
@@ -214,6 +257,7 @@ class Dashboard extends Admin_Controller {
                     $row->last_name,
                     ($row->active == 1) ? anchor( site_url('dashboard/deactivate_user/'.$row->id), '<span class="text-success">Active</span>') : anchor( site_url('dashboard/activate_user/'.$row->id), '<span class="text-danger">Inactive</span>'),
                     ''.anchor( site_url('dashboard/edit_user/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    ''.anchor( site_url('dashboard/view_user/'.$row->id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     anchor( site_url('dashboard/delete_user/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
                 );
             }
@@ -299,7 +343,7 @@ class Dashboard extends Admin_Controller {
             if( $this->ion_auth->register($username, $password, $email, $additional_data) )
             {
                 // Create a message.
-                $this->messageci->set( lang('success_add_user'), 'success');
+                $this->messageci->set( sprintf(lang('success_add_user'), $this->input->post('username')), 'success');
 
                 // Redirect.
                 redirect( site_url('dashboard/all_users'), 'refresh');
@@ -627,6 +671,7 @@ class Dashboard extends Admin_Controller {
                     $row->discussion_count,
                     $row->comment_count,
                     ''.anchor( site_url('dashboard/edit_category/'.$row->category_id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    ''.anchor( site_url('dashboard/view_category/'.$row->category_id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     anchor( site_url('dashboard/delete_category/'.$row->category_id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
                 );
             }
@@ -671,8 +716,6 @@ class Dashboard extends Admin_Controller {
             $this->crumbs->add('Dashboard', 'dashboard');
             $this->crumbs->add('Add Category');
 
-            /* TODO - Build the add categories page. */
-
             // Define the page data.
             $data['page'] = array(
                 // Form Data.
@@ -694,6 +737,7 @@ class Dashboard extends Admin_Controller {
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
         } else {
 
             // Gather the data.
@@ -740,26 +784,89 @@ class Dashboard extends Admin_Controller {
             redirect($this->agent->referrer());
         }
 
-        // Define the page title.
-        $data['title'] = 'Edit Category';
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['edit_category']);
 
-        // Define the page template.
-        $data['template'] = 'pages/dashboard/edit_category';
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Edit Category';
 
-        // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('Edit Category');
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/edit_category';
 
-        /* TODO - Build the edit categories page. */
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Edit Category');
 
-        // Define the page data.
-        $data['page'] = array(
-            'breadcrumbs' => $this->crumbs->output(),
-        );
+            // Get the category from the database.
+            $category = $this->forums->get_category_admin($category_id);
 
-        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/edit_category/'.$category_id) ),
+                'form_close' => form_close(),
+                // Fields
+                'name_field' => form_input( $this->form_fields['edit_category'][0], set_value( $this->form_fields['edit_category'][0]['name'], $category->name ) ),
+                'description_field' => form_input( $this->form_fields['edit_category'][1], set_value( $this->form_fields['edit_category'][1]['name'], $category->description ) ),
+                'slug_field' => form_input( $this->form_fields['edit_category'][2], set_value( $this->form_fields['edit_category'][2]['name'], $category->slug ) ),
+                // Errors.
+                'name_error' => form_error($this->form_fields['edit_category'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['edit_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'slug_error' => form_error($this->form_fields['edit_category'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'name_label' => form_label('Name:', $this->form_fields['edit_category'][0]['id']),
+                'description_label' => form_label('Description:', $this->form_fields['edit_category'][1]['id']),
+                'slug_label' => form_label('Slug:', $this->form_fields['edit_category'][2]['id']),
+                // Hidden.
+                'category_id_hidden_field' => form_hidden('category_id', $category->category_id),
+                // Buttons.
+                'btn_update_category' => form_submit('submit', lang('btn_update_category'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+            // Gather the data.
+            $data = array(
+                'name' => $this->input->post('name'),
+                'description' => $this->input->post('description'),
+                'slug' => $this->input->post('slug'),
+            );
+
+            if ($this->forums->update_category( $this->input->post('category_id'), $data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( sprintf(lang('success_update_category'), $this->input->post('name')), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_categories'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( sprintf(lang('error_update_category'), $this->input->post('name')), 'error');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_categories'), 'refresh');
+            }
+
+        }
     }
 
+    /**
+     * Delete Category
+     *
+     * Deletes the supplied category.
+     *
+     * @param       integer     $category_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     *
+     */
     public function delete_category($category_id)
     {
         if(empty($category_id))

@@ -130,7 +130,7 @@ class Discussions extends Front_Controller {
                         'src' => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                     );
 
-                    $data['comments'][] = array(
+                    $data['comments'][$row->comment_id] = array(
                         'comment_id' => $row->comment_id,
                         'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$row->comment_id.''), '#'.$row->comment_id.''),
                         'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
@@ -140,8 +140,9 @@ class Discussions extends Front_Controller {
                         'report_button' => anchor( site_url('comments/report_comment/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
                         'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
                         'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
-                        'edit_comment_button' => anchor( site_url( 'comments/edit_comment/'.$row->comment_id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ),
-                        'delete_comment_button' => anchor( site_url( 'comments/delete_comment/'.$row->comment_id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ),
+                        'edit_comment_button' => (!$row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->comment_id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
+                        'delete_comment_button' => (!$row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->comment_id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
+                        'comment_creator' => (!$row->insert_user_id == $this->session->userdata('user_id')) ? 1 : 0,
                     );
                 }
 
@@ -180,8 +181,8 @@ class Discussions extends Front_Controller {
                 'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
                 'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
                 'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
-                'edit_discussion_button' => anchor( site_url( 'discussions/edit_discussion/'.$discussion->discussion_id), lang('btn_edit_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Discussion') ),
-                'delete_discussion_button' => anchor( site_url( 'discussions/delete_discussion/'.$discussion->discussion_id), lang('btn_delete_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Discussion') ),
+                'edit_discussion_button' => (!$discussion->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'discussions/edit_discussion/'.$discussion->discussion_id), lang('btn_edit_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Discussion') ) : NULL,
+                'delete_discussion_button' => (!$discussion->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'discussions/delete_discussion/'.$discussion->discussion_id), lang('btn_delete_discussion'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Discussion') ) : NULL,
                 // Discussion Data.
                 'comment_id' => '#0',
                 'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#0'), '#0'),
@@ -461,11 +462,53 @@ class Discussions extends Front_Controller {
             redirect( site_url(), 'refresh' );
         }
 
-        if($this->forums->delete_discussion($discussion_id) === TRUE)
-        {
+        // Get the discussion.
+        $discussion = $this->forums->get_discussion_by_id($discussion_id);
 
+        // Check if the user is a administrator.
+        if ($this->ion_auth->is_admin())
+        {
+            if($this->forums->delete_discussion($discussion_id))
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_delete_discussion'), 'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_delete_discussion'), 'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
+        }
+
+        if($discussion->insert_user_id == $this->session->userdata('user_id'))
+        {
+            if($this->forums->delete_discussion($discussion_id))
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_delete_discussion'), 'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_delete_discussion'), 'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
         } else {
 
+            // Create a message.
+            $this->messageci->set( lang('error_discussion_owner'), 'error');
+
+            // Redirect
+            redirect( site_url(), 'refresh');
         }
     }
 

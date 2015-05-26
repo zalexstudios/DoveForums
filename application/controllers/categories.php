@@ -29,15 +29,13 @@ class Categories extends Front_Controller {
             // Loop through the results.
             foreach( $categories as $row )
             {
-                $data['categories'] = array(
-                    array(
+                $data['categories'][] = array(
                         'name' => anchor( site_url('categories/'.$row->category_slug.''), $row->name),
                         'description' => $row->description,
                         'discussion_count' => $row->discussion_count,
                         'comment_count' => $row->comment_count,
                         'latest_discussion' => anchor( site_url('discussions/'.$row->category_slug.'/'.$row->discussion_slug.''), $row->discussion_name),
                         'last_comment_by' => anchor( site_url('users/profile/'.$row->user_id.''), $row->username),
-                    ),
                 );
             }
 

@@ -616,8 +616,6 @@ class Dashboard extends Admin_Controller {
         // Get all the categories.
         $categories = $this->forums->get_categories();
 
-        print_r($categories);
-
         if (!empty($categories))
         {
             foreach($categories as $row)

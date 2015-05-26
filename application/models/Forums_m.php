@@ -85,8 +85,27 @@ class Forums_M extends CI_Model {
 
     public function delete_category($category_id)
     {
+        // Get the discussion count for the category we are removing.
+        $discussion_count = $this->_get_row('discussion_count', 'category_id', $category_id, $this->tables['categories']);
+
+        // Get the comment count for the category we are removing.
+        $comment_count = $this->_get_row('comment_count', 'category_id', $category_id, $this->tables['categories']);
+
+        // Get the discussion count for the default category.
+        $default_discussion_count = $this->_get_row('discussion_count', 'category_id', 1, $this->tables['categories']);
+
+        // Get the comment count for the default category.
+        $default_comment_count = $this->_get_row('comment_count', 'category_id', 1, $this->tables['categories']);
+
+        // Build the data for the update.
+        $data = array(
+            'category_id' => 1,
+            'discussion_count' => $default_discussion_count + $discussion_count,
+            'comment_count' => $default_comment_count + $comment_count,
+        );
+
         // Move any discussion in the category to the default category.
-        $this->_update('category_id', $category_id, $this->tables['discussions'], array('category_id', 1));
+        $this->_update('category_id', $category_id, $this->tables['discussions'], $data);
 
         // Delete the category.
         return $this->_delete('category_id', $category_id, $this->tables['categories']) === TRUE;

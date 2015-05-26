@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.38)
 # Database: DoveForums
-# Generation Time: 2015-05-19 17:45:06 +0000
+# Generation Time: 2015-05-26 10:14:07 +0000
 # ************************************************************
 
 
@@ -39,15 +39,16 @@ CREATE TABLE `categories` (
   `last_comment_date` datetime DEFAULT NULL,
   `last_comment_id` int(11) DEFAULT NULL,
   `last_discussion_id` int(11) DEFAULT NULL,
+  `deletable` int(11) DEFAULT '1',
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 
-INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`)
+INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
 VALUES
-	(1,1,10,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-05-19 11:10:13',10,1);
+	(1,1,1,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-05-26 11:12:31',1,1,0);
 
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -79,16 +80,7 @@ LOCK TABLES `comments` WRITE;
 
 INSERT INTO `comments` (`comment_id`, `discussion_id`, `insert_user_id`, `update_user_id`, `delete_user_id`, `body`, `insert_date`, `delete_date`, `update_date`, `insert_ip`, `update_ip`, `flag`)
 VALUES
-	(1,1,1,NULL,NULL,'This is a test comment to the First Discussion.','2015-04-21 10:37:59',NULL,NULL,'::1',NULL,0),
-	(2,1,1,NULL,NULL,'And a second test comment after updating some code.','2015-04-21 10:44:15',NULL,NULL,'::1',NULL,0),
-	(3,1,1,NULL,NULL,'And another test.','2015-04-21 10:46:38',NULL,NULL,'::1',NULL,0),
-	(4,1,1,NULL,NULL,'And a final test after more code tweaks.','2015-04-21 10:54:55',NULL,NULL,'::1',NULL,0),
-	(5,1,1,NULL,NULL,'And one more test.','2015-04-21 10:56:44',NULL,NULL,'::1',NULL,0),
-	(6,1,2,NULL,NULL,'Test as another user.','2015-04-22 11:31:57',NULL,NULL,'::1',NULL,0),
-	(7,1,1,NULL,NULL,'test after all the changes.','2015-04-22 20:12:10',NULL,NULL,'::1',NULL,0),
-	(8,1,1,NULL,NULL,'testing after all the changes.','2015-05-19 11:00:50',NULL,NULL,'::1',NULL,0),
-	(9,1,1,NULL,NULL,'testing after all the changes.','2015-05-19 11:01:13',NULL,NULL,'::1',NULL,0),
-	(10,1,1,NULL,NULL,'test after yet more changes.','2015-05-19 11:10:13',NULL,NULL,'::1',NULL,0);
+	(1,1,1,NULL,NULL,'This is the first comment on your site! \r\n\r\nYou can go ahead and remove this.\r\n\r\nRegards\r\nDove Forums Team','2015-05-26 11:12:31',NULL,NULL,'::1',NULL,0);
 
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -130,7 +122,7 @@ LOCK TABLES `discussions` WRITE;
 
 INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `flag`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`)
 VALUES
-	(1,1,1,NULL,0,10,'First Discussion','first-discussion','This is a testing first discussion.',10,0,437,0,0,0,0,'2015-04-15 15:00:00',NULL,NULL,NULL,'2015-05-19 11:10:13',1);
+	(1,1,1,NULL,0,1,'First Discussion','first_discussion','Welcome to your fresh new forum, ready to build up your community. Dove Forums is a basic forums software ready to customise as you see fit!.\r\n\r\nYou can go over to your Dashboard and customise your categories and site settings.  You can also edit or remove this discussion to make way for your own.\r\n\r\nWe hope you have fun using our software and remember to head over to http://www.doveforums.com if you need support!.\r\n\r\nRegards\r\nDove Forums Team',1,0,2,0,0,0,0,'2015-05-26 11:11:31',NULL,NULL,NULL,'2015-05-26 11:12:31',1);
 
 /*!40000 ALTER TABLE `discussions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -175,37 +167,6 @@ CREATE TABLE `login_attempts` (
 
 
 
-# Dump of table pm_conversations
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `pm_conversations`;
-
-CREATE TABLE `pm_conversations` (
-  `conversation_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `subject` varchar(255) DEFAULT NULL,
-  `insert_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`conversation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table pm_mesages
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `pm_mesages`;
-
-CREATE TABLE `pm_mesages` (
-  `message_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `conversation_id` int(11) DEFAULT NULL,
-  `body` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `insert_user_id` int(11) DEFAULT NULL,
-  `date_inserted` datetime DEFAULT NULL,
-  `insert_ip` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table users
 # ------------------------------------------------------------
 
@@ -240,8 +201,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`)
 VALUES
-	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432039128,1,'Admin','istrator','ADMIN','0',11,5,1),
-	(2,'::1','TeutonicT3rror','$2y$08$z90jdWX0s/SRPGnfbmv8iOoqbvCSu8W2qrTPQgYvO3LBtkdwLgEQy',NULL,'t3utonict3rror@gmail.com',NULL,NULL,NULL,NULL,1429698688,1430305695,1,NULL,NULL,NULL,NULL,5,NULL,NULL);
+	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432630144,1,'Admin','istrator','ADMIN','0',16,5,1);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -269,9 +229,7 @@ LOCK TABLES `users_groups` WRITE;
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
 VALUES
-	(1,1,1),
-	(2,1,2),
-	(3,2,2);
+	(1,1,1);
 
 /*!40000 ALTER TABLE `users_groups` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -34,7 +34,7 @@ Frontend :-
 <ul>
 <li>Send PM Function</li>
 <li>Thumbs Up Function</li>
-<li><strike>Delete Discussion Function</strike></li>
+<li><strike>Delete Discussion Function</strike> - Commit #56</li>
 <li>Edit Discussion Function</li>
 <li>Report Discussion Function</li>
 <li>Delete Comments Function</li>

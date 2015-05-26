@@ -33,9 +33,9 @@ class Forums_M extends CI_Model {
      * This function grabs all the categories
      * from the database.
      *
-     * @return object
-     * @author Chris Baines
-     * @since 0.0.1
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
      */
     public function get_categories ()
     {
@@ -57,10 +57,10 @@ class Forums_M extends CI_Model {
      * This function grabs a single category
      * from the database.
      *
-     * @var category_slug
-     * @return object
-     * @author Chris Baines
-     * @since 0.0.1
+     * @param       string      category_slug
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
      */
     public function get_category ($category_slug)
     {
@@ -73,6 +73,15 @@ class Forums_M extends CI_Model {
         return $query->num_rows() > 0 ? $query->row() : NULL;
     }
 
+    /**
+     * Get Categories Dropdown
+     *
+     * Gets the categories for the dropdown field.
+     *
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function get_categories_dropdown()
     {
         // Query.
@@ -83,6 +92,36 @@ class Forums_M extends CI_Model {
         return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
+    /**
+     * Get Categories - ** Admin Function **
+     *
+     * Gets the categories for the admin panel with no joins.
+     *
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function get_categories_admin()
+    {
+        // Query.
+        $query = $this->db->select('*')
+            ->get($this->tables['categories']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->result() : NULL;
+    }
+
+    /**
+     * Delete Category
+     *
+     * Deletes the category and moves any discussions to the default
+     * category.
+     *
+     * @param       integer     $category_id
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function delete_category($category_id)
     {
         // Get the discussion count for the category we are removing.
@@ -98,20 +137,37 @@ class Forums_M extends CI_Model {
         $default_comment_count = $this->_get_row('comment_count', 'category_id', 1, $this->tables['categories']);
 
         // Build the data for the update.
-        $data = array(
+        $discussion = array(
             'category_id' => 1,
-            'discussion_count' => $default_discussion_count + $discussion_count,
-            'comment_count' => $default_comment_count + $comment_count,
         );
 
         // Move any discussion in the category to the default category.
-        $this->_update('category_id', $category_id, $this->tables['discussions'], $data);
+        $this->_update('category_id', $category_id, $this->tables['discussions'], $discussion);
+
+        // Build the data for the update.
+        $category = array(
+            'discussion_count' => $default_discussion_count + $discussion_count,
+            'comment_count' => $default_comment_count + $comment_count,
+        );
+        
+        // Update the default category.
+        $this->_update('category_id', 1, $this->tables['categories'], $category);
 
         // Delete the category.
         return $this->_delete('category_id', $category_id, $this->tables['categories']) === TRUE;
 
     }
 
+    /**
+     * Add Category
+     *
+     * Adds a new category to the database.
+     *
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function add_category($data)
     {
         // Start database transaction.
@@ -290,11 +346,30 @@ class Forums_M extends CI_Model {
             ->delete($this->tables['discussions']);
     }
 
+    /**
+     * Delete Discussion
+     *
+     * Deletes the supplied discussion from the database.
+     *
+     * @param       integer     $discussion_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function delete_discussion($discussion_id)
     {
 
     }
 
+    /**
+     * Create Discussion.
+     *
+     * Adds a new discussion to the database.
+     *
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function create_discussion($data)
     {
         // Load the slug library.
@@ -426,6 +501,15 @@ class Forums_M extends CI_Model {
 
     }
 
+    /**
+     * Get Previous comment from the database,
+     * part of the delete comment code.
+     *
+     * @param       integer     $discussion_id
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function get_previous_comment( $discussion_id )
     {
         // Query.
@@ -484,6 +568,19 @@ class Forums_M extends CI_Model {
      * Misc Functions
      *****************************************************************************************/
 
+    /**
+     * Get Row
+     *
+     * Gets a single field from the database.
+     *
+     * @param       string      $row
+     * @param       string      $field
+     * @param       string      $where
+     * @param       string      $table
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function get_row( $row, $field, $where, $table )
     {
         return $this->_get_row( $row, $field, $where, $table );
@@ -607,6 +704,19 @@ class Forums_M extends CI_Model {
         return date('Y-m-d G:i:s', time());
     }
 
+    /**
+     * Delete
+     *
+     * Deletes information from the database.
+     *
+     * @param       string      $field
+     * @param       string      $where
+     * @param       string      $table
+     * @return      bool|null
+     * @author      Chris Baines
+     * @since       0.0.1
+     *
+     */
     private function _delete( $field, $where, $table )
     {
         $this->db->where($field, $where)

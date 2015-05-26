@@ -614,7 +614,7 @@ class Dashboard extends Admin_Controller {
         );
 
         // Get all the categories.
-        $categories = $this->forums->get_categories();
+        $categories = $this->forums->get_categories_admin();
 
         if (!empty($categories))
         {
@@ -622,7 +622,7 @@ class Dashboard extends Admin_Controller {
             {
                 $this->table->add_row(
                     $row->name,
-                    $row->category_slug,
+                    $row->slug,
                     $row->description,
                     $row->discussion_count,
                     $row->comment_count,

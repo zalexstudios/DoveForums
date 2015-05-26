@@ -63,11 +63,9 @@ class Front_Controller extends MY_Controller{
         {
             foreach( $categories as $row )
             {
-                $data['categories'] = array(
-                    array(
+                $data['categories'][] = array(
                         'name' => anchor( site_url('categories/'.$row->category_slug.''), $row->name ),
                         'discussion_count' => $row->discussion_count,
-                    ),
                 );
             }
 

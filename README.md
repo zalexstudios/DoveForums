@@ -35,10 +35,10 @@ Frontend :-
 <li>Send PM Function</li>
 <li>Thumbs Up Function</li>
 <li><strike>Delete Discussion Function</strike> - Commit #56</li>
-<li>Edit Discussion Function</li>
+<li><strike>Edit Discussion Function</strike> - Commit #61</li>
 <li>Report Discussion Function</li>
-<li>Delete Comments Function</li>
-<li>Edit Comment Function</li>
+<li><strike>Delete Comments Function</strike> - Commit #61</li>
+<li><strike>Edit Comment Function</strike> - Commit #61</li>
 <li>Report Comment Function</li>
 </ul>
 

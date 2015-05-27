@@ -36,10 +36,10 @@ Frontend :-
 <li>Thumbs Up Function</li>
 <li><strike>Delete Discussion Function</strike> - Commit #56</li>
 <li><strike>Edit Discussion Function</strike> - Commit #61</li>
-<li>Report Discussion Function</li>
+<li><strike>Report Discussion Function</strike> - Commit #63</li>
 <li><strike>Delete Comments Function</strike> - Commit #61</li>
 <li><strike>Edit Comment Function</strike> - Commit #61</li>
-<li>Report Comment Function</li>
+<li><strike>Report Comment Function</strike> - Commit #63</li>
 </ul>
 
 Backend :-

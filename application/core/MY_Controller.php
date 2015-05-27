@@ -23,6 +23,7 @@ class MY_Controller extends CI_Controller{
         $this->lang->load('buttons', 'english');
         $this->lang->load('rules', 'english');
         $this->lang->load('tables', 'english');
+        $this->lang->load('auth', 'english');
 
         //$this->output->enable_profiler(TRUE);
 
@@ -90,6 +91,7 @@ class Front_Controller extends MY_Controller{
                 'logout_link' => anchor( site_url( 'users/logout' ), 'Logout' ),
                 'profile_link' => anchor( site_url( 'users/profile' ), 'Profile' ),
                 'settings_link' => anchor( site_url( 'users/settings' ), 'Settings' ),
+                'change_password_link' => anchor (site_url( 'users/change_password' ), 'Change Password'),
                 'dashboard_link' => anchor( site_url( 'dashboard' ), 'Dashboard' ),
                 'login_link' => anchor( site_url( 'users/login' ), 'Login' ),
                 'register_link' => anchor( site_url( 'users/register' ), 'Register' ),

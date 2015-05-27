@@ -14,3 +14,6 @@ $lang['rules_category'] = 'Category';
 $lang['rules_name'] = 'Name';
 $lang['rules_description'] = 'Description';
 $lang['rules_reason'] = 'Report Reason';
+$lang['rules_old_password'] = 'Old Password';
+$lang['rules_new_password'] = 'New Password';
+$lang['rules_confirm_new_password'] = 'Confirm New Password';

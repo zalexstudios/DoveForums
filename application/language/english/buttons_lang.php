@@ -26,3 +26,7 @@ $lang['btn_update_discussion'] = 'Update Discussion';
 $lang['btn_update_comment'] = 'Update Comment';
 $lang['btn_report_discussion'] = 'Report Discussion';
 $lang['btn_report_comment'] = 'Report Comment';
+$lang['btn_change_password'] = 'Change Password';
+$lang['btn_reset_password'] = 'Reset Password';
+$lang['btn_login'] = 'Login';
+$lang['btn_forgot_password'] = 'Forgot Password';

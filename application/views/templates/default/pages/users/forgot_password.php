@@ -4,7 +4,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Login</h3>
+        <h3 class="panel-title">Forgot Password</h3>
 
     </div>
 
@@ -14,23 +14,13 @@
 
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-12">
 
-                <div class="form-group">
+                <div class="form-group <?php if(form_error('identity')){echo 'has-error';} ?>">
 
-                    {email_label}
-                    {email_field}
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="form-group">
-
-                    {password_label}
-                    {password_field}
+                    {identity_label}
+                    {identity_field}
+                    {identity_error}
 
                 </div>
 
@@ -45,7 +35,6 @@
                 <div class="form-group">
 
                     {btn_forgot_password}
-                    {btn_login}
 
                 </div>
 

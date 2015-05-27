@@ -32,6 +32,10 @@ Chris
 Frontend :-
 
 <ul>
+<li>User Profile Function</li>
+<li>User Settings Function</li>
+<li><strike>User Change Password Function</strike> - Commit #65</li>
+<li><strike>User Forgot Password Function</strike> - Commit #65</li>
 <li>Send PM Function</li>
 <li>Thumbs Up Function</li>
 <li><strike>Delete Discussion Function</strike> - Commit #56</li>

@@ -50,6 +50,26 @@ class Users extends Front_Controller {
                 'label' => 'lang:rules_confirm_email',
             ),
         ),
+        'change_password' => array(
+            //0
+            array(
+                'field' => 'old_password',
+                'rules' => 'required',
+                'label' => 'lang:rules_old_password',
+            ),
+            //1
+            array(
+                'field' => 'new_password',
+                'rules' => 'required',
+                'label' => 'lang:rules_new_password',
+            ),
+            //2
+            array(
+                'field' => 'confirm_new_password',
+                'rules' => 'required|matches[new_password]',
+                'label' => 'lang:rules_confirm_new_password',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -105,6 +125,54 @@ class Users extends Front_Controller {
                 'name' => 'confirm_email',
                 'class' => 'form-control',
                 'type' => 'text',
+            ),
+        ),
+        'change_password' => array(
+            //0
+            array(
+                'id' => 'old_password',
+                'name' => 'old_password',
+                'class' => 'form-control',
+                'type' => 'password',
+            ),
+            //1
+            array(
+                'id' => 'new_password',
+                'name' => 'new_password',
+                'class' => 'form-control',
+                'type' => 'password',
+            ),
+            //2
+            array(
+                'id' => 'confirm_new_password',
+                'name' => 'confirm_new_password',
+                'class' => 'form-control',
+                'type' => 'password',
+            ),
+        ),
+        'forgot_password' => array(
+            //0
+            array(
+                'id' => 'identity',
+                'name' => 'identity',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
+        'reset_password' => array(
+            //0
+            array(
+                'id' => 'new_password',
+                'name' => 'new_password',
+                'class' => 'form-control',
+                'type' => 'password',
+            ),
+            //1
+            array(
+                'id' => 'confirm_new_password',
+                'name' => 'confirm_new_password',
+                'class' => 'form-control',
+                'type' => 'password',
             ),
         ),
     );
@@ -188,14 +256,14 @@ class Users extends Front_Controller {
             if($register)
             {
                 // Create a message.
-                $this->messageci->set( lang('success_register'), 'success' );
+                $this->messageci->set( $this->ion_auth->messages(), 'success' );
 
                 // Redirect.
                 redirect( site_url('forums') );
             } else {
 
                 // Create a message.
-                $this->messageci->set( lang('error_register'), 'error' );
+                $this->messageci->set( $this->ion_auth->errors(), 'error' );
 
                 // Redirect.
                 redirect( site_url('forums') );
@@ -250,7 +318,9 @@ class Users extends Front_Controller {
                 'email_label' => form_label( 'Email:', $this->form_fields['login'][0]['id'] ),
                 'password_label' => form_label( 'Password:', $this->form_fields['login'][1]['id'] ),
                 // Buttons.
-                'login_button' => form_submit( 'submit', 'Login', 'class="btn btn-primary"'),
+                'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
+                'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
+                // Other
                 'breadcrumbs' => $this->crumbs->output(),
             );
 
@@ -274,14 +344,14 @@ class Users extends Front_Controller {
                 $this->forums->update_visit_count($user->id, ++$user->visit_count);
 
                 // Create a message.
-                $this->messageci->set( lang('success_login'), 'success' );
+                $this->messageci->set( $this->ion_auth->messages(), 'success' );
 
                 // Redirect.
                 redirect( site_url('forums') );
             } else {
 
                 // Create a message.
-                $this->messageci->set( lang('error_login'), 'error' );
+                $this->messageci->set( $this->ion_auth->errors(), 'error' );
 
                 // Redirect.
                 redirect( site_url('users/login') );
@@ -302,7 +372,7 @@ class Users extends Front_Controller {
         $this->ion_auth->logout();
 
         // Create a message.
-        $this->messageci->set( lang('success_logout'), 'success' );
+        $this->messageci->set( $this->ion_auth->messages(), 'success' );
 
         // Redirect.
         redirect( site_url('forums') );
@@ -361,17 +431,336 @@ class Users extends Front_Controller {
     }
 
     /**
-     * Thumbs Down
+     * Change Password
      *
-     * Removes a point from a user for been abusive/un-helpful
+     * Allows the user to change their password.
      *
-     * @param       integer     $user_id
      * @author      Chris Baines
      * @since       0.0.1
-     *
      */
-    public function thumbs_down ($user_id)
+    public function change_password()
     {
-        /* TODO */
+        // First make sure the user is logged in.
+        if ( !$this->ion_auth->logged_in() === TRUE )
+        {
+            // Create a message.
+            $this->messageci->set( lang('info_login_required'), 'info' );
+
+            // Redirect.
+            redirect( site_url('forums') );
+        }
+
+        // Set the form validation rules.
+        $this->form_validation->set_rules( $this->validation_rules['change_password'] );
+
+        // See if the form validation has been run.
+        if ( $this->form_validation->run() === FALSE )
+        {
+            // Define the page title.
+            $data['title'] = 'Change Password';
+
+            // Define the page template.
+            $data['template'] = 'pages/users/change_password';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add('Users', 'users');
+            $this->crumbs->add('Change Password');
+
+            // Get the user.
+            $user = $this->ion_auth->user()->row();
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('users/change_password') ),
+                'form_close' => form_close(),
+                // Fields.
+                'old_password_field' => form_input( $this->form_fields['change_password'][0], set_value( $this->form_fields['change_password'][0]['name'], $this->input->post('old_password') ) ),
+                'new_password_field' => form_input( $this->form_fields['change_password'][1], set_value( $this->form_fields['change_password'][1]['name'], $this->input->post('new_password') ) ),
+                'confirm_new_password_field' => form_input( $this->form_fields['change_password'][2], set_value( $this->form_fields['change_password'][2]['name'], $this->input->post('confirm_new_password') ) ),
+                // Labels.
+                'old_password_label' => form_label('Old Password:', $this->form_fields['change_password'][0]['id']),
+                'new_password_label' => form_label('New Password:', $this->form_fields['change_password'][1]['id']),
+                'confirm_new_password_label' => form_label('Confirm New Password:', $this->form_fields['change_password'][2]['id']),
+                // Errors.
+                'old_password_error' => form_error($this->form_fields['change_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'new_password_error' => form_error($this->form_fields['change_password'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'confirm_new_password_error' => form_error($this->form_fields['change_password'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Buttons.
+                'btn_change_password' => form_submit('submit', lang('btn_change_password'), 'class="btn btn-primary btn-sm"'),
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+        }
+        else
+        {
+            $identity =  $this->session->userdata('identity');
+
+            $change = $this->ion_auth->change_password($identity, $this->input->post('old_password'), $this->input->post('new_password'));
+
+            if($change)
+            {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                // Logout.
+                $this->logout();
+            } else {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+                // Redirect.
+                redirect( site_url('forums'), 'refresh');
+            }
+        }
+    }
+
+    /**
+     * Forgot Password
+     *
+     * Allows a user to request a new password.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function forgot_password()
+    {
+        // Set validation rules by checking if identity is username or email.
+        if($this->config->item('identity', 'ion_auth') == 'username' )
+        {
+            $this->form_validation->set_rules('identity', lang('forgot_password_username_identity_label'), 'required');
+        }
+        else
+        {
+            $this->form_validation->set_rules('identity', lang('forgot_password_validation_email_label'), 'required|valid_email');
+        }
+
+        if($this->form_validation->run() == FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Forgot Password';
+
+            // Define the page template.
+            $data['template'] = 'pages/users/forgot_password';
+
+            // Build the page breadcrumbs.
+            $this->crumbs->add('Users', 'users');
+            $this->crumbs->add('Forgot Password');
+
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('users/forgot_password') ),
+                'form_close' => form_close(),
+                // Fields.
+                'identity_field' => form_input( $this->form_fields['forgot_password'][0], set_value( $this->form_fields['forgot_password'][0]['name'], $this->input->post('identity') ) ),
+                // Labels.
+                'identity_label' => form_label( 'Email:', $this->form_fields['forgot_password'][0]['id'] ),
+                // Errors.
+                'identity_error' => form_error($this->form_fields['forgot_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Buttons.
+                'btn_forgot_password' => form_submit( 'submit', lang('btn_forgot_password'), 'class="btn btn-primary"'),
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+        }
+        else
+        {
+
+            // Get identity.
+            if($this->config->item('identity', 'ion_auth') == 'username')
+            {
+                $identity = $this->ion_auth->where('username', strtolower($this->input->post('identity')))->users()->row();
+            } else {
+                $identity = $this->ion_auth->where('email', strtolower($this->input->post('identity')))->users()->row();
+            }
+
+            if(empty($identity))
+            {
+                if($this->config->item('identity', 'ion_auth') == 'username')
+                {
+                    $this->ion_auth->set_message('forgot_password_username_not_found');
+                } else {
+                    $this->ion_auth->set_message('forgot_password_email_not_found');
+                }
+
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'info');
+
+                // Redirect.
+                redirect( site_url('users/forgot_password'), 'refresh');
+            }
+
+            // Run the forgotten password method to email a activation code to the user.
+            $forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
+
+            if($forgotten)
+            {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                // Redirect.
+                redirect( site_url('users/login'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->errors(), 'refresh');
+
+                // Redirect.
+                redirect( site_url('users/forgot_password'), 'refresh');
+            }
+        }
+    }
+
+    /**
+     * Reset Password
+     *
+     * Final step in the reset password function.
+     *
+     * @param       integer      $code
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function reset_password($code = NULL)
+    {
+        if(!$code)
+        {
+            show_404();
+        }
+
+        $user = $this->ion_auth->forgotten_password_check($code);
+
+        if($user)
+        {
+            // If the code is valid, show the reset password form.
+            $this->form_validation->set_rules('new_password', $this->lang->line('reset_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[confirm_new_password]');
+            $this->form_validation->set_rules('confirm_new_password', $this->lang->line('reset_password_validation_new_password_confirm_label'), 'required');
+
+            if($this->form_validation->run() === FALSE)
+            {
+                // Define the page title.
+                $data['title'] = 'Reset Password';
+
+                // Define the page template.
+                $data['template'] = 'pages/users/reset_password';
+
+                // Build the page breadcrumbs.
+                $this->crumbs->add('Users', 'users');
+                $this->crumbs->add('Reset Password');
+
+                $data['page'] = array(
+                    // Form Data.
+                    'form_open' => form_open( site_url('users/reset_password/'.$code) ),
+                    'form_close' => form_close(),
+                    // Fields.
+                    'new_password_field' => form_input( $this->form_fields['reset_password'][0], set_value( $this->form_fields['reset_password'][0]['name'], $this->input->post('new_password') ) ),
+                    'confirm_new_password_field' => form_input( $this->form_fields['reset_password'][1], set_value( $this->form_fields['reset_password'][1]['name'], $this->input->post('confirm_new_password') ) ),
+                    // Labels.
+                    'new_password_label' => form_label( 'New Password:', $this->form_fields['reset_password'][0]['id'] ),
+                    'confirm_new_password_label' => form_label( 'Confirm New Password:', $this->form_fields['reset_password'][1]['id'] ),
+                    // Errors.
+                    'new_password_error' => form_error($this->form_fields['reset_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                    'confirm_new_password_error' => form_error($this->form_fields['reset_password'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                    // Hidden.
+                    'user_id_hidden_field' => form_hidden('user_id', $user->id),
+                    'csrf_hidden_field' => form_hidden($this->_get_csrf_nonce()),
+                    // Buttons.
+                    'btn_reset_password' => form_submit( 'submit', lang('btn_reset_password'), 'class="btn btn-primary"'),
+                    'breadcrumbs' => $this->crumbs->output(),
+                );
+
+                $this->render( element('page', $data), element('title', $data), element('template', $data) );
+            }
+            else
+            {
+                // Do we have a valid request.
+                if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id'))
+                {
+                    // Something is not right.
+                    $this->ion_auth->clear_forgotten_password_code($code);
+
+                    show_error(lang('error_csrf'));
+                }
+                else
+                {
+                    // Change the password.
+                    $identity = $user->{$this->config->item('identity', 'ion_auth')};
+
+                    $change = $this->ion_auth->reset_password($identity, $this->input->post('new_password'));
+
+                    if($change)
+                    {
+                        // Create a message.
+                        $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                        // Redirect.
+                        redirect( site_url('users/login'), 'refresh');
+                    } else {
+                        // Create a message.
+                        $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+                        // Redirect.
+                        redirect( site_url('users/reset_password/'.$code), 'refresh');
+                    }
+                }
+            }
+        }
+        else
+        {
+            // If the code is invalid, send them back to the forgot password page.
+            $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+            // Redirect.
+            redirect( site_url('users/forgot_password'), 'refresh');
+        }
+    }
+
+    /**
+     * Settings
+     *
+     * Allows the user to change their personal settings.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function settings()
+    {
+
+    }
+
+    /**
+     * Profile
+     *
+     * Allows the user to view their profile.
+     *
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function profile()
+    {
+
+    }
+
+    function _get_csrf_nonce()
+    {
+        $this->load->helper('string');
+        $key   = random_string('alnum', 8);
+        $value = random_string('alnum', 20);
+        $this->session->set_flashdata('csrfkey', $key);
+        $this->session->set_flashdata('csrfvalue', $value);
+        return array($key => $value);
+    }
+
+    function _valid_csrf_nonce()
+    {
+        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
+            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
     }
 }

@@ -37,6 +37,7 @@
 
                             <li>{profile_link}</li>
                             <li>{settings_link}</li>
+                            <li>{change_password_link}</li>
 
                             <?php if($this->ion_auth->is_admin() === TRUE) { ?>
 

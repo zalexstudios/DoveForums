@@ -16,6 +16,9 @@ $lang['success_delete_category'] = 'The category has been deleted.';
 $lang['success_add_category'] = 'The category <strong>%s</strong> has been created.';
 $lang['success_update_category'] = 'The category <strong>%s</strong> has been updated.';
 $lang['success_delete_discussion'] = 'The discussion has been removed.';
+$lang['success_update_discussion'] = 'The discussion <strong>%s</strong> has been updated.';
+$lang['success_update_comment'] = 'The comment has been updated.';
+$lang['success_delete_comment'] = 'The comment has been removed.';
 
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
 $lang['error_login'] = 'There has been a problem logging you in, please try again!';
@@ -39,3 +42,6 @@ $lang['error_add_category'] = 'There was a problem creating the category.';
 $lang['error_update_category'] = 'There was a problem updating the category <strong>%s</strong>.';
 $lang['error_discussion_owner'] = 'You are not the owner of this discussion!.';
 $lang['error_delete_discussion'] = 'There was a problem removing the discussion.';
+$lang['error_update_discussion'] = 'There was a problem updating the discussion <strong>%s</strong>.';
+$lang['error_update_comment'] = 'There was a problem updating the comment.';
+$lang['error_delete_comment'] = 'There was a problem removing the comment.';

@@ -519,6 +519,43 @@ class Forums_M extends CI_Model {
         return $this->_update_category($data['category'], $category) === TRUE ? TRUE : FALSE;
     }
 
+    /**
+     * Update Discussion
+     *
+     * Updates the supplied discussion.
+     *
+     * @param       integer     $discussion_id
+     * @param       array       $data
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function update_discussion( $discussion_id, $data )
+    {
+        // Load the slug library.
+        $config = array(
+            'field' => 'slug',
+            'title' => 'name',
+            'id' => 'discussion_id',
+            'table' => 'discussions',
+            'replacement' => 'underscore'
+        );
+
+        $this->load->library('slug', $config);
+
+        $discussion = array(
+            'name' => strip_tags($data['name']),
+            'slug' => $this->slug->create_uri(strip_tags($data['name']), $discussion_id),
+            'body' => strip_tags($data['body']),
+            'category_id' => $data['category'],
+            'update_user_id' => $this->session->userdata('user_id'),
+            'update_date' => $this->_date(),
+            'update_ip' => $this->input->ip_address(),
+        );
+
+        return $this->_update_discussion( $discussion_id, $discussion) ? TRUE : FALSE;
+    }
+
     /*****************************************************************************************
      * Comments Functions
      *****************************************************************************************/
@@ -548,6 +585,28 @@ class Forums_M extends CI_Model {
 
         // Result.
         return $query->num_rows() > 0 ? $query->result() : NULL;
+    }
+
+    /**
+     * Get Comment By ID
+     *
+     * Gets a single comment by the supplied ID.
+     *
+     * @param       integer     $comment_id
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function get_comment_by_id($comment_id)
+    {
+        // Query.
+        $query = $this->db->select('*')
+            ->where('comment_id', $comment_id)
+            ->limit(1)
+            ->get($this->tables['comments']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row() : NULL;
     }
 
     /**
@@ -652,11 +711,100 @@ class Forums_M extends CI_Model {
             ->delete($this->tables['comments']);
     }
 
+    /**
+     * Delete Comments By Discussion ID
+     *
+     * Deletes all the comments with the supplied discussion ID.
+     *
+     * @param       integer     $discussion_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function delete_comments_by_discussion_id($discussion_id)
     {
         // Query.
         $this->db->where('discussion_id', $discussion_id)
             ->delete($this->tables['comments']);
+    }
+
+    /**
+     * Delete Comment
+     *
+     * Deletes the comment by the supplied comment ID.
+     *
+     * @param       integer     $comment_id
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function delete_comment($comment_id)
+    {
+        // Get the comment from the database.
+        $comment = $this->get_comment_by_id($comment_id);
+
+        // Get the discussion Id.
+        $discussion_id = $comment->discussion_id;
+
+        // Get the category ID.
+        $category_id = $this->_get_row('category_id', 'discussion_id', $discussion_id, $this->tables['discussions']);
+
+        // Get the comment count.
+        $discussion_comment_count = $this->_get_row('comment_count', 'discussion_id', $discussion_id, $this->tables['discussions']);
+        $category_comment_count = $this->_get_row('comment_count', 'category_id', $category_id, $this->tables['categories']);
+
+        // Delete the comment.
+        $this->_delete('comment_id', $comment_id, $this->tables['comments']);
+
+        // Get the previous comment.
+        $previous_comment_id = $this->get_previous_comment($discussion_id);
+
+        // Get the last comment date.
+        $previous_comment_date = $this->_get_row('insert_date', 'comment_id', $previous_comment_id, $this->tables['comments']);
+
+        // Build the update information.
+        $discussion_update = array(
+            'comment_count' => --$discussion_comment_count,
+            'last_comment_id' => (empty($previous_comment_id) ? 0 : $previous_comment_id),
+            'last_comment_date' => (empty($previous_comment_date) ? NULL : $previous_comment_date),
+        );
+
+        $category_update = array(
+            'comment_count' => --$category_comment_count,
+            'last_comment_id' => (empty($previous_comment_id) ? 0 : $previous_comment_id),
+            'last_comment_date' => (empty($previous_comment_date) ? NULL : $previous_comment_date),
+        );
+
+        // Update the discussion.
+        $discussion = $this->_update_discussion($discussion_id, $discussion_update);
+
+        // Update the category.
+        $category = $this->_update_category($category_id, $category_update);
+
+        return ($discussion && $category === TRUE) ? TRUE : FALSE;
+
+    }
+
+    /**
+     * Update Comment
+     *
+     * Updates the supplied comment.
+     *
+     * @param       integer     $comment_id
+     * @param       array       $data
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function update_comment( $comment_id, $data )
+    {
+        $comment = array(
+            'body' => strip_tags($data['body']),
+            'update_user_id' => $this->session->userdata('user_id'),
+            'update_date' => $this->_date(),
+            'update_ip' => $this->input->ip_address(),
+        );
+
+        return $this->_update_comment( $comment_id, $comment) ? TRUE : FALSE;
     }
 
     /*****************************************************************************************
@@ -765,6 +913,11 @@ class Forums_M extends CI_Model {
     private function _update_category ( $category_id, $data )
     {
         return $this->_update( 'category_id', $category_id, $this->tables['categories'], $data );
+    }
+
+    private function _update_comment( $comment_id, $data )
+    {
+        return $this->_update( 'comment_id', $comment_id, $this->tables['comments'], $data );
     }
 
     /**

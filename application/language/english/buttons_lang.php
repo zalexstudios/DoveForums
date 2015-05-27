@@ -24,3 +24,5 @@ $lang['btn_update_category'] = 'Update Category';
 $lang['btn_view'] = '<i class="fa fa-eye"></i>';
 $lang['btn_update_discussion'] = 'Update Discussion';
 $lang['btn_update_comment'] = 'Update Comment';
+$lang['btn_report_discussion'] = 'Report Discussion';
+$lang['btn_report_comment'] = 'Report Comment';

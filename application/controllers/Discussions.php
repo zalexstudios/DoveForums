@@ -60,6 +60,14 @@ class Discussions extends Front_Controller {
                 'label' => 'lang:rules_category',
             ),
         ),
+        'report_discussion' => array(
+            //0
+            array(
+                'field' => 'reason',
+                'rules' => 'required',
+                'label' => 'lang:rules_reason',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -125,7 +133,7 @@ class Discussions extends Front_Controller {
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function view ($category_slug, $discussion_slug)
+    public function view($category_slug, $discussion_slug)
     {
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
@@ -281,7 +289,7 @@ class Discussions extends Front_Controller {
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function reply ($category_slug, $discussion_slug)
+    public function reply($category_slug, $discussion_slug)
     {
         // See if the user is logged in.
         if ($this->ion_auth->logged_in() === FALSE)
@@ -455,6 +463,15 @@ class Discussions extends Front_Controller {
         }
     }
 
+    /**
+     * Report Discussion.
+     *
+     * Allows a user to report a discussion.
+     *
+     * @param       integer      $discussion_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function report_discussion ( $discussion_id = NULL )
     {
         // Check a discussion ID was supplied.
@@ -467,9 +484,84 @@ class Discussions extends Front_Controller {
             redirect( site_url(), 'refresh' );
         }
 
-        /* TODO */
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['report_discussion']);
+
+        // See if the form has been run.
+        if($this->form_validation->run() === FALSE) {
+
+            // Define the page title.
+            $data['title'] = 'Report Discussion';
+
+            // Define the page template.
+            $data['template'] = 'pages/discussions/report';
+
+            // Build the page breadcrumbs.
+            $this->crumbs->add('Report Discussion');
+
+            // Build the reason dropdown.
+            $reason = array(
+                '' => 'Pick Reason...',
+                '1' => 'Breaks Forum Rules',
+                '2' => 'Inappropriate Content',
+                '3' => 'Spam Content',
+                '4' => 'Wrong Forum',
+                '5' => 'Other',
+            );
+
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open('discussions/report_discussion/' . $discussion_id),
+                'form_close' => form_close(),
+                // Fields.
+                'report_field' => form_dropdown('reason', $reason, '0', 'class="form-control"'),
+                // Errors
+                'report_error' => form_error('reason', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
+                // Hidden
+                'discussion_id_hidden_field' => form_hidden('discussion_id', $discussion_id),
+                // Buttons
+                'btn_report_discussion' => form_submit('submit', lang('btn_report_discussion'), 'class="btn btn-primary btn-sm"'),
+                // Other.
+                'breadcrumbs' => $this->crumbs->output(),
+                'logged_in_user' => $this->session->userdata('username'),
+            );
+
+            $this->render(element('page', $data), element('title', $data), element('template', $data));
+        }
+        else
+        {
+            // Gather the data.
+            $data = array(
+                'reason' => $this->input->post('reason'),
+            );
+
+            if ($this->forums->report_discussion($this->input->post('discussion_id'), $data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_report_discussion'),  'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh' );
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_report_discussion'),  'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
+        }
     }
 
+    /**
+     * Edit Discussion
+     *
+     * Allows the user to edit the discussion via the supplied
+     * discussion ID.
+     *
+     * @param       integer      $discussion_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function edit_discussion ( $discussion_id = NULL )
     {
         // Check a discussion ID was supplied.
@@ -564,6 +656,15 @@ class Discussions extends Front_Controller {
 
     }
 
+    /**
+     * Delete Discussion
+     *
+     * Deletes the discussion via the supplied discussion ID.
+     *
+     * @param       integer      $discussion_id
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
     public function delete_discussion ( $discussion_id = NULL )
     {
         // Check a discussion ID was supplied.

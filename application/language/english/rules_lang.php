@@ -13,3 +13,4 @@ $lang['rules_body'] = 'Body';
 $lang['rules_category'] = 'Category';
 $lang['rules_name'] = 'Name';
 $lang['rules_description'] = 'Description';
+$lang['rules_reason'] = 'Report Reason';

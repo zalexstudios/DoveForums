@@ -364,6 +364,33 @@ class Forums_M extends CI_Model {
     }
 
     /**
+     * Get Discussions ** Admin Function **
+     *
+     * This function grabs all discussions
+     * from the database.
+     *
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function get_discussions_admin ()
+    {
+        // Query.
+        $query = $this->db->select('discussions.discussion_id, discussions.category_id, discussions.name as discussion_name, discussions.insert_user_id,
+        discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
+        discussions.comment_count, discussions.first_comment_id, discussions.flag, discussions.report_reason, discussions.report_date, discussions.report_user_id,
+        categories.name as category_name, categories.slug as category_slug,
+        users.username, users.id as user_id, users.email')
+            ->join($this->tables['categories'], 'categories.category_id = discussions.category_id')
+            ->join($this->tables['users'], 'users.id = discussions.insert_user_id')
+            ->order_by('discussions.flag', 'desc')
+            ->get($this->tables['discussions']);
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->row() : NULL;
+    }
+
+    /**
      * Count Discussions
      *
      * Counts all the discussion in the database.
@@ -554,6 +581,30 @@ class Forums_M extends CI_Model {
         );
 
         return $this->_update_discussion( $discussion_id, $discussion) ? TRUE : FALSE;
+    }
+
+    /**
+     * Report Discussion.
+     *
+     * Allows a user to report a discussion.
+     *
+     * @param       integer     $discussion_id
+     * @param       array       $data
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function report_discussion($discussion_id, $data)
+    {
+        // Build the data.
+        $data = array(
+            'flag' => 1,
+            'report_reason' => $data['reason'],
+            'report_date' => $this->_date(),
+            'report_user_id' => $this->session->userdata('user_id'),
+        );
+
+        return ($this->_update_discussion($discussion_id, $data) === TRUE) ? TRUE : FALSE;
     }
 
     /*****************************************************************************************
@@ -805,6 +856,30 @@ class Forums_M extends CI_Model {
         );
 
         return $this->_update_comment( $comment_id, $comment) ? TRUE : FALSE;
+    }
+
+    /**
+     * Report Comment.
+     *
+     * Allows a user to report a comment.
+     *
+     * @param       integer     $comment_id
+     * @param       array       $data
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    public function report_comment($comment_id, $data)
+    {
+        // Build the data.
+        $data = array(
+            'flag' => 1,
+            'report_reason' => $data['reason'],
+            'report_date' => $this->_date(),
+            'report_user_id' => $this->session->userdata('user_id'),
+        );
+
+        return ($this->_update_comment($comment_id, $data) === TRUE) ? TRUE : FALSE;
     }
 
     /*****************************************************************************************

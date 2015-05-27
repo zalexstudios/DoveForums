@@ -12,6 +12,14 @@ class Comments extends Front_Controller {
                 'label' => 'lang:rules_comment',
             ),
         ),
+        'report_comment' => array(
+            //0
+            array(
+                'field' => 'reason',
+                'rules' => 'required',
+                'label' => 'lang:rules_reason',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -134,6 +142,86 @@ class Comments extends Front_Controller {
 
             // Redirect.
             redirect( $this->agent->referrer(), 'refresh');
+        }
+    }
+
+    public function report_comment($comment_id = NULL)
+    {
+        // Check a comment ID was supplied.
+        if ( empty($comment_id) || $comment_id === NULL )
+        {
+            // Create a message.
+            $this->messageci->set ( lang('error_invalid_id'), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['report_comment']);
+
+        // See if the form has been run.
+        if($this->form_validation->run() === FALSE) {
+
+            // Define the page title.
+            $data['title'] = 'Report Comment';
+
+            // Define the page template.
+            $data['template'] = 'pages/comments/report';
+
+            // Build the page breadcrumbs.
+            $this->crumbs->add('Report Comment');
+
+            // Build the reason dropdown.
+            $reason = array(
+                '' => 'Pick Reason...',
+                '1' => 'Breaks Forum Rules',
+                '2' => 'Inappropriate Content',
+                '3' => 'Spam Content',
+                '4' => 'Wrong Forum',
+                '5' => 'Other',
+            );
+
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open('comments/report_comment/' . $comment_id),
+                'form_close' => form_close(),
+                // Fields.
+                'report_field' => form_dropdown('reason', $reason, '0', 'class="form-control"'),
+                // Errors
+                'report_error' => form_error('reason', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
+                // Hidden
+                'comment_id_hidden_field' => form_hidden('comment_id', $comment_id),
+                // Buttons
+                'btn_report_comment' => form_submit('submit', lang('btn_report_comment'), 'class="btn btn-primary btn-sm"'),
+                // Other.
+                'breadcrumbs' => $this->crumbs->output(),
+                'logged_in_user' => $this->session->userdata('username'),
+            );
+
+            $this->render(element('page', $data), element('title', $data), element('template', $data));
+        }
+        else
+        {
+            // Gather the data.
+            $data = array(
+                'reason' => $this->input->post('reason'),
+            );
+
+            if ($this->forums->report_comment($this->input->post('comment_id'), $data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_report_comment'),  'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh' );
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_report_comment'),  'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
         }
     }
 }

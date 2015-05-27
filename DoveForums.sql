@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.38)
 # Database: DoveForums
-# Generation Time: 2015-05-26 10:14:07 +0000
+# Generation Time: 2015-05-27 14:32:04 +0000
 # ************************************************************
 
 
@@ -48,7 +48,7 @@ LOCK TABLES `categories` WRITE;
 
 INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
 VALUES
-	(1,1,1,'General','general','This is the general category.',1,NULL,'2015-04-15 15:00:00',NULL,'2015-05-26 11:12:31',1,1,0);
+	(1,1,1,'General','general','This is the general category.',1,1,'2015-04-15 15:00:00','2015-05-26 12:01:03','2015-05-27 11:21:07',1,1,0);
 
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -72,15 +72,18 @@ CREATE TABLE `comments` (
   `insert_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `update_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `flag` tinyint(4) DEFAULT '0',
+  `report_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `report_date` datetime DEFAULT NULL,
+  `report_user_id` int(11) DEFAULT '0',
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
 
-INSERT INTO `comments` (`comment_id`, `discussion_id`, `insert_user_id`, `update_user_id`, `delete_user_id`, `body`, `insert_date`, `delete_date`, `update_date`, `insert_ip`, `update_ip`, `flag`)
+INSERT INTO `comments` (`comment_id`, `discussion_id`, `insert_user_id`, `update_user_id`, `delete_user_id`, `body`, `insert_date`, `delete_date`, `update_date`, `insert_ip`, `update_ip`, `flag`, `report_reason`, `report_date`, `report_user_id`)
 VALUES
-	(1,1,1,NULL,NULL,'This is the first comment on your site! \r\n\r\nYou can go ahead and remove this.\r\n\r\nRegards\r\nDove Forums Team','2015-05-26 11:12:31',NULL,NULL,'::1',NULL,0);
+	(1,1,1,NULL,NULL,'This is the first comment on your site! \r\n\r\nYou can go ahead and remove this.\r\n\r\nRegards\r\nDove Forums Team','2015-05-26 11:12:31',NULL,NULL,'::1',NULL,0,NULL,NULL,0);
 
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -114,15 +117,18 @@ CREATE TABLE `discussions` (
   `update_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_comment_date` datetime DEFAULT NULL,
   `last_comment_user_id` int(11) DEFAULT NULL,
+  `report_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `report_date` datetime DEFAULT NULL,
+  `report_user_id` int(11) DEFAULT '0',
   PRIMARY KEY (`discussion_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `discussions` WRITE;
 /*!40000 ALTER TABLE `discussions` DISABLE KEYS */;
 
-INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `flag`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`)
+INSERT INTO `discussions` (`discussion_id`, `category_id`, `insert_user_id`, `update_user_id`, `first_comment_id`, `last_comment_id`, `name`, `slug`, `body`, `comment_count`, `bookmark_count`, `view_count`, `closed`, `announce`, `stick`, `flag`, `insert_date`, `update_date`, `insert_ip`, `update_ip`, `last_comment_date`, `last_comment_user_id`, `report_reason`, `report_date`, `report_user_id`)
 VALUES
-	(1,1,1,NULL,0,1,'First Discussion','first_discussion','Welcome to your fresh new forum, ready to build up your community. Dove Forums is a basic forums software ready to customise as you see fit!.\r\n\r\nYou can go over to your Dashboard and customise your categories and site settings.  You can also edit or remove this discussion to make way for your own.\r\n\r\nWe hope you have fun using our software and remember to head over to http://www.doveforums.com if you need support!.\r\n\r\nRegards\r\nDove Forums Team',1,0,2,0,0,0,0,'2015-05-26 11:11:31',NULL,NULL,NULL,'2015-05-26 11:12:31',1);
+	(1,1,1,NULL,0,1,'First Discussion','first_discussion','Welcome to your fresh new forum, ready to build up your community. Dove Forums is a basic forums software ready to customise as you see fit!.\r\n\r\nYou can go over to your Dashboard and customise your categories and site settings.  You can also edit or remove this discussion to make way for your own.\r\n\r\nWe hope you have fun using our software and remember to head over to http://www.doveforums.com if you need support!.\r\n\r\nRegards\r\nDove Forums Team',1,0,0,0,0,0,0,'2015-05-26 11:11:31',NULL,NULL,NULL,'2015-05-26 11:12:31',1,NULL,NULL,0);
 
 /*!40000 ALTER TABLE `discussions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -201,7 +207,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`)
 VALUES
-	(1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432630144,1,'Admin','istrator','ADMIN','0',16,5,1);
+	(1,'127.0.0.1','administrator','$2y$08$yX8Hxu7NTOSIJPkQ0HHb.u8COSFFsQML68ZE8RfG6ENGRbKc1mWPC','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432724341,1,'Admin','istrator','ADMIN','0',20,5,1);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

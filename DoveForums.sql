@@ -207,7 +207,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`)
 VALUES
-	(1,'127.0.0.1','administrator','$2y$08$yX8Hxu7NTOSIJPkQ0HHb.u8COSFFsQML68ZE8RfG6ENGRbKc1mWPC','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432724341,1,'Admin','istrator','ADMIN','0',20,5,1);
+	(1,'127.0.0.1','administrator','$2y$08$Fek1EzPjE2SQu50dw6DZ.OTKefroF3n9eiJaJEY8WaNXvjkpAgery','','admin@admin.com','',NULL,NULL,NULL,1268889823,1432724341,1,'Admin','istrator','ADMIN','0',20,5,1);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

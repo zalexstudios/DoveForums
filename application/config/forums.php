@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['site_name'] = 'Dove Forums';
+$config['site_name'] = '';
 $config['site_email'] = '';
 $config['theme'] = 'default';
 $config['admin_theme'] = 'default';

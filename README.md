@@ -63,5 +63,5 @@ Backend :-
 Other :-
 
 <ul>
-<li>Installation Function</li>
+<li><strike>Installation Function</strike> - Commit #70</li>
 </ul>

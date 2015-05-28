@@ -63,6 +63,6 @@ $route['comments/delete_comment/(:any)'] = 'comments/delete_comment/$1';
 // Categories
 $route['categories/(:any)'] = 'categories/view/$1';
 
-$route['default_controller'] = 'forums';
+$route['default_controller'] = 'install';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

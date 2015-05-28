@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/DoveForums/';
+$config['base_url'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -305,7 +305,7 @@ $config['cache_query_string'] = FALSE;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 't3Ci1kh349n66qLrx6x82dVhig26Vcf5';
+$config['encryption_key'] = '';
 
 /*
 |--------------------------------------------------------------------------

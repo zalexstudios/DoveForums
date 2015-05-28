@@ -217,7 +217,6 @@ class Admin_Controller extends Front_Controller {
                 array('link' => '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">'),
                 array('link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">'),
                 array('link' => '<link href="' . base_url('templates/' . $this->admin_theme . '/assets/css/custom.css') . '", rel="stylesheet">'),
-                array('link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">'),
             ),
             'meta' => array(
                 array('meta' => meta('keywords', $this->config->item('keywords'))),

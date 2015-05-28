@@ -51,7 +51,7 @@ class Install_M extends CI_Model {
         $this->load->dbforge();
 
         // Create sessions table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
 			CREATE TABLE IF NOT EXISTS `ci_sessions` (
@@ -68,7 +68,7 @@ class Install_M extends CI_Model {
         }
 
         // Create categories table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `categories` (
@@ -96,7 +96,7 @@ class Install_M extends CI_Model {
         }
 
         // Create comments table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE '. $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `comments` (
@@ -125,7 +125,7 @@ class Install_M extends CI_Model {
         }
 
         // Create discussions table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `discussions` (
@@ -164,7 +164,7 @@ class Install_M extends CI_Model {
         }
 
         // Create groups table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `groups` (
@@ -181,7 +181,7 @@ class Install_M extends CI_Model {
         }
 
         // Create logging attempts table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `login_attempts` (
@@ -199,7 +199,7 @@ class Install_M extends CI_Model {
         }
 
         // Create users table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `users` (
@@ -233,7 +233,7 @@ class Install_M extends CI_Model {
         }
 
         // Create users groups table.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             CREATE TABLE IF NOT EXISTS `users_groups` (
@@ -255,7 +255,7 @@ class Install_M extends CI_Model {
         }
 
         // Add default groups.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             INSERT INTO `groups` (`id`, `name`, `description`)
@@ -271,7 +271,7 @@ class Install_M extends CI_Model {
         }
 
         // Add the default category.
-        $this->db->query('USE', $database_name);
+        $this->db->query('USE ' . $database_name);
 
         $sql = "
             INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
@@ -441,7 +441,7 @@ class Install_M extends CI_Model {
         return TRUE;
     }
 
-    public function cleanup()
+    public function delete_files()
     {
         $installation_items = array(
             APPPATH . 'controllers/Install.php',

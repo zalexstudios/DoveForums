@@ -276,7 +276,7 @@ class Install_M extends CI_Model {
         $sql = "
             INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
             VALUES
-                (1,1,1,'General','general','This is the general category.',1,1,'2015-04-15 15:00:00','2015-05-26 12:01:03','2015-05-27 11:21:07',1,1,0);
+                (1,0,0,'General','general','This is the general category.',1,0,'2015-04-15 15:00:00',NULL,'2015-05-27 11:21:07',0,0,0);
         ";
 
         if(!$this->db->query($sql))

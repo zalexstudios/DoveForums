@@ -18,6 +18,9 @@ class MY_Controller extends CI_Controller{
         // Load Models.
         $this->load->model('forums_m', 'forums');
 
+        // Load libraries.
+        $this->load->library(array('database', 'session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent'));
+
         // Load Language Files.
         $this->lang->load('messages', 'english');
         $this->lang->load('buttons', 'english');

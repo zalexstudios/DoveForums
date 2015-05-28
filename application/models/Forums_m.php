@@ -4,16 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Name:  Forums Model
  *
- * Version: 2.5.2
+ * Version: 0.0.1
  *
  * Author:  Chris Baines
- * 		   chris@doveforums.com
+ * 		    chris@doveforums.com
  *
- * Location: http://github.com/doveforums/DoveForums
- *
- * Created:  18.05.2015
- *
- * Last Change: 18.05.2015
+ * Location: http://github.com/chrisbaines/DoveForums
  *
  * Description:  All the functions for Dove Forums.
  *

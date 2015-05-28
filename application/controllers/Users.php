@@ -7,7 +7,7 @@ class Users extends Front_Controller {
         'login' => array(
             //0
             array(
-                'field' => 'email',
+                'field' => 'identity',
                 'rules' => 'required',
                 'label' => 'lang:rules_email',
             ),
@@ -76,8 +76,8 @@ class Users extends Front_Controller {
         'login' => array(
             //0
             array(
-                'id' => 'email',
-                'name' => 'email',
+                'id' => 'identity',
+                'name' => 'identity',
                 'class' => 'form-control',
                 'type' => 'text',
                 'placeholder' => 'Email',
@@ -312,10 +312,10 @@ class Users extends Front_Controller {
                 'form_open' => form_open( site_url('users/login') ),
                 'form_close' => form_close(),
                 // Fields.
-                'email_field' => form_input( $this->form_fields['login'][0], set_value( $this->form_fields['login'][0]['name'], $this->input->post('email') ) ),
+                'identity_field' => form_input( $this->form_fields['login'][0], set_value( $this->form_fields['login'][0]['name'], $this->input->post('identity') ) ),
                 'password_field' => form_input( $this->form_fields['login'][1] ),
                 // Labels.
-                'email_label' => form_label( 'Email:', $this->form_fields['login'][0]['id'] ),
+                'identity_label' => form_label( 'Email:', $this->form_fields['login'][0]['id'] ),
                 'password_label' => form_label( 'Password:', $this->form_fields['login'][1]['id'] ),
                 // Buttons.
                 'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
@@ -330,7 +330,7 @@ class Users extends Front_Controller {
         {
 
             // Form has been submitted, sanitize the data.
-            $identity = strip_tags( $this->security->xss_clean( $this->input->post('email') ) );
+            $identity = strip_tags( $this->security->xss_clean( $this->input->post('identity') ) );
             $password = strip_tags( $this->security->xss_clean( $this->input->post('password') ) );
 
             // Perform the login.

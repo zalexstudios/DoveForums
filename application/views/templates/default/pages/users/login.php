@@ -18,8 +18,8 @@
 
                 <div class="form-group">
 
-                    {email_label}
-                    {email_field}
+                    {identity_label}
+                    {identity_field}
 
                 </div>
 

@@ -72,6 +72,20 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_slug',
             ),
         ),
+        'add_group' => array(
+            //0
+            array(
+                'field' => 'name',
+                'rules' => 'required',
+                'label' => 'lang:rules_name',
+            ),
+            //1
+            array(
+                'field' => 'description',
+                'rules' => 'required',
+                'label' => 'lang:rules_description',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -177,6 +191,22 @@ class Dashboard extends Admin_Controller {
             array(
                 'id' => 'slug',
                 'name' => 'slug',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
+        'add_group' => array(
+            //0
+            array(
+                'id' => 'name',
+                'name' => 'name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'description',
+                'name' => 'description',
                 'class' => 'form-control',
                 'type' => 'text',
             ),
@@ -580,12 +610,119 @@ class Dashboard extends Admin_Controller {
 
     public function all_groups()
     {
+        // Define the page title.
+        $data['title'] = 'All Groups';
 
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/all_groups';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add('Dashboard', 'dashboard');
+        $this->crumbs->add('All Groups');
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_name'),
+            lang('tbl_description'),
+            lang('tbl_action')
+        );
+
+        // Get all the categories.
+        $groups = $this->ion_auth->groups()->result();
+
+        if (!empty($groups))
+        {
+            foreach($groups as $row)
+            {
+                $this->table->add_row(
+                    $row->name,
+                    $row->description,
+                    ''.anchor( site_url('dashboard/edit_group/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    ''.anchor( site_url('dashboard/view_group/'.$row->id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_group/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_groups' => $this->table->generate(),
+            // Buttons.
+            'btn_add_group' => anchor( site_url('dashboard/add_group'), lang('btn_add_group'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
     public function add_group()
     {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_group']);
 
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Add Group';
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_group';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Add Group');
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/add_group') ),
+                'form_close' => form_close(),
+                // Fields
+                'name_field' => form_input( $this->form_fields['add_group'][0], set_value( $this->form_fields['add_group'][0]['name'], $this->input->post('name') ) ),
+                'description_field' => form_input( $this->form_fields['add_group'][1], set_value( $this->form_fields['add_group'][1]['name'], $this->input->post('description') ) ),
+                // Errors.
+                'name_error' => form_error($this->form_fields['add_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['add_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'name_label' => form_label('Name:', $this->form_fields['add_group'][0]['id']),
+                'description_label' => form_label('Description:', $this->form_fields['add_group'][1]['id']),
+                // Buttons.
+                'btn_add_group' => form_submit('submit', lang('btn_add_group'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+            $new_group_id = $this->ion_auth->create_group($this->input->post('name'), $this->input->post('description'));
+
+            if ($new_group_id)
+            {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_groups'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_groups'), 'refresh');
+            }
+        }
     }
 
     public function edit_group($group_id)

@@ -21,6 +21,10 @@ http://www.yoursite.com
 
 You will automatically be taken to the installer.
 
+<h2>Demo</h2>
+
+You can view the demo over at http://www.doveforums.com/beta/
+
 This project is also been built on top of the latest Codeigniter & Twitter Bootstrap builds.  
 
 If you would like to contribute to this project that would be great as I really would like to get this project back on track after so much time away from the community.

@@ -20,6 +20,96 @@ class Install extends CI_Controller {
     public function index()
     {
         // Set some validation rules.
+        $this->form_validation->set_rules('db_hostname', 'Hostname', 'trim|required');
+        $this->form_validation->set_rules('db_username', 'Username', 'trim|required');
+        $this->form_validation->set_rules('db_password', 'Password', 'trim|required');
+        $this->form_validation->set_rules('db_name', 'Database Name', 'trim|required');
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->load->view('install/header');
+            $this->load->view('install/install');
+            $this->load->view('install/footer');
+        }
+        else
+        {
+            $hostname = $this->input->post('db_hostname');
+            $username = $this->input->post('db_username');
+            $password = $this->input->post('db_password');
+            $database = $this->input->post('db_name');
+
+            if ($this->install->test_database($hostname, $username, $password, $database) === TRUE)
+            {
+                // Replace the hostname in the database.php config file.
+                $find = "'hostname' =>";
+                $replace = "\t" . "'hostname' => '".$hostname."'," . "\n";
+
+                if ($this->install->edit_database_config($find, $replace) !== true)
+                {
+                    // Create a message.
+                    $this->messageci->set( 'The hostname on your database config file cannot be replaced.', 'error');
+
+                    // Redirect.
+                    redirect( site_url('install'));
+                }
+
+                // Replace the username in the database.php config file.
+                $find = "'username' =>";
+                $replace = "\t" . "'username' => '".$username."'," . "\n";
+
+                if ($this->install->edit_database_config($find, $replace) !== true)
+                {
+                    // Create a message.
+                    $this->messageci->set( 'The username on your database config file cannot be replaced.', 'error');
+
+                    // Redirect.
+                    redirect( site_url('install'));
+                }
+
+                // Replace the password in the database.php config file.
+                $find = "'password' =>";
+                $replace = "\t" . "'password' => '".$password."'," . "\n";
+
+                if ($this->install->edit_database_config($find, $replace) !== true)
+                {
+                    // Create a message.
+                    $this->messageci->set( 'The password on your database config file cannot be replaced.', 'error');
+
+                    // Redirect.
+                    redirect( site_url('install'));
+                }
+
+                // Replace the database in the database.php config file.
+                $find = "'database' =>";
+                $replace = "\t" . "'database' => '".$database."'," . "\n";
+
+                if ($this->install->edit_database_config($find, $replace) !== true)
+                {
+                    // Create a message.
+                    $this->messageci->set( 'The database on your database config file cannot be replaced.', 'error');
+
+                    // Redirect.
+                    redirect( site_url('install'));
+                }
+
+
+                // Everything ok, proceed to the next step.
+                redirect( site_url('install/create_tables') );
+            }
+            else
+            {
+                // Create a message.
+                $this->messageci->set('There was a problem connecting to the database, please try again.');
+
+                // Redirect.
+                redirect( site_url('install/') );
+            }
+        }
+    }
+
+    public function create_tables()
+    {
+        // Set some validation rules.
         $this->form_validation->set_rules('first_iteration', 'First Iteration', 'trim|required|alpha_dash|max_length[64]');
 
         if ($this->form_validation->run() === FALSE)

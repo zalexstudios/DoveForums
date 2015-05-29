@@ -413,11 +413,8 @@ class Install_M extends CI_Model {
 
     public function test_database($host, $username, $password, $database_name)
     {
-        $this->load->database();
-        $this->load->dbforge();
-
         // Create a connection.
-        $conn = new mysqli($host, $username, $password);
+        $conn = new mysqli($host, $username, $password, $database_name);
 
         // Check the connection.
         if ($conn->connect_error)

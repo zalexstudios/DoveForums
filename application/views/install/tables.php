@@ -4,7 +4,6 @@
 
     <ol class="breadcrumb">
         <li><i class="fa fa-share-alt"></i> MySQL Connection</li>
-        <li><i class="fa fa-database"></i> Database Creation</li>
         <li class="active"><i class="fa fa-table"></i> Table Creation</li>
         <li><i class="fa fa-cog"></i> Site Settings</li>
         <li><i class="fa fa-flag-checkered"></i> Finish</li>

@@ -20,7 +20,6 @@
 
         <div class="panel-body">
 
-            <p>Your database <code><?= $_COOKIE['db_name']; ?></code> has been successfully created.</p>
             <p>Please click the "Next" button below to generate the tables for your Forums.</p>
             <br>
 
@@ -36,7 +35,7 @@
 
             <?php echo form_open(); ?>
 
-            <input type="hidden" id="db_name_cookie" name="db_name_cookie" value="<?= $_COOKIE['db_name'] ?>">
+            <input type="hidden" id="first_iteration" name="first_iteration" value="yes">
 
             <div class="form-group">
 

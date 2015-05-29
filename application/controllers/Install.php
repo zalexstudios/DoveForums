@@ -19,137 +19,8 @@ class Install extends CI_Controller {
 
     public function index()
     {
-        // Set some validation rules.
-        $this->form_validation->set_rules('db_hostname', 'Hostname', 'trim|required');
-        $this->form_validation->set_rules('db_username', 'Username', 'trim|required');
-        $this->form_validation->set_rules('db_password', 'Password', 'trim|required');
-
-        if ($this->form_validation->run() === FALSE)
-        {
-            $this->load->view('install/header');
-            $this->load->view('install/install');
-            $this->load->view('install/footer');
-        }
-        else
-        {
-            // Gather the data.
-            $hostname = $this->input->post('db_hostname');
-            $username = $this->input->post('db_username');
-            $password = $this->input->post('db_password');
-
-            // Replace the hostname in the database.php config file.
-            $find = "'hostname' =>";
-            $replace = "\t" . "'hostname' => '".$hostname."'," . "\n";
-
-            if ($this->install->edit_database_config($find, $replace) !== true)
-            {
-                // Create a message.
-                $this->messageci->set( 'The hostname on your database config file cannot be replaced.', 'error');
-
-                // Redirect.
-                redirect( site_url('install'));
-            }
-
-            // Replace the username in the database.php config file.
-            $find = "'username' =>";
-            $replace = "\t" . "'username' => '".$username."'," . "\n";
-
-            if ($this->install->edit_database_config($find, $replace) !== true)
-            {
-                // Create a message.
-                $this->messageci->set( 'The username on your database config file cannot be replaced.', 'error');
-
-                // Redirect.
-                redirect( site_url('install'));
-            }
-
-            // Replace the password in the database.php config file.
-            $find = "'password' =>";
-            $replace = "\t" . "'password' => '".$password."'," . "\n";
-
-            if ($this->install->edit_database_config($find, $replace) !== true)
-            {
-                // Create a message.
-                $this->messageci->set( 'The password on your database config file cannot be replaced.', 'error');
-
-                // Redirect.
-                redirect( site_url('install'));
-            }
-
-            // Test the database connection.
-            if ($this->install->test_database($hostname, $username, $password) === TRUE)
-            {
-                redirect('install/create_database');
-            }
-            else
-            {
-                // Create a message.
-                $this->messageci->set( 'Could not connect to MySQL with the entered values, Please enter a valid MySQL hostname, username and password!.', 'error');
-
-                // Reset the database.php config file.
-                $find    = "'hostname' =>";
-                $replace = "\t" . "'hostname' => 'localhost'," . "\n";
-                $this->install->edit_database_config($find, $replace);
-                $find    = "'username' =>";
-                $replace = "\t" . "'username' => ''," . "\n";
-                $this->install->edit_database_config($find, $replace);
-                $find    = "'password' =>";
-                $replace = "\t" . "'password' => ''," . "\n";
-                $this->install->edit_database_config($find, $replace);
-
-                // Clear the variables defined before.
-                $hostname = NULL;
-                $username = NULL;
-                $password = NULL;
-
-                // Restart the installation.
-                redirect( site_url('install'));
-            }
-
-        }
-
-    }
-
-    public function create_database()
-    {
-
-        // Set some validation rules.
-        $this->form_validation->set_rules('database_name', 'Database Name', 'trim|required|alpha_numeric|max_length[64]');
-
-        if ($this->form_validation->run() === FALSE)
-        {
-            $this->load->view('install/header');
-            $this->load->view('install/database');
-            $this->load->view('install/footer');
-        }
-        else
-        {
-            // Gather the data.
-            $database_name = $this->input->post('database_name');
-
-            // Set a cookie.
-            setcookie('db_name', $database_name);
-
-            if ($this->install->create_database($database_name) === TRUE)
-            {
-                // Everything ok, proceed to the next step.
-                redirect( site_url('install/create_tables') );
-            }
-            else
-            {
-                // Create a message.
-                $this->messageci->set('There was a problem creating the database, Please try again!.');
-
-                // Redirect.
-                redirect( site_url('install/create_database') );
-            }
-        }
-    }
-
-    public function create_tables()
-    {
-        // Set some validation rules.
-        $this->form_validation->set_rules('db_name_cookie', 'Database Name', 'trim|required|alpha_numeric|max_length[64]');
+       // Set some validation rules.
+        $this->form_validation->set_rules('first_iteration', 'First Iteration', 'trim|required|alpha_dash|max_length[64]');
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -159,10 +30,7 @@ class Install extends CI_Controller {
         }
         else
         {
-            // Gather the data.
-            $database_name = $_COOKIE['db_name'];
-
-            if ($this->install->create_tables($database_name) === TRUE)
+            if ($this->install->create_tables() === TRUE)
             {
                 // Everything ok, proceed to the next step.
                 redirect( site_url('install/site_settings') );
@@ -191,7 +59,7 @@ class Install extends CI_Controller {
         $this->form_validation->set_rules('base_url', 'Base Url', 'trim|required|max_length[255]');
         $this->form_validation->set_rules('site_title', 'Site Title', 'trim|required|max_length[255]');
         $this->form_validation->set_rules('encryption_key', 'Encryption Key', 'required|min_length[32]');
-        $this->form_validation->set_rules('admin_username', 'Admin Username', 'trim|required|alpha_numeric|min_length[4]|max_length[20]');
+        $this->form_validation->set_rules('admin_username', 'Admin Username', 'trim|required|alpha_dash|min_length[4]|max_length[20]');
         $this->form_validation->set_rules('admin_password', 'Admin Password', 'trim|required|min_length[6]');
         $this->form_validation->set_rules('admin_password_confirm', 'Confirm Password', 'trim|required|min_length[6]|matches[admin_password]');
         $this->form_validation->set_rules('admin_email', 'Admin Email', 'trim|required|valid_email');

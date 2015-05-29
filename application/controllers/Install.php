@@ -114,7 +114,7 @@ class Install extends CI_Controller {
     {
 
         // Set some validation rules.
-        $this->form_validation->set_rules('database_name', 'Database Name', 'trim|required|alpha_numeric|max_length[64]');
+        $this->form_validation->set_rules('database_name', 'Database Name', 'trim|required|alpha_dash|max_length[64]');
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -149,7 +149,7 @@ class Install extends CI_Controller {
     public function create_tables()
     {
         // Set some validation rules.
-        $this->form_validation->set_rules('db_name_cookie', 'Database Name', 'trim|required|alpha_numeric|max_length[64]');
+        $this->form_validation->set_rules('db_name_cookie', 'Database Name', 'trim|required|alpha_dash|max_length[64]');
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -191,7 +191,7 @@ class Install extends CI_Controller {
         $this->form_validation->set_rules('base_url', 'Base Url', 'trim|required|max_length[255]');
         $this->form_validation->set_rules('site_title', 'Site Title', 'trim|required|max_length[255]');
         $this->form_validation->set_rules('encryption_key', 'Encryption Key', 'required|min_length[32]');
-        $this->form_validation->set_rules('admin_username', 'Admin Username', 'trim|required|alpha_numeric|min_length[4]|max_length[20]');
+        $this->form_validation->set_rules('admin_username', 'Admin Username', 'trim|required|alpha_dash|min_length[4]|max_length[20]');
         $this->form_validation->set_rules('admin_password', 'Admin Password', 'trim|required|min_length[6]');
         $this->form_validation->set_rules('admin_password_confirm', 'Confirm Password', 'trim|required|min_length[6]|matches[admin_password]');
         $this->form_validation->set_rules('admin_email', 'Admin Email', 'trim|required|valid_email');

@@ -57,10 +57,10 @@ Backend :-
 
 <ul>
 <li>All Discussions Function</li>
-<li>All Groups Function</li>
-<li>Add Group Function</li>
-<li>Edit Group Function</li>
-<li>Delete Group Function</li>
+<li><strike>All Groups Function</strike> - Commit #83</li>
+<li><strike>Add Group Function</strike> - Commit #83</li>
+<li><strike>Edit Group Function</strike> - Commit #83</li>
+<li><strike>Delete Group Function</strike> - Commit #83</li>
 <li>Settings Function</li>
 <li>View User Function</li>
 <li>View Category Function</li>

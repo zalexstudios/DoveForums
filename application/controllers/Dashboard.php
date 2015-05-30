@@ -706,9 +706,7 @@ class Dashboard extends Admin_Controller {
 
         } else {
 
-            $new_group_id = $this->ion_auth->create_group($this->input->post('name'), $this->input->post('description'));
-
-            if ($new_group_id)
+            if ($this->ion_auth->create_group($this->input->post('name'), $this->input->post('description')))
             {
                 // Create a message.
                 $this->messageci->set( $this->ion_auth->messages(), 'success');
@@ -780,9 +778,7 @@ class Dashboard extends Admin_Controller {
 
         } else {
 
-            $new_group_id = $this->ion_auth->create_group($this->input->post('name'), $this->input->post('description'));
-
-            if ($new_group_id)
+            if ($this->ion_auth->update_group($group_id, $this->input->post('name'), $this->input->post('description')))
             {
                 // Create a message.
                 $this->messageci->set( $this->ion_auth->messages(), 'success');
@@ -810,6 +806,21 @@ class Dashboard extends Admin_Controller {
 
             // Redirect.
             redirect($this->agent->referrer());
+        }
+
+        if($this->ion_auth->delete_group($group_id))
+        {
+            // Create a message.
+            $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+            // Redirect.
+            redirect( site_url('dashboard/all_groups'), 'refresh');
+        } else {
+            // Create a message.
+            $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+            // Redirect.
+            redirect( site_url('dashboard/all_groups'), 'refresh');
         }
 
     }

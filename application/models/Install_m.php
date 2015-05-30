@@ -264,7 +264,6 @@ class Install_M extends CI_Model {
             VALUES
                 (1,'admin','Administrator'),
                 (2,'members','General User'),
-                (3,'test','test group');
 	    ";
 
         if(!$this->db->query($sql))

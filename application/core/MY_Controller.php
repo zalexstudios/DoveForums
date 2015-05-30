@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
+    public $version = '0.0.1';
+
     /**
      * Construct Functions
      *
@@ -20,7 +22,7 @@ class MY_Controller extends CI_Controller{
 
         // Load libraries.
 		$this->load->database();
-        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent'));
+        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
 
         // Load Language Files.
         $this->lang->load('messages', 'english');
@@ -44,9 +46,9 @@ class Front_Controller extends MY_Controller{
     {
         parent::__construct();
 
-        $this->theme        = $this->config->item('theme');
-        $this->site_name    = $this->config->item('site_name');
-        $this->tables       = $this->config->item('tables');
+        $this->theme = $this->config->item('theme');
+        $this->site_name = $this->config->item('site_name');
+        $this->tables = $this->config->item('tables');
     }
 
     /**
@@ -107,7 +109,7 @@ class Front_Controller extends MY_Controller{
             ),
             // Footer.
             'footer' => array(
-                'copy_text' => 'Powered By '.anchor( 'http://www.doveforums.com', 'Dove Forums').', &copy; 2011 - 2015.',
+                'copy_text' => 'Powered By '.anchor( 'http://www.doveforums.com', 'Dove Forums').' &copy; 2011 - 2015 - Version '.$this->version,
             ),
         );
 

@@ -56,7 +56,7 @@
             <div class="form-group <?php if(form_error('db_password')){echo 'has-error';} ?>">
 
                 <label for="db_password">Password</label>
-                <input type="text" class="form-control" id="db_password" name="db_password" placeholder="Enter your db password.">
+                <input type="password" class="form-control" id="db_password" name="db_password" placeholder="Enter your db password.">
 
             </div>
 

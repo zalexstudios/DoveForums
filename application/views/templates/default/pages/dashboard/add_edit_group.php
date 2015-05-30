@@ -37,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            {btn_add_group}
+            {btn_add_edit_group}
         </div>
 
         {form_close}

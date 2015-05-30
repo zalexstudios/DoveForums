@@ -72,7 +72,7 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_slug',
             ),
         ),
-        'add_group' => array(
+        'add_edit_group' => array(
             //0
             array(
                 'field' => 'name',
@@ -195,7 +195,7 @@ class Dashboard extends Admin_Controller {
                 'type' => 'text',
             ),
         ),
-        'add_group' => array(
+        'add_edit_group' => array(
             //0
             array(
                 'id' => 'name',
@@ -667,7 +667,7 @@ class Dashboard extends Admin_Controller {
     public function add_group()
     {
         // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['add_group']);
+        $this->form_validation->set_rules($this->validation_rules['add_edit_group']);
 
         // See if the form has been submitted.
         if($this->form_validation->run() === FALSE)
@@ -676,7 +676,7 @@ class Dashboard extends Admin_Controller {
             $data['title'] = 'Add Group';
 
             // Define the page template.
-            $data['template'] = 'pages/dashboard/add_group';
+            $data['template'] = 'pages/dashboard/add_edit_group';
 
             // Build the breadcrumbs.
             $this->crumbs->add('Dashboard', 'dashboard');
@@ -688,16 +688,16 @@ class Dashboard extends Admin_Controller {
                 'form_open' => form_open( site_url('dashboard/add_group') ),
                 'form_close' => form_close(),
                 // Fields
-                'name_field' => form_input( $this->form_fields['add_group'][0], set_value( $this->form_fields['add_group'][0]['name'], $this->input->post('name') ) ),
-                'description_field' => form_input( $this->form_fields['add_group'][1], set_value( $this->form_fields['add_group'][1]['name'], $this->input->post('description') ) ),
+                'name_field' => form_input( $this->form_fields['add_edit_group'][0], set_value( $this->form_fields['add_edit_group'][0]['name'], $this->input->post('name') ) ),
+                'description_field' => form_input( $this->form_fields['add_edit_group'][1], set_value( $this->form_fields['add_edit_group'][1]['name'], $this->input->post('description') ) ),
                 // Errors.
-                'name_error' => form_error($this->form_fields['add_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'description_error' => form_error($this->form_fields['add_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'name_error' => form_error($this->form_fields['add_edit_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['add_edit_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'name_label' => form_label('Name:', $this->form_fields['add_group'][0]['id']),
-                'description_label' => form_label('Description:', $this->form_fields['add_group'][1]['id']),
+                'name_label' => form_label('Name:', $this->form_fields['add_edit_group'][0]['id']),
+                'description_label' => form_label('Description:', $this->form_fields['add_edit_group'][1]['id']),
                 // Buttons.
-                'btn_add_group' => form_submit('submit', lang('btn_add_group'), 'class="btn btn-primary btn-sm"'),
+                'btn_add_edit_group' => form_submit('submit', lang('btn_add_group'), 'class="btn btn-primary btn-sm"'),
                 // Other
                 'breadcrumbs' => $this->crumbs->output(),
             );
@@ -735,6 +735,67 @@ class Dashboard extends Admin_Controller {
 
             // Redirect.
             redirect($this->agent->referrer());
+        }
+
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_edit_group']);
+
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = 'Edit Group';
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_edit_group';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Edit Group');
+
+            // Get the group.
+            $group = $this->ion_auth->group($group_id)->row();
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/edit_group/'.$group_id) ),
+                'form_close' => form_close(),
+                // Fields
+                'name_field' => form_input( $this->form_fields['add_edit_group'][0], set_value( $this->form_fields['add_edit_group'][0]['name'], $group->name ) ),
+                'description_field' => form_input( $this->form_fields['add_edit_group'][1], set_value( $this->form_fields['add_edit_group'][1]['name'], $group->description ) ),
+                // Errors.
+                'name_error' => form_error($this->form_fields['add_edit_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['add_edit_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'name_label' => form_label('Name:', $this->form_fields['add_edit_group'][0]['id']),
+                'description_label' => form_label('Description:', $this->form_fields['add_edit_group'][1]['id']),
+                // Buttons.
+                'btn_add_edit_group' => form_submit('submit', lang('btn_edit_group'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+            $new_group_id = $this->ion_auth->create_group($this->input->post('name'), $this->input->post('description'));
+
+            if ($new_group_id)
+            {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_groups'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+                // Redirect.
+                redirect( site_url('dashboard/all_groups'), 'refresh');
+            }
         }
 
     }

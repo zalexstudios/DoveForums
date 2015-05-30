@@ -92,7 +92,6 @@ class Install extends CI_Controller {
                     redirect( site_url('install'));
                 }
 
-
                 // Everything ok, proceed to the next step.
                 redirect( site_url('install/create_tables') );
             }
@@ -168,6 +167,9 @@ class Install extends CI_Controller {
             // Load Ion Auth.
             $this->load->library('ion_auth');
 
+            // Load the settings library.
+            $this->load->library('settings');
+
             // Gather the data.
             $base_url = $this->input->post('base_url');
             $site_title = addslashes($this->input->post('site_title'));
@@ -192,18 +194,17 @@ class Install extends CI_Controller {
             }
             else
             {
-                // Set the site email settings.
-                $find = '$config[\'site_email\'] =';
-                $replace = '$config[\'site_email\'] = \''.$email.'\';'."\n";
-
-                if ($this->install->edit_forum_config($find, $replace) !== TRUE)
-                {
-                    // Create a message.
-                    $this->messageci->set('The Forum email address in your forums.php config file cannot be replaced.', 'error');
-
-                    // Redirect.
-                    redirect( site_url('install/site_settings') );
-                }
+                // Update the settings in the database.
+                $this->settings->add_setting('site_name', addslashes($this->input->post('site_title')), 'site', 'yes');
+                $this->settings->add_setting('site_email', $this->input->post('admin_email'), 'site', 'yes');
+                $this->settings->add_setting('theme', 'default', 'site', 'yes');
+                $this->settings->add_setting('admin_theme', 'default', 'site', 'yes');
+                $this->settings->add_setting('gravatar_rating', 'x', 'gravatar', 'yes');
+                $this->settings->add_setting('gravatar_default_image', 'mm', 'gravatar', 'yes');
+                $this->settings->add_setting('gravatar_size', 50, 'gravatar', 'yes');
+                $this->settings->add_setting('default_timezone', 'Europe/London', 'timezone', 'yes');
+                $this->settings->add_setting('discussions_per_page', 10, 'discussions', 'yes');
+                $this->settings->add_setting('comments_per_page', 10, 'comments', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';
@@ -252,19 +253,6 @@ class Install extends CI_Controller {
                 {
                     // Create a message.
                     $this->messageci->set('The encryption key in the your main config.php file cannot be replaced.', 'error');
-
-                    // Redirect.
-                    redirect( site_url('install/site_settings') );
-                }
-
-                // Replace site name.
-                $find = '$config[\'site_name\'] =';
-                $replace = '$config[\'site_name\'] = \'' . $site_title . '\';' . "\n";
-
-                if ($this->install->edit_forum_config($find, $replace) !== TRUE)
-                {
-                    // Create a message.
-                    $this->messageci->set('The site name in your forum.php config file cannot be replaced.', 'error');
 
                     // Redirect.
                     redirect( site_url('install/site_settings') );

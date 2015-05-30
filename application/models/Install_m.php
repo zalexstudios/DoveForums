@@ -119,7 +119,6 @@ class Install_M extends CI_Model {
         }
 
         // Create discussions table.
-
         $sql = "
             CREATE TABLE IF NOT EXISTS `discussions` (
               `discussion_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -157,7 +156,6 @@ class Install_M extends CI_Model {
         }
 
         // Create groups table.
-
         $sql = "
             CREATE TABLE IF NOT EXISTS `groups` (
               `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -173,7 +171,6 @@ class Install_M extends CI_Model {
         }
 
         // Create logging attempts table.
-
         $sql = "
             CREATE TABLE IF NOT EXISTS `login_attempts` (
               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -190,7 +187,6 @@ class Install_M extends CI_Model {
         }
 
         // Create users table.
-
         $sql = "
             CREATE TABLE IF NOT EXISTS `users` (
               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -223,7 +219,6 @@ class Install_M extends CI_Model {
         }
 
         // Create users groups table.
-
         $sql = "
             CREATE TABLE IF NOT EXISTS `users_groups` (
               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -236,6 +231,25 @@ class Install_M extends CI_Model {
               CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
               CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Create settings table.
+        $sql = "
+            CREATE TABLE `settings` (
+              `option_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `option_name` varchar(64) NOT NULL DEFAULT '',
+              `option_value` mediumtext NOT NULL,
+              `option_group` varchar(55) NOT NULL DEFAULT 'site',
+              `auto_load` enum('no','yes') NOT NULL DEFAULT 'yes',
+              PRIMARY KEY (`option_id`,`option_name`),
+              KEY `option_name` (`option_name`),
+              KEY `auto_load` (`auto_load`)
+            ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
         ";
 
         if(!$this->db->query($sql))

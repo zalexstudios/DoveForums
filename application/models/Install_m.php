@@ -263,7 +263,7 @@ class Install_M extends CI_Model {
             INSERT INTO `groups` (`id`, `name`, `description`)
             VALUES
                 (1,'admin','Administrator'),
-                (2,'members','General User'),
+                (2,'members','General User');
 	    ";
 
         if(!$this->db->query($sql))

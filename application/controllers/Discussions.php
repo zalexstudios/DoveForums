@@ -186,7 +186,7 @@ class Discussions extends Front_Controller {
                         'comment_id' => $comment_id,
                         'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$comment_id.''), '#'.$comment_id.''),
                         'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
-                        'body' => nl2br($row->body),
+                        'body' => $row->body,
                         'avatar' => img( element('avatar', $data) ),
                         'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
                         'report_button' => anchor( site_url('comments/report_comment/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),

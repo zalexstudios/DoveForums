@@ -569,7 +569,7 @@ class Forums_M extends CI_Model {
         $discussion = array(
             'name' => strip_tags($data['name']),
             'slug' => $this->slug->create_uri(strip_tags($data['name']), $discussion_id),
-            'body' => strip_tags($data['body']),
+            'body' => $data['body'],
             'category_id' => $data['category'],
             'update_user_id' => $this->session->userdata('user_id'),
             'update_date' => $this->_date(),

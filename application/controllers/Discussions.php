@@ -76,8 +76,9 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'comment',
                 'name' => 'comment',
-                'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'textarea',
+                'class' => 'textarea',
+                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
         ),
         'new_reply' => array(
@@ -85,8 +86,9 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'comment',
                 'name' => 'comment',
-                'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'textarea',
+                'class' => 'textarea',
+                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
         ),
         'new_discussion' => array(
@@ -101,8 +103,9 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'body',
                 'name' => 'body',
-                'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'textarea',
+                'class' => 'textarea',
+                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
         ),
         'edit_discussion' => array(
@@ -117,8 +120,9 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'body',
                 'name' => 'body',
-                'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'textarea',
+                'class' => 'textarea',
+                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
         ),
     );

@@ -10,7 +10,6 @@
 
     {meta}{meta}{/meta}
     {css}{link}{/css}
-    {js}{script}{/js}
 </head>
 
 <body>
@@ -47,6 +46,8 @@
     </div>
 
 </div>
+
+{js}{script}{/js}
 
 </body>
 

@@ -196,6 +196,7 @@
         <div class="btn-group pull-left">
 
             {pagination}
+            Displaying {result_start} to {result_end} of {total}
 
         </div>
 
@@ -215,6 +216,7 @@
         </div>
 
         <?php } ?>
+
 
     </div>
 

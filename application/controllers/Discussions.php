@@ -137,7 +137,7 @@ class Discussions extends Front_Controller {
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function view($category_slug, $discussion_slug)
+    public function view($category_slug, $discussion_slug, $offset=NULL)
     {
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
@@ -152,10 +152,23 @@ class Discussions extends Front_Controller {
             $this->forums->update_discussion_count( $discussion->discussion_id, ++$discussion->view_count );
 
             // Setup the Pagination.
+            $total = count( $this->forums->get_comments( $discussion->discussion_id ) );
             $config['base_url'] = site_url('discussions/'.$category_slug.'/'.$discussion_slug.'');
-            $config['total_rows'] = count( $this->forums->get_comments( $discussion->discussion_id ) );
+            $config['total_rows'] = $total;
             $config['per_page'] = $this->config->item('comments_per_page');
             $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+            $result_start = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+            if ($result_start == 0) $result_start = 1;
+
+            $result_end = $result_start+$this->config->item('comments_per_page')-1;
+
+            if($result_end < $this->config->item('comments_per_page'))
+            {
+                $result_end = $this->config->item('comments_per_page');
+            } elseif($result_end > $total) {
+                $result_end = $total;
+            }
 
             $this->pagination->initialize($config);
 
@@ -194,7 +207,6 @@ class Discussions extends Front_Controller {
                         'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
                         'edit_comment_button' => ($row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->comment_id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
                         'delete_comment_button' => ($row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->comment_id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
-                        'comment_creator' => (!$row->insert_user_id == $this->session->userdata('user_id')) ? 1 : 0,
                     );
                 }
 
@@ -248,6 +260,9 @@ class Discussions extends Front_Controller {
                 'has_comments' => (!empty($comments)) ? 1 : 0,
                 'breadcrumbs' => $this->crumbs->output(),
                 'login_link' => anchor( site_url('users/login'), 'Login'),
+                'result_start' => $result_start,
+                'result_end' => $result_end,
+                'total' => $total,
                 // Other.
                 'pagination' => $this->pagination->create_links(),
             );

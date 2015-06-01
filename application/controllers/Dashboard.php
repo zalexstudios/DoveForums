@@ -112,6 +112,26 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_site_description',
             ),
         ),
+        'add_edit_language' => array(
+            //0
+            array(
+                'field' => 'language',
+                'rules' => 'required',
+                'label' => 'lang:rules_language',
+            ),
+            //1
+            array(
+                'field' => 'code',
+                'rules' => 'required',
+                'label' => 'lang:rules_code',
+            ),
+            //2
+            array(
+                'field' => 'icon',
+                'rules' => 'required',
+                'label' => 'lang:rules_icon',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -266,6 +286,32 @@ class Dashboard extends Admin_Controller {
                 'class' => 'textarea',
                 'type' => 'text',
                 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+            ),
+        ),
+        'add_edit_language' => array(
+            //0
+            array(
+                'id' => 'language',
+                'name' => 'language',
+                'class' => 'form-control',
+                'type' => 'text',
+                'placeholder' => 'English'
+            ),
+            //1
+            array(
+                'id' => 'code',
+                'name' => 'code',
+                'class' => 'form-control',
+                'type' => 'text',
+                'placeholder' => 'english',
+            ),
+            //2
+            array(
+                'id' => 'icon',
+                'name' => 'icon',
+                'class' => 'form-control',
+                'type' => 'text',
+                'placeholder' => 'gb.png',
             ),
         ),
     );
@@ -1259,6 +1305,7 @@ class Dashboard extends Admin_Controller {
 
         // See if the form has been submitted.
         if($this->form_validation->run() === FALSE) {
+
             // Define the page title.
             $data['title'] = 'Settings';
 
@@ -1394,7 +1441,130 @@ class Dashboard extends Admin_Controller {
 
     public function language()
     {
-        
+        // Define the page title.
+        $data['title'] = 'Language Packs';
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/language_packs';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add('Dashboard', 'dashboard');
+        $this->crumbs->add('Language Packs');
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_icon'),
+            lang('tbl_language'),
+            lang('tbl_code'),
+            lang('tbl_action')
+        );
+
+        // Get all the categories.
+        $languages = $this->forums->get_languages();
+
+        if (!empty($languages))
+        {
+            foreach($languages as $row)
+            {
+                $this->table->add_row(
+                    img('templates/assets/img/flags/'.$row->icon),
+                    $row->language,
+                    $row->code,
+                    ''.anchor( site_url('dashboard/edit_language/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_language/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_language_packs' => $this->table->generate(),
+            // Buttons.
+            'btn_add_language' => anchor( site_url('dashboard/add_language'), lang('btn_add_language'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function add_language()
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_edit_language']);
+
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE) {
+
+            // Define the page title.
+            $data['title'] = 'Add Language';
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_edit_language';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Add Language');
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open(site_url('dashboard/add_language')),
+                'form_close' => form_close(),
+                // Fields
+                'language_field' => form_input($this->form_fields['add_edit_language'][0], set_value($this->form_fields['add_edit_language'][0]['name'], $this->input->post('language'))),
+                'code_field' => form_input($this->form_fields['add_edit_language'][1], set_value($this->form_fields['add_edit_language'][1]['name'], $this->input->post('code'))),
+                'icon_field' => form_input($this->form_fields['add_edit_language'][2], set_value($this->form_fields['add_edit_language'][2]['name'], $this->input->post('icon'))),
+                // Errors.
+                'language_error' => form_error('language', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'code_error' => form_error('code', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'icon_error' => form_error('icon', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'language_label' => form_label('Language:', $this->form_fields['settings'][0]['id']),
+                'code_label' => form_label('Code:', $this->form_fields['settings'][1]['id']),
+                'icon_label' => form_label('Icon:', $this->form_fields['settings'][2]['id']),
+                // Buttons.
+                'btn_add_edit_language' => form_submit('submit', lang('btn_add_language'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render(element('page', $data), element('title', $data), element('template', $data));
+
+        } else {
+
+            // Gather the data.
+            $data = array(
+                'language' => $this->input->post('language'),
+                'code' => strtolower($this->input->post('code')),
+                'icon' => $this->input->post('icon'),
+            );
+
+            if($this->forums->add_language($data))
+            {
+                // Create a message
+                $this->messageci->set( lang('success_add_language'), 'success');
+
+                // Redirect
+                redirect( site_url('dashboard/language'), 'refresh');
+            } else {
+                // Create a message
+                $this->messageci->set( lang('edit_add_language'), 'success');
+
+                // Redirect
+                redirect( site_url('dashboard/language'), 'refresh');
+            }
+
+
+        }
     }
 
 }

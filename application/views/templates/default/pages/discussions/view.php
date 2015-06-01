@@ -1,4 +1,6 @@
-{breadcrumbs}
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+    {breadcrumbs}
 
 <div class="well well-sm">
 

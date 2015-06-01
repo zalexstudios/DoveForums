@@ -938,6 +938,11 @@ class Forums_M extends CI_Model {
         return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
+    public function add_language($data = array())
+    {
+        return $this->_insert($this->tables['languages'], $data);
+    }
+
     /*****************************************************************************************
      * Private Functions
      *****************************************************************************************/

@@ -1,3 +1,5 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
 <ul class="list-group">
 
     <li class="list-group-item list-group-item-info">Categories</li>

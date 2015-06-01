@@ -37,8 +37,8 @@ class MY_Controller extends CI_Controller{
         $this->lang->load('forums', $language);
         $this->lang->load('auth', $language);
 
-        //$this->output->enable_profiler(TRUE);
-
+        // Override ion_auth default language loading.
+        $this->lang->load('ion_auth', $language);
     }
 }
 
@@ -198,16 +198,15 @@ class Admin_Controller extends Front_Controller {
             // Navigation.
             'navigation' => array(
                 'links' => array(
-                    array('link' => anchor(site_url(), 'Discussions')),
+                    array('link' => anchor(site_url('dashboard/all_categories'), 'Categories')),
+                    array('link' => anchor(site_url('dashboard/all_users'), 'Users')),
+                    array('link' => anchor(site_url('dashboard/all_groups'), 'Groups')),
+                    array('link' => anchor(site_url('dashboard/settings'), 'Settings')),
                 ),
                 'logo' => anchor(site_url(), $this->site_name, array('class' => 'navbar-brand')),
                 'username' => ucfirst($this->session->userdata('username')),
                 'logout_link' => anchor(site_url('users/logout'), 'Logout'),
-                'profile_link' => anchor(site_url('users/profile'), 'Profile'),
-                'settings_link' => anchor(site_url('users/settings'), 'Settings'),
-                'dashboard_link' => anchor(site_url('dashboard'), 'Dashboard'),
-                'login_link' => anchor(site_url('users/login'), 'Login'),
-                'register_link' => anchor(site_url('users/register'), 'Register'),
+                'home_link' => anchor(site_url('forums'), 'Visit Site'),
             ),
             // Sidebar.
             'sidebar' => array(
@@ -248,7 +247,7 @@ class Admin_Controller extends Front_Controller {
             // Page Title.
             'title' => '' . $this->site_name . ' - ' . $page_title . '',
             // Navigation.
-            'navigation' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/navigation', element('navigation', $data), TRUE),
+            'navigation' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/admin_navigation', element('navigation', $data), TRUE),
             // Sidebar.
             'sidebar' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/admin_sidebar', element('sidebar', $data), TRUE),
             // Content.

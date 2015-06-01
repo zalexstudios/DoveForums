@@ -1,3 +1,5 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
 {breadcrumbs}
 
 <div class="panel panel-warning">

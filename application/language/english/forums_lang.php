@@ -1,4 +1,22 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Name:  Forums Language
+ * Language: English
+ *
+ * Version: 0.0.1
+ *
+ * Author:  Chris Baines
+ * 		    chris@doveforums.com
+ *
+ * Location: http://github.com/chrisbaines/DoveForums
+ *
+ * Description:  English language file..
+ *
+ * Requirements: PHP5 or above
+ *
+ */
 
 // Buttons
 $lang['btn_new_discussion'] = '<i class="fa fa-check"></i> Start a new Discussion';
@@ -33,6 +51,7 @@ $lang['btn_forgot_password'] = 'Forgot Password';
 $lang['btn_add_group'] = 'Add Group';
 $lang['btn_edit_group'] = 'Edit Group';
 $lang['btn_update_settings'] = 'Update Settings';
+$lang['btn_add_language'] = 'Add Language';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -120,3 +139,6 @@ $lang['tbl_discussion_count'] = 'Discussions';
 $lang['tbl_comment_count'] = 'Comments';
 $lang['tbl_slug'] = 'Slug';
 $lang['tbl_description'] = 'Description';
+$lang['tbl_language'] = 'Language';
+$lang['tbl_code'] = 'Code';
+$lang['tbl_icon'] = 'Icon';

@@ -258,6 +258,23 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create language_packs table.
+        $sql = "
+            CREATE TABLE `language_packs` (
+              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `language` varchar(255) DEFAULT NULL,
+              `code` varchar(255) DEFAULT NULL,
+              `icon` varchar(100) DEFAULT NULL,
+              `deletable` int(11) DEFAULT '1',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default groups.
 
         $sql = "
@@ -278,6 +295,18 @@ class Install_M extends CI_Model {
             INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
             VALUES
                 (1,0,0,'General','general','This is the general category.',1,0,'2015-04-15 15:00:00',NULL,'2015-05-27 11:21:07',0,0,0);
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add the default language_pack
+        $sql = "
+            INSERT INTO `language_packs` (`id`, `language`, `code`, `icon`, `deletable`)
+            VALUES
+                (1,'English','english','gb.png',0);
         ";
 
         if(!$this->db->query($sql))

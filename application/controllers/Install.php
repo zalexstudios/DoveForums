@@ -207,6 +207,7 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('comments_per_page', 10, 'comments', 'yes');
                 $this->settings->add_setting('site_keywords', 'key, words, here', 'site', 'yes');
                 $this->settings->add_setting('site_description', 'Enter a site description here.', 'site', 'yes');
+                $this->settings->add_setting('site_language', 'english', 'site', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

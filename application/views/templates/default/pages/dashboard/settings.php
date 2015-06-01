@@ -42,6 +42,11 @@
                         {site_email_error}
                     </div>
 
+                    <div class="form-group">
+                        {site_language_label}
+                        {site_language_field}
+                    </div>
+
                 </div>
 
             </div>

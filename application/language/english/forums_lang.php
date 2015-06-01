@@ -1,6 +1,40 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+// Buttons
+$lang['btn_new_discussion'] = '<i class="fa fa-check"></i> Start a new Discussion';
+$lang['btn_reply_discussion'] = '<i class="fa fa-quote-left"></i> Reply to this Discussion';
+$lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
+$lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i> PM';
+$lang['btn_report'] = '<i class="fa fa-bullhorn"></i> Report';
+$lang['btn_post_comment'] = 'Post Reply';
+$lang['btn_register'] = 'Register';
+$lang['btn_send_pm'] = 'Send PM';
+$lang['btn_edit_discussion'] = '<i class="fa fa-pencil"></i> Edit';
+$lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Delete';
+$lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Edit';
+$lang['btn_delete_comment'] = '<i class="fa fa-trash-o"></i> Delete';
+$lang['btn_add_user'] = 'Add User';
+$lang['btn_edit'] = '<i class="fa fa-pencil"></i>';
+$lang['btn_delete'] = '<i class="fa fa-trash-o"></i>';
+$lang['btn_password'] = '<i class="fa fa-key"></i>';
+$lang['btn_update_user'] = 'Update User';
+$lang['btn_create_discussion'] = 'Create Discussion';
+$lang['btn_add_category'] = 'Add Category';
+$lang['btn_update_category'] = 'Update Category';
+$lang['btn_view'] = '<i class="fa fa-eye"></i>';
+$lang['btn_update_discussion'] = 'Update Discussion';
+$lang['btn_update_comment'] = 'Update Comment';
+$lang['btn_report_discussion'] = 'Report Discussion';
+$lang['btn_report_comment'] = 'Report Comment';
+$lang['btn_change_password'] = 'Change Password';
+$lang['btn_reset_password'] = 'Reset Password';
+$lang['btn_login'] = 'Login';
+$lang['btn_forgot_password'] = 'Forgot Password';
+$lang['btn_add_group'] = 'Add Group';
+$lang['btn_edit_group'] = 'Edit Group';
+$lang['btn_update_settings'] = 'Update Settings';
+
+// Success Messages.
 $lang['success_login'] = 'You have been logged in.';
 $lang['success_logout'] = 'You have been logged out, please come back soon!';
 $lang['success_creating_comment'] = 'Your comment has been created.';
@@ -23,6 +57,7 @@ $lang['success_report_discussion'] = 'The discussion has been reported.';
 $lang['success_report_comment'] = 'The comment has been reported.';
 $lang['success_update_settings'] = 'The settings have been updated.';
 
+// Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
 $lang['error_login'] = 'There has been a problem logging you in, please try again!';
 $lang['error_creating_comment'] = 'There has been a problem creating the comment, please try again!';
@@ -51,3 +86,37 @@ $lang['error_delete_comment'] = 'There was a problem removing the comment.';
 $lang['error_report_discussion'] = 'There was a problem reporting the discussion.';
 $lang['error_report_comment'] = 'There was a problem reporting the comment.';
 $lang['error_update_settings'] = 'There was a problem updating the settings.';
+
+// Form Rules
+$lang['rules_comment'] = 'Comment';
+$lang['rules_email'] = 'Email';
+$lang['rules_password'] = 'Password';
+$lang['rules_username'] = 'Username';
+$lang['rules_confirm_password'] = 'Confirm Password';
+$lang['rules_confirm_email'] = 'Confirm Email';
+$lang['rules_subject'] = 'Subject';
+$lang['rules_message'] = 'Message';
+$lang['rules_body'] = 'Body';
+$lang['rules_category'] = 'Category';
+$lang['rules_name'] = 'Name';
+$lang['rules_description'] = 'Description';
+$lang['rules_reason'] = 'Report Reason';
+$lang['rules_old_password'] = 'Old Password';
+$lang['rules_new_password'] = 'New Password';
+$lang['rules_confirm_new_password'] = 'Confirm New Password';
+$lang['rules_site_name'] = 'Site Name';
+$lang['rules_site_email'] = 'Site Email';
+$lang['rules_site_keywords'] = 'Site Keywords';
+$lang['rules_site_description'] = 'Site Description';
+
+// Table Headers
+$lang['tbl_username'] = 'Username';
+$lang['tbl_first_name'] = 'First Name';
+$lang['tbl_last_name'] = 'Last Name';
+$lang['tbl_status'] = 'Status';
+$lang['tbl_action'] = 'Action';
+$lang['tbl_name'] = 'Name';
+$lang['tbl_discussion_count'] = 'Discussions';
+$lang['tbl_comment_count'] = 'Comments';
+$lang['tbl_slug'] = 'Slug';
+$lang['tbl_description'] = 'Description';

@@ -6,4 +6,5 @@ $config['tables'] = array(
     'discussions' => 'discussions',
     'comments' => 'comments',
     'users' => 'users',
+    'languages' => 'language_packs'
 );

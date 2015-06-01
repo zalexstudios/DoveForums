@@ -50,7 +50,7 @@
                     <div class="form-group <?php if(form_error('admin_email')){echo 'has-error';} ?>">
 
                         <label for="admin_email">Admin Email</label>
-                        <input type="text" class="form-control" id="admin_email" name="admin_email" placeholder="Enter your admin email.">
+                        <input type="email" class="form-control" id="admin_email" name="admin_email" placeholder="Enter your admin email.">
                         <p class="help-block"><small><i class="fa fa-question-circle"></i> This email will be used to send & receive notifications.</small></p>
 
                     </div>

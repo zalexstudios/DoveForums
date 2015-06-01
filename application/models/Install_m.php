@@ -209,6 +209,7 @@ class Install_M extends CI_Model {
               `visit_count` int(11) DEFAULT '0',
               `comments` int(11) DEFAULT NULL,
               `discussions` int(11) DEFAULT NULL,
+              `language` varchar(255) DEFAULT 'english',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         ";

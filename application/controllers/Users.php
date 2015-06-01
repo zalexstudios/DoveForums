@@ -79,7 +79,7 @@ class Users extends Front_Controller {
                 'id' => 'identity',
                 'name' => 'identity',
                 'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'email',
                 'placeholder' => 'Email',
             ),
             //1
@@ -117,14 +117,14 @@ class Users extends Front_Controller {
                 'id' => 'email',
                 'name' => 'email',
                 'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'email',
             ),
             //4
             array(
                 'id' => 'confirm_email',
                 'name' => 'confirm_email',
                 'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'email',
             ),
         ),
         'change_password' => array(

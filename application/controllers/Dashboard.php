@@ -128,7 +128,7 @@ class Dashboard extends Admin_Controller {
                 'id' => 'email',
                 'name' => 'email',
                 'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'email',
             ),
             //2
             array(
@@ -165,7 +165,7 @@ class Dashboard extends Admin_Controller {
                 'id' => 'email',
                 'name' => 'email',
                 'class' => 'form-control',
-                'type' => 'text',
+                'type' => 'email',
             ),
             //2
             array(
@@ -1311,6 +1311,17 @@ class Dashboard extends Admin_Controller {
                 '50' => '50',
             );
 
+            // Build the site language options.
+            $languages = $this->forums->get_languages();
+
+            if(!empty($languages))
+            {
+                foreach($languages as $row)
+                {
+                    $language_options[$row->code] = $row->language;
+                }
+            }
+
             // Define the page data.
             $data['page'] = array(
                 // Form Data.
@@ -1320,6 +1331,7 @@ class Dashboard extends Admin_Controller {
                 'site_name_field' => form_input($this->form_fields['settings'][0], set_value($this->form_fields['settings'][0]['name'], $this->settings->get_setting('site_name'))),
                 'site_email_field' => form_input($this->form_fields['settings'][1], set_value($this->form_fields['settings'][1]['name'], $this->settings->get_setting('site_email'))),
                 'site_keywords_field' => form_input($this->form_fields['settings'][2], set_value($this->form_fields['settings'][2]['name'], $this->settings->get_setting('site_keywords'))),
+                'site_language_field' => form_dropdown('site_language', $language_options, $this->settings->get_setting('site_language'), 'class="form-control"'),
                 'site_description_field' => form_textarea($this->form_fields['settings'][3], set_value($this->form_fields['settings'][3]['name'], $this->settings->get_setting('site_description'))),
                 'gravatar_rating_field' => form_dropdown('gravatar_rating', $gravatar_rating, $this->settings->get_setting('gravatar_rating'), 'class="form-control"'),
                 'gravatar_default_image_field' => form_dropdown('gravatar_default_image', $gravatar_default_image, $this->settings->get_setting('gravatar_default_image'), 'class="form-control"'),
@@ -1335,6 +1347,7 @@ class Dashboard extends Admin_Controller {
                 'site_name_label' => form_label('Site Name:', $this->form_fields['settings'][0]['id']),
                 'site_email_label' => form_label('Site Email:', $this->form_fields['settings'][1]['id']),
                 'site_keywords_label' => form_label('Site Keywords:', $this->form_fields['settings'][2]['id']),
+                'site_language_label' => form_label('Site Language:', 'site_language'),
                 'site_description_label' => form_label('Site Description:', $this->form_fields['settings'][3]['id']),
                 'gravatar_rating_label' => form_label('Gravatar Rating:', 'gravatar_rating'),
                 'gravatar_default_image_label' => form_label('Gravatar Default Image:', 'gravatar_default_image'),
@@ -1356,6 +1369,7 @@ class Dashboard extends Admin_Controller {
                 'site_name' => $this->input->post('site_name'),
                 'site_email' => $this->input->post('site_email'),
                 'site_keywords' => $this->input->post('site_keywords'),
+                'site_language' => $this->input->post('site_language'),
                 'site_description' => $this->input->post('site_description'),
                 'gravatar_rating' => $this->input->post('gravatar_ratings'),
                 'gravatar_default_image' => $this->input->post('gravatar_default_image'),
@@ -1363,8 +1377,6 @@ class Dashboard extends Admin_Controller {
                 'discussions_per_page' => $this->input->post('discussions_per_page'),
                 'comments_per_page' => $this->input->post('comments_per_page'),
             );
-
-            $error = 0;
 
             foreach($data as $k => $v)
             {
@@ -1378,6 +1390,11 @@ class Dashboard extends Admin_Controller {
             // Redirect
             redirect( site_url('dashboard/settings'), 'refresh');
         }
+    }
+
+    public function language()
+    {
+        
     }
 
 }

@@ -24,12 +24,18 @@ class MY_Controller extends CI_Controller{
 		$this->load->database();
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
 
+        // See if a user is logged in, if so set their language preference.
+        if ($this->ion_auth->logged_in() === TRUE)
+        {
+            $user = $this->ion_auth->user()->row();
+            $language = $user->language;
+        } else {
+            $language = $this->config->item('site_language');
+        }
+
         // Load Language Files.
-        $this->lang->load('messages', 'english');
-        $this->lang->load('buttons', 'english');
-        $this->lang->load('rules', 'english');
-        $this->lang->load('tables', 'english');
-        $this->lang->load('auth', 'english');
+        $this->lang->load('forums', $language);
+        $this->lang->load('auth', $language);
 
         //$this->output->enable_profiler(TRUE);
 
@@ -213,6 +219,7 @@ class Admin_Controller extends Front_Controller {
                 'all_groups' => anchor( site_url('dashboard/all_groups'), 'All Groups'),
                 'add_group' => anchor( site_url('dashboard/add_group'), 'Add Group'),
                 'all_settings' => anchor( site_url('dashboard/settings'), 'Settings'),
+                'language_packs' => anchor( site_url('dashboard/language'), 'Language Packs'),
             ),
             // Footer.
             'footer' => array(

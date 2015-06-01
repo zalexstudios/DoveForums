@@ -205,8 +205,8 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('default_timezone', 'Europe/London', 'timezone', 'yes');
                 $this->settings->add_setting('discussions_per_page', 10, 'discussions', 'yes');
                 $this->settings->add_setting('comments_per_page', 10, 'comments', 'yes');
-                $this->settings->add_setting('site_keywords', 'key, words, here', 'yes');
-                $this->settings->add_setting('site_description', 'Enter a site description here.', 'yes');
+                $this->settings->add_setting('site_keywords', 'key, words, here', 'site', 'yes');
+                $this->settings->add_setting('site_description', 'Enter a site description here.', 'site', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

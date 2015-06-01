@@ -53,7 +53,7 @@ class Comments extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Define the page title.
-            $data['title'] = 'Edit Comment';
+            $data['title'] = lang('tle_edit_comment');
 
             // Define the page template.
             $data['template'] = 'pages/comments/edit';
@@ -164,7 +164,7 @@ class Comments extends Front_Controller {
         if($this->form_validation->run() === FALSE) {
 
             // Define the page title.
-            $data['title'] = 'Report Comment';
+            $data['title'] = lang('tle_report_comment');
 
             // Define the page template.
             $data['template'] = 'pages/comments/report';

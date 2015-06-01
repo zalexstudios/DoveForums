@@ -319,7 +319,7 @@ class Dashboard extends Admin_Controller {
     public function index()
     {
         // Define the page title.
-        $data['title'] = 'Dashboard';
+        $data['title'] = lang('tle_dashboard');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/dashboard';
@@ -350,14 +350,14 @@ class Dashboard extends Admin_Controller {
     public function all_users()
     {
         // Define the page title.
-        $data['title'] = 'All Users';
+        $data['title'] = lang('tle_users');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/users';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('All Users');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_users'));
 
         // Set the table template.
         $data['tmpl'] = array (
@@ -425,14 +425,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Add User';
+            $data['title'] = lang('tle_add');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/add_user';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Add User');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
 
             // Define the page data.
             $data['page'] = array(
@@ -519,14 +519,14 @@ class Dashboard extends Admin_Controller {
         {
 
             // Define the page title.
-            $data['title'] = 'Edit User';
+            $data['title'] = lang('tle_edit');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/edit_user';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Edit User');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_edit'));
 
             // Get the user from the database.
             $user = $this->ion_auth->user($user_id)->row();
@@ -714,14 +714,14 @@ class Dashboard extends Admin_Controller {
     public function all_groups()
     {
         // Define the page title.
-        $data['title'] = 'All Groups';
+        $data['title'] = lang('tle_groups');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/all_groups';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('All Groups');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_groups'));
 
         // Set the table template.
         $data['tmpl'] = array (
@@ -776,14 +776,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Add Group';
+            $data['title'] = lang('tle_add');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/add_edit_group';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Add Group');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
 
             // Define the page data.
             $data['page'] = array(
@@ -845,14 +845,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Edit Group';
+            $data['title'] = lang('tle_edit');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/add_edit_group';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Edit Group');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_edit'));
 
             // Get the group.
             $group = $this->ion_auth->group($group_id)->row();
@@ -943,14 +943,14 @@ class Dashboard extends Admin_Controller {
     public function all_categories()
     {
         // Define the page title.
-        $data['title'] = 'All Categories';
+        $data['title'] = lang('tle_categories');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/all_categories';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('All Categories');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_categories'));
 
         // Set the table template.
         $data['tmpl'] = array (
@@ -1019,14 +1019,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Add Category';
+            $data['title'] = lang('tle_add');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/add_category';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Add Category');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
 
             // Define the page data.
             $data['page'] = array(
@@ -1103,14 +1103,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Edit Category';
+            $data['title'] = lang('tle_edit');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/edit_category';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Edit Category');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_edit'));
 
             // Get the category from the database.
             $category = $this->forums->get_category_admin($category_id);
@@ -1226,14 +1226,14 @@ class Dashboard extends Admin_Controller {
     public function all_discussions()
     {
         // Define the page title.
-        $data['title'] = 'All Discussions';
+        $data['title'] = lang('tle_discussions');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/all_discussions';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('All Discussions');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_discussions'));
 
         /* TODO - Build the all discussions page. */
 
@@ -1257,14 +1257,14 @@ class Dashboard extends Admin_Controller {
         }
 
         // Define the page title.
-        $data['title'] = 'Edit Discussion';
+        $data['title'] = lang('tle_edit');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/edit_discussion';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('Edit Discussion');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_edit'));
 
         /* TODO - Build the edit discussion page. */
 
@@ -1307,14 +1307,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE) {
 
             // Define the page title.
-            $data['title'] = 'Settings';
+            $data['title'] = lang('tle_settings');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/settings';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Settings');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_settings'));
 
             // Build the gravatar rating options.
             $gravatar_rating = array(
@@ -1442,14 +1442,14 @@ class Dashboard extends Admin_Controller {
     public function language()
     {
         // Define the page title.
-        $data['title'] = 'Language Packs';
+        $data['title'] = lang('tle_language_packs');
 
         // Define the page template.
         $data['template'] = 'pages/dashboard/language_packs';
 
         // Build the breadcrumbs.
-        $this->crumbs->add('Dashboard', 'dashboard');
-        $this->crumbs->add('Language Packs');
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_language_packs'));
 
         // Set the table template.
         $data['tmpl'] = array (
@@ -1505,14 +1505,14 @@ class Dashboard extends Admin_Controller {
         if($this->form_validation->run() === FALSE) {
 
             // Define the page title.
-            $data['title'] = 'Add Language';
+            $data['title'] = lang('tle_add');
 
             // Define the page template.
             $data['template'] = 'pages/dashboard/add_edit_language';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Dashboard', 'dashboard');
-            $this->crumbs->add('Add Language');
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
 
             // Define the page data.
             $data['page'] = array(
@@ -1563,8 +1563,18 @@ class Dashboard extends Admin_Controller {
                 redirect( site_url('dashboard/language'), 'refresh');
             }
 
-
         }
+
+    }
+
+    public function edit_language($language_id)
+    {
+
+    }
+
+    public function delete_language($language_id)
+    {
+
     }
 
 }

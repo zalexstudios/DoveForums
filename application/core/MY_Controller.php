@@ -96,21 +96,20 @@ class Front_Controller extends MY_Controller{
             // Navigation.
             'navigation' => array(
                 'links' => array(
-                    array( 'link' => anchor( site_url(), 'Discussions' ) ),
+                    array( 'link' => anchor( site_url(), lang('lnk_discussions') ) ),
                 ),
                 'logo' => anchor( site_url(), $this->site_name, array( 'class' => 'navbar-brand' ) ),
                 'username' => ucfirst( $this->session->userdata('username') ),
-                'logout_link' => anchor( site_url( 'users/logout' ), 'Logout' ),
-                'profile_link' => anchor( site_url( 'users/profile' ), 'Profile' ),
-                'settings_link' => anchor( site_url( 'users/settings' ), 'Settings' ),
-                'change_password_link' => anchor (site_url( 'users/change_password' ), 'Change Password'),
-                'dashboard_link' => anchor( site_url( 'dashboard' ), 'Dashboard' ),
-                'login_link' => anchor( site_url( 'users/login' ), 'Login' ),
-                'register_link' => anchor( site_url( 'users/register' ), 'Register' ),
+                'logout_link' => anchor( site_url( 'users/logout' ), lang('lnk_logout') ),
+                'profile_link' => anchor( site_url( 'users/profile' ), lang('lnk_profile') ),
+                'settings_link' => anchor( site_url( 'users/settings' ), lang('lnk_settings') ),
+                'change_password_link' => anchor (site_url( 'users/change_password' ), lang('lnk_change_password') ),
+                'dashboard_link' => anchor( site_url( 'dashboard' ), lang('lnk_dashboard') ),
+                'login_link' => anchor( site_url( 'users/login' ), lang('lnk_login') ),
+                'register_link' => anchor( site_url( 'users/register' ), lang('lnk_register') ),
             ),
             // Sidebar.
             'sidebar' => array(
-                'new_discussion_button' => anchor( site_url('discussions/new_discussion'), 'New Discussion', array( 'class' => 'btn btn-success btn-sm' )),
                 'categories' => element( 'categories', $data ),
             ),
             // Footer.
@@ -198,27 +197,27 @@ class Admin_Controller extends Front_Controller {
             // Navigation.
             'navigation' => array(
                 'links' => array(
-                    array('link' => anchor(site_url('dashboard/all_categories'), 'Categories')),
-                    array('link' => anchor(site_url('dashboard/all_users'), 'Users')),
-                    array('link' => anchor(site_url('dashboard/all_groups'), 'Groups')),
-                    array('link' => anchor(site_url('dashboard/settings'), 'Settings')),
+                    array('link' => anchor(site_url('dashboard/all_categories'), lang('lnk_categories'))),
+                    array('link' => anchor(site_url('dashboard/all_users'), lang('lnk_users'))),
+                    array('link' => anchor(site_url('dashboard/all_groups'), lang('lnk_groups'))),
+                    array('link' => anchor(site_url('dashboard/settings'), lang('lnk_settings'))),
                 ),
                 'logo' => anchor(site_url(), $this->site_name, array('class' => 'navbar-brand')),
                 'username' => ucfirst($this->session->userdata('username')),
-                'logout_link' => anchor(site_url('users/logout'), 'Logout'),
-                'home_link' => anchor(site_url('forums'), 'Visit Site'),
+                'logout_link' => anchor(site_url('users/logout'), lang('lnk_logout')),
+                'home_link' => anchor(site_url('forums'), lang('lnk_visit_site')),
             ),
             // Sidebar.
             'sidebar' => array(
-                'all_users' => anchor( site_url('dashboard/all_users'), 'All Users'),
-                'add_user' => anchor( site_url('dashboard/add_user'), 'Add User'),
-                'all_categories' => anchor( site_url('dashboard/all_categories'), 'All Categories'),
-                'add_category' => anchor( site_url('dashboard/add_category'), 'Add Category'),
-                'all_discussions' => anchor( site_url('dashboard/all_discussions'), 'All Discussions'),
-                'all_groups' => anchor( site_url('dashboard/all_groups'), 'All Groups'),
-                'add_group' => anchor( site_url('dashboard/add_group'), 'Add Group'),
-                'all_settings' => anchor( site_url('dashboard/settings'), 'Settings'),
-                'language_packs' => anchor( site_url('dashboard/language'), 'Language Packs'),
+                'all_users' => anchor( site_url('dashboard/all_users'), lang('lnk_users')),
+                'add_user' => anchor( site_url('dashboard/add_user'), lang('lnk_add_user')),
+                'all_categories' => anchor( site_url('dashboard/all_categories'), lang('lnk_categories')),
+                'add_category' => anchor( site_url('dashboard/add_category'), lang('lnk_add_category')),
+                'all_discussions' => anchor( site_url('dashboard/all_discussions'), lang('lnk_discussions')),
+                'all_groups' => anchor( site_url('dashboard/all_groups'), lang('lnk_groups')),
+                'add_group' => anchor( site_url('dashboard/add_group'), lang('lnk_add_group')),
+                'all_settings' => anchor( site_url('dashboard/settings'), lang('lnk_settings')),
+                'language_packs' => anchor( site_url('dashboard/language'), lang('lnk_language_packs')),
             ),
             // Footer.
             'footer' => array(

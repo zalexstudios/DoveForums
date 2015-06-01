@@ -204,7 +204,7 @@ class Users extends Front_Controller {
         if ( $this->form_validation->run() === FALSE )
         {
             // Define the page title.
-            $data['title'] = 'Register';
+            $data['title'] = lang('tle_register');
 
             // Define the page template.
             $data['template'] = 'pages/users/register';
@@ -298,7 +298,7 @@ class Users extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Define the page title.
-            $data['title'] = 'Login';
+            $data['title'] = lang('tle_login');
 
             // Define the page template.
             $data['template'] = 'pages/users/login';
@@ -457,7 +457,7 @@ class Users extends Front_Controller {
         if ( $this->form_validation->run() === FALSE )
         {
             // Define the page title.
-            $data['title'] = 'Change Password';
+            $data['title'] = lang('tle_change_password');
 
             // Define the page template.
             $data['template'] = 'pages/users/change_password';
@@ -539,7 +539,7 @@ class Users extends Front_Controller {
         if($this->form_validation->run() == FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Forgot Password';
+            $data['title'] = lang('tle_forgot_password');
 
             // Define the page template.
             $data['template'] = 'pages/users/forgot_password';
@@ -639,7 +639,7 @@ class Users extends Front_Controller {
             if($this->form_validation->run() === FALSE)
             {
                 // Define the page title.
-                $data['title'] = 'Reset Password';
+                $data['title'] = lang('tle_reset_password');
 
                 // Define the page template.
                 $data['template'] = 'pages/users/reset_password';

@@ -6,7 +6,7 @@ class Forums extends Front_Controller
     public function index()
     {
         // Define the page title.
-        $data['title'] = 'Recent Discussions';
+        $data['title'] = lang('tle_recent_discussions');
 
         // Define the template.
         $data['template'] = 'pages/home/home';

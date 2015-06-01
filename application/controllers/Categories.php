@@ -15,7 +15,7 @@ class Categories extends Front_Controller {
     public function index()
     {
         // Define the page title.
-        $data['title'] = 'All Categories';
+        $data['title'] = lang('tle_all_discussions');
 
         // Define the page template.
         $data['template'] = 'pages/categories/all';

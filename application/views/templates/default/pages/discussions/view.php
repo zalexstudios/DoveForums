@@ -8,12 +8,6 @@
 
 <div class="btn-toolbar pagination-toolbar" role="toolbar">
 
-    <div class="btn-group pull-left">
-
-        {pagination}
-
-    </div>
-
     <!-- Check the user is logged in -->
     <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
 
@@ -191,17 +185,16 @@
 
     {/comments}
 
-    <div class="btn-toolbar pagination-toolbar" role="toolbar">
+<?php } else { ?>
 
-        <div class="btn-group pull-left">
+    <div class="alert alert-info"><p>No comments to show, why not create one?</p></div>
 
-            {pagination}
-            Displaying {result_start} to {result_end} of {total}
+<?php } ?>
 
-        </div>
+<div class="btn-toolbar pagination-toolbar" role="toolbar">
 
-        <!-- Check the user is logged in -->
-        <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
 
         <div class="btn-group pull-right">
 
@@ -215,16 +208,16 @@
 
         </div>
 
-        <?php } ?>
+    <?php } ?>
 
+</div>
 
-    </div>
+<div class="text-center">
 
-<?php } else { ?>
+    {pagination} <br />
+    <p class="text-muted small">Displaying {result_start} to {result_end} of {total}</p>
 
-    <div class="alert alert-info"><p>No comments to show, why not create one?</p></div>
-
-<?php } ?>
+</div>
 
 <!-- Check if the user is logged in -->
 <?php if($this->ion_auth->logged_in() === TRUE) { ?>

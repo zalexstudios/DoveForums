@@ -137,7 +137,7 @@ class Discussions extends Front_Controller {
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function view($category_slug, $discussion_slug, $offset=NULL)
+    public function view($category_slug, $discussion_slug)
     {
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
@@ -159,7 +159,10 @@ class Discussions extends Front_Controller {
             $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
             $result_start = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
             if ($result_start == 0) $result_start = 1;
+
+            $total = ($total == 0) ? 1 : $total+1;
 
             $result_end = $result_start+$this->config->item('comments_per_page')-1;
 
@@ -184,20 +187,16 @@ class Discussions extends Front_Controller {
             // Loop through the comments.
             if( !empty( $comments ) )
             {
-                $comment_id = 0;
-
                 foreach( $comments as $row )
                 {
-                    $comment_id++;
-
                     // build the users avatar.
                     $data['avatar'] = array(
                         'src' => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                     );
 
                     $data['comments'][$row->comment_id] = array(
-                        'comment_id' => $comment_id,
-                        'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$comment_id.''), '#'.$comment_id.''),
+                        'comment_id' => $row->comment_id,
+                        'comment_id_link' => anchor( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'/#'.$row->comment_id.''), '#'.$row->comment_id.''),
                         'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
                         'body' => $row->body,
                         'avatar' => img( element('avatar', $data) ),

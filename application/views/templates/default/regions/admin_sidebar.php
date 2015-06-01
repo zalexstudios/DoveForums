@@ -12,5 +12,6 @@
     <li class="list-group-item">{all_groups}</li>
     <li class="list-group-item">{add_group}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-cog"></i> Settings</li>
+    <li class="list-group-item">{all_settings}</li>
 
 </ul>

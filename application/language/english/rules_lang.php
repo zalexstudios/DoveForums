@@ -17,3 +17,7 @@ $lang['rules_reason'] = 'Report Reason';
 $lang['rules_old_password'] = 'Old Password';
 $lang['rules_new_password'] = 'New Password';
 $lang['rules_confirm_new_password'] = 'Confirm New Password';
+$lang['rules_site_name'] = 'Site Name';
+$lang['rules_site_email'] = 'Site Email';
+$lang['rules_site_keywords'] = 'Site Keywords';
+$lang['rules_site_description'] = 'Site Description';

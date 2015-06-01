@@ -32,3 +32,4 @@ $lang['btn_login'] = 'Login';
 $lang['btn_forgot_password'] = 'Forgot Password';
 $lang['btn_add_group'] = 'Add Group';
 $lang['btn_edit_group'] = 'Edit Group';
+$lang['btn_update_settings'] = 'Update Settings';

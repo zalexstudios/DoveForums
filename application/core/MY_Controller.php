@@ -124,7 +124,8 @@ class Front_Controller extends MY_Controller{
                 array( 'link' => '<link href="'.base_url('templates//'.$this->theme.'/assets/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
             ),
             'meta' => array(
-                array( 'meta' => meta('keywords', $this->config->item('keywords')) ),
+                array( 'meta' => meta('keywords', $this->config->item('site_keywords')) ),
+                array( 'meta' => meta('description', $this->config->item('site_description')) ),
             ),
             'js' => array(
                 array( 'script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>' ),
@@ -211,6 +212,7 @@ class Admin_Controller extends Front_Controller {
                 'all_discussions' => anchor( site_url('dashboard/all_discussions'), 'All Discussions'),
                 'all_groups' => anchor( site_url('dashboard/all_groups'), 'All Groups'),
                 'add_group' => anchor( site_url('dashboard/add_group'), 'Add Group'),
+                'all_settings' => anchor( site_url('dashboard/settings'), 'Settings'),
             ),
             // Footer.
             'footer' => array(

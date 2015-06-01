@@ -86,6 +86,32 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_description',
             ),
         ),
+        'settings' => array(
+            //0
+            array(
+                'field' => 'site_name',
+                'rules' => 'required',
+                'label' => 'lang:rules_site_name',
+            ),
+            //1
+            array(
+                'field' => 'site_email',
+                'rules' => 'required|valid_email',
+                'label' => 'lang:rules_site_email',
+            ),
+            //2
+            array(
+                'field' => 'site_keywords',
+                'rules' => 'required',
+                'label' => 'lang:rules_site_keywords',
+            ),
+            //3
+            array(
+                'field' => 'site_description',
+                'rules' => 'required',
+                'label' => 'lang:rules_site_description',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -209,6 +235,37 @@ class Dashboard extends Admin_Controller {
                 'name' => 'description',
                 'class' => 'form-control',
                 'type' => 'text',
+            ),
+        ),
+        'settings' => array(
+            //0
+            array(
+                'id' => 'site_name',
+                'name' => 'site_name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'site_email',
+                'name' => 'site_email',
+                'class' => 'form-control',
+                'type' => 'email',
+            ),
+            //2
+            array(
+                'id' => 'site_keywords',
+                'name' => 'site_keywords',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //3
+            array(
+                'id' => 'site_description',
+                'name' => 'site_description',
+                'class' => 'textarea',
+                'type' => 'text',
+                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
         ),
     );
@@ -1195,5 +1252,132 @@ class Dashboard extends Admin_Controller {
      * Settings Functions
      *****************************************************************************************/
 
+    public function settings()
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['settings']);
+
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE) {
+            // Define the page title.
+            $data['title'] = 'Settings';
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/settings';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add('Dashboard', 'dashboard');
+            $this->crumbs->add('Settings');
+
+            // Build the gravatar rating options.
+            $gravatar_rating = array(
+                'g' => 'G: Suitable for display on all websites with any audience type',
+                'pg' => 'PG: May contain rude gestures, provocatively dressed individuals, the lesser swear words, or mild violence',
+                'r' => 'R: May contain such things as harsh profanity, intense violence, nudity, or hard drug use',
+                'x' => 'X: May contain hardcore sexual imagery or extremely disturbing violence',
+            );
+
+            // Build the gravatar default image options.
+            $gravatar_default_image = array(
+                'mm' => 'A simple, cartoon-style silhouetted outline of a person',
+                'identicon' => 'A geometric pattern based on an email hash',
+                'monsterid' => 'A generated `monster` with different colors, faces, etc',
+                'wavatar' => 'Generated faces with differing features and backgrounds',
+                'retro' => 'Awesome generated, 8-bit arcade-style pixelated faces',
+                'blank' => 'A transparent PNG image',
+            );
+
+            // Build the gravatar size options.
+            $gravatar_size = array(
+                '10' => '10px x 10px',
+                '20' => '20px x 20px',
+                '30' => '30px x 30px',
+                '40' => '40px x 40px',
+                '50' => '50px x 50px',
+                '60' => '60px x 60px',
+            );
+
+            // Build the per page options.
+            $per_page = array(
+                '5' => '5',
+                '10' => '10',
+                '15' => '15',
+                '20' => '20',
+                '25' => '25',
+                '30' => '30',
+                '35' => '35',
+                '40' => '40',
+                '45' => '45',
+                '50' => '50',
+            );
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open(site_url('dashboard/settings')),
+                'form_close' => form_close(),
+                // Fields
+                'site_name_field' => form_input($this->form_fields['settings'][0], set_value($this->form_fields['settings'][0]['name'], $this->settings->get_setting('site_name'))),
+                'site_email_field' => form_input($this->form_fields['settings'][1], set_value($this->form_fields['settings'][1]['name'], $this->settings->get_setting('site_email'))),
+                'site_keywords_field' => form_input($this->form_fields['settings'][2], set_value($this->form_fields['settings'][2]['name'], $this->settings->get_setting('site_keywords'))),
+                'site_description_field' => form_textarea($this->form_fields['settings'][3], set_value($this->form_fields['settings'][3]['name'], $this->settings->get_setting('site_description'))),
+                'gravatar_rating_field' => form_dropdown('gravatar_rating', $gravatar_rating, $this->settings->get_setting('gravatar_rating'), 'class="form-control"'),
+                'gravatar_default_image_field' => form_dropdown('gravatar_default_image', $gravatar_default_image, $this->settings->get_setting('gravatar_default_image'), 'class="form-control"'),
+                'gravatar_size_field' => form_dropdown('gravatar_size', $gravatar_size, $this->settings->get_setting('gravatar_size'), 'class="form-control"'),
+                'discussions_per_page_field' => form_dropdown('discussions_per_page', $per_page, $this->settings->get_setting('discussions_per_page'), 'class="form-control"'),
+                'comments_per_page_field' => form_dropdown('comments_per_page', $per_page, $this->settings->get_setting('comments_per_page'), 'class="form-control"'),
+                // Errors.
+                'site_name_error' => form_error($this->form_fields['settings'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'site_email_error' => form_error($this->form_fields['settings'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'site_keywords_error' => form_error($this->form_fields['settings'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'site_description_error' => form_error($this->form_fields['settings'][3]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'site_name_label' => form_label('Site Name:', $this->form_fields['settings'][0]['id']),
+                'site_email_label' => form_label('Site Email:', $this->form_fields['settings'][1]['id']),
+                'site_keywords_label' => form_label('Site Keywords:', $this->form_fields['settings'][2]['id']),
+                'site_description_label' => form_label('Site Description:', $this->form_fields['settings'][3]['id']),
+                'gravatar_rating_label' => form_label('Gravatar Rating:', 'gravatar_rating'),
+                'gravatar_default_image_label' => form_label('Gravatar Default Image:', 'gravatar_default_image'),
+                'gravatar_size_label' => form_label('Gravatar Size:', 'gravatar_size'),
+                'discussions_per_page_label' => form_label('Discussions Per Page:', 'discussions_per_page'),
+                'comments_per_page_label' => form_label('Comments Per Page:', 'comments_per_page'),
+                // Buttons.
+                'btn_update_settings' => form_submit('submit', lang('btn_update_settings'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render(element('page', $data), element('title', $data), element('template', $data));
+
+        } else {
+
+            // Gather the data.
+            $data = array(
+                'site_name' => $this->input->post('site_name'),
+                'site_email' => $this->input->post('site_email'),
+                'site_keywords' => $this->input->post('site_keywords'),
+                'site_description' => $this->input->post('site_description'),
+                'gravatar_rating' => $this->input->post('gravatar_ratings'),
+                'gravatar_default_image' => $this->input->post('gravatar_default_image'),
+                'gravatar_size' => $this->input->post('gravatar_size'),
+                'discussions_per_page' => $this->input->post('discussions_per_page'),
+                'comments_per_page' => $this->input->post('comments_per_page'),
+            );
+
+            $error = 0;
+
+            foreach($data as $k => $v)
+            {
+                // Update the settings.
+                $this->settings->edit_setting($k, $v);
+            }
+
+            // Create a message
+            $this->messageci->set( lang('success_update_settings'), 'success');
+
+            // Redirect
+            redirect( site_url('dashboard/settings'), 'refresh');
+        }
+    }
 
 }

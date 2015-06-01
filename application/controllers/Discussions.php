@@ -201,9 +201,9 @@ class Discussions extends Front_Controller {
                         'body' => $row->body,
                         'avatar' => img( element('avatar', $data) ),
                         'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
-                        'report_button' => anchor( site_url('comments/report_comment/'.$row->comment_id.''), '<i class="fa fa-bullhorn"></i> Report', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
-                        'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), '<i class="fa fa-envelope-o"></i> PM', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
-                        'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), '<i class="fa fa-thumbs-o-up"></i>', array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
+                        'report_button' => anchor( site_url('comments/report_comment/'.$row->comment_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
+                        'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
+                        'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$row->user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
                         'edit_comment_button' => ($row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->comment_id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
                         'delete_comment_button' => ($row->insert_user_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->comment_id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
                     );
@@ -223,7 +223,7 @@ class Discussions extends Front_Controller {
 
             // Build the page breadcrumbs.
             $this->crumbs->add ($discussion->category_name, 'categories/'.$category_slug.'');
-            $this->crumbs->add ($discussion->discussion_name, 'discussions/'.$category_slug.'/'.$discussion_slug.'');
+            $this->crumbs->add ($discussion->discussion_name);
 
             // Build the page data.
             $data['page'] = array(
@@ -240,7 +240,7 @@ class Discussions extends Front_Controller {
                 // Buttons.
                 'post_comment_button' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
                 'report_button' => anchor( site_url('discussions/report_discussion/'.$discussion->discussion_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this discussion to a moderator.')),
-                'pm_button' => anchor( site_url('messages/send/'.$discussion->insert_user_id.''), lang('btn_send_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+                'pm_button' => anchor( site_url('messages/send/'.$discussion->insert_user_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
                 'thumbs_up_button' => anchor( site_url('users/thumbs_up/'.$discussion->insert_user_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.')),
                 'new_discussion_button' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
                 'reply_button' => anchor( site_url( 'discussions/reply/'.$category_slug.'/'.$discussion_slug.'' ), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
@@ -258,7 +258,7 @@ class Discussions extends Front_Controller {
                 'comments' => element( 'comments', $data ),
                 'has_comments' => (!empty($comments)) ? 1 : 0,
                 'breadcrumbs' => $this->crumbs->output(),
-                'login_link' => anchor( site_url('users/login'), 'Login'),
+                'login_link' => anchor( site_url('users/login'), lang('lnk_login')),
                 'result_start' => $result_start,
                 'result_end' => $result_end,
                 'total' => $total,
@@ -330,7 +330,7 @@ class Discussions extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Define the page title.
-            $data['title'] = 'Post a New Reply';
+            $data['title'] = lang('tle_new_reply');
 
             // Define the page template.
             $data['template'] = 'pages/discussions/reply';
@@ -415,7 +415,7 @@ class Discussions extends Front_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Create a new Discussion';
+            $data['title'] = lang('tle_new_discussion');
 
             // Define the page template.
             $data['template'] = 'pages/discussions/new';
@@ -513,7 +513,7 @@ class Discussions extends Front_Controller {
         if($this->form_validation->run() === FALSE) {
 
             // Define the page title.
-            $data['title'] = 'Report Discussion';
+            $data['title'] = lang('tle_report_discussion');
 
             // Define the page template.
             $data['template'] = 'pages/discussions/report';
@@ -603,7 +603,7 @@ class Discussions extends Front_Controller {
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = 'Edit Discussion';
+            $data['title'] = lang('tle_edit_discussion');
 
             // Define the page template.
             $data['template'] = 'pages/discussions/edit';

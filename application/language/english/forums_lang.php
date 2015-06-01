@@ -26,7 +26,6 @@ $lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i> PM';
 $lang['btn_report'] = '<i class="fa fa-bullhorn"></i> Report';
 $lang['btn_post_comment'] = 'Post Reply';
 $lang['btn_register'] = 'Register';
-$lang['btn_send_pm'] = 'Send PM';
 $lang['btn_edit_discussion'] = '<i class="fa fa-pencil"></i> Edit';
 $lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Delete';
 $lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Edit';
@@ -52,6 +51,61 @@ $lang['btn_add_group'] = 'Add Group';
 $lang['btn_edit_group'] = 'Edit Group';
 $lang['btn_update_settings'] = 'Update Settings';
 $lang['btn_add_language'] = 'Add Language';
+$lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> PM';
+$lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
+
+//Links
+$lang['lnk_discussions'] = 'Discussions';
+$lang['lnk_login'] = 'Login';
+$lang['lnk_logout'] = 'Logout';
+$lang['lnk_profile'] = 'Profile';
+$lang['lnk_settings'] = 'Settings';
+$lang['lnk_change_password'] = 'Change Password';
+$lang['lnk_dashboard'] = 'Dashboard';
+$lang['lnk_register'] = 'Register';
+$lang['lnk_categories'] = 'Categories';
+$lang['lnk_add_category'] = 'Add Category';
+$lang['lnk_users'] = 'Users';
+$lang['lnk_add_user'] = 'Add User';
+$lang['lnk_groups'] = 'Groups';
+$lang['lnk_add_group'] = 'Add Group';
+$lang['lnk_visit_site'] = 'Visit Site';
+$lang['lnk_discussions'] = 'Discussions';
+$lang['lnk_language_packs'] = 'Language Packs';
+
+// Titles
+$lang['tle_recent_discussions'] = 'Recent Discussions';
+$lang['tle_new_reply'] = 'Post a New Reply';
+$lang['tle_new_discussion'] = 'Create a New Discussion';
+$lang['tle_report_discussion'] = 'Report Discussion';
+$lang['tle_all_discussions'] = 'All Discussions';
+$lang['tle_report_comment'] = 'Report Comment';
+$lang['tle_register'] = 'Register';
+$lang['tle_login'] = 'Login';
+$lang['tle_change_password'] = 'Change Password';
+$lang['tle_forgot_password'] = 'Forgot Password';
+$lang['tle_reset_password'] = 'Reset Password';
+$lang['tle_dashboard'] = 'Dashboard';
+$lang['tle_users'] = 'Users';
+$lang['tle_groups'] = 'Groups';
+$lang['tle_categories'] = 'Categories';
+$lang['tle_discussions'] = 'Discussions';
+$lang['tle_settings'] = 'Settings';
+$lang['tle_language_packs'] = 'Language Packs';
+$lang['tle_add_language'] = 'Add Language';
+$lang['tle_add'] = 'Add';
+$lang['tle_edit'] = 'Edit';
+
+// Breadcrumbs
+$lang['crumb_dashboard'] = 'Dashboard';
+$lang['crumb_users'] = 'Users';
+$lang['crumb_groups'] = 'Groups';
+$lang['crumb_categories'] = 'Categories';
+$lang['crumb_discussions'] = 'Discussions';
+$lang['crumb_settings'] = 'Settings';
+$lang['crumb_language_packs'] = 'Language Packs';
+$lang['crumb_add'] = 'Add';
+$lang['crumb_edit'] = 'Edit';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';

@@ -36,13 +36,16 @@ class Forums extends Front_Controller
         }
 
         // Build the page breadcrumbs.
-        $this->crumbs->add('recent discussions');
+        $this->crumbs->add(lang('tle_recent_discussions'));
 
         // Define the page data.
         $data['page'] = array(
             // Buttons
             'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-            // Other
+            //fixed page element language
+			'pg_recent_discussions' => lang('pg_recent_discussions'),
+			'pg_no_discussions' => lang('pg_no_discussions'),
+			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,
             'breadcrumbs' => $this->crumbs->output(),

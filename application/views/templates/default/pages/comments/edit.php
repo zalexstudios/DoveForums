@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Edit Comment</h3>
+        <h3 class="panel-title">{tle_edit_comment}</h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
             <div class="col-md-3">
 
-                <strong>Username:</strong>
+                <strong>{pg_username}</strong>
 
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="col-md-3">
 
-                <strong>Your Message:</strong>
+                <strong>{pg_your_message}</strong>
 
             </div>
 

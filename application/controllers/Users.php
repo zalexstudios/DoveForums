@@ -70,6 +70,14 @@ class Users extends Front_Controller {
                 'label' => 'lang:rules_confirm_new_password',
             ),
         ),
+        'settings' => array(
+            //0
+            array(
+                'field' => 'email',
+                'rules' => 'required|valid_email',
+                'label' => 'lang:rules_email',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -173,6 +181,29 @@ class Users extends Front_Controller {
                 'name' => 'confirm_new_password',
                 'class' => 'form-control',
                 'type' => 'password',
+            ),
+        ),
+        'settings' => array(
+            //0
+            array(
+                'id' => 'email',
+                'name' => 'email',
+                'class' => 'form-control',
+                'type' => 'email',
+            ),
+            //1
+            array(
+                'id' => 'first_name',
+                'name' => 'first_name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //2
+            array(
+                'id' => 'last_name',
+                'name' => 'last_name',
+                'class' => 'form-control',
+                'type' => 'text',
             ),
         ),
     );
@@ -725,7 +756,88 @@ class Users extends Front_Controller {
      */
     public function settings()
     {
+        // Set the form validation rules.
+        $this->form_validation->set_rules( $this->validation_rules['settings'] );
 
+        // See if the form validation has been run.
+        if ( $this->form_validation->run() === FALSE )
+        {
+            // Define the page title.
+            $data['title'] = lang('tle_settings');
+
+            // Define the page template.
+            $data['template'] = 'pages/users/settings';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add( lang('crumb_users'), 'users');
+            $this->crumbs->add( lang('crumb_settings') );
+
+            // Get all the languages.
+            $languages = $this->forums->get_languages();
+
+            // Build the languages dropdown.
+            if(!empty($languages))
+            {
+                foreach($languages as $row)
+                {
+                    $language_options[$row->code] = $row->language;
+                }
+            }
+
+            // Get the user.
+            $user = $this->ion_auth->user()->row();
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('users/settings') ),
+                'form_close' => form_close(),
+                // Fields.
+                'email_field' => form_input( $this->form_fields['settings'][0], set_value( $this->form_fields['settings'][0]['name'], $user->email ) ),
+                'first_name_field' => form_input( $this->form_fields['settings'][1], set_value( $this->form_fields['settings'][1]['name'], $user->first_name ) ),
+                'last_name_field' => form_input( $this->form_fields['settings'][2], set_value( $this->form_fields['settings'][2]['name'], $user->last_name ) ),
+                'language_field' => form_dropdown('category', $language_options, $user->language, 'class="form-control"'),
+                // Labels.
+                'email_label' => form_label( lang('lbl_email'), $this->form_fields['settings'][0]['id']),
+                'first_name_label' => form_label( lang('lbl_first_name'), $this->form_fields['settings'][1]['id']),
+                'last_name_label' => form_label( lang('lbl_last_name'), $this->form_fields['settings'][2]['id']),
+                'language_label' => form_label(lang('lbl_language'), 'language'),
+                // Errors.
+                'email_error' => form_error($this->form_fields['change_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Buttons.
+                'btn_update_settings' => form_submit('submit', lang('btn_update_settings'), 'class="btn btn-primary btn-sm"'),
+                'breadcrumbs' => $this->crumbs->output(),
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+        }
+        else
+        {
+            // Gather the data.
+            $data = array(
+                'email' => $this->input->post('email'),
+                'first_name' => $this->input->post('first_name'),
+                'last_name' => $this->input->post('last_name'),
+                'language' => $this->input->post('language'),
+            );
+
+            $update = $this->ion_auth->update($this->session->userdata('user_id'), $data);
+
+            if($update)
+            {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->messages(), 'success');
+
+                // Logout.
+                redirect( site_url('users/settings'), 'refresh');
+            } else {
+                // Create a message.
+                $this->messageci->set( $this->ion_auth->errors(), 'error');
+
+                // Redirect.
+                redirect( site_url('users/settings'), 'refresh');
+            }
+        }
     }
 
     /**

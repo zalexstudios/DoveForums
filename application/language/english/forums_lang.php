@@ -130,6 +130,7 @@ $lang['txt_joined'] = 'Joined:';
 $lang['txt_last_visit'] = 'Last Visit:';
 $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
+$lang['txt_personal'] = 'Personal';
 
 // Labels
 $lang['lbl_username'] = 'Username:';

@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - models/Forums_m.php - Added count_user_discussions($user_id) function.
 - models/Forums_m.php - Added count_user_comments($user_id) function.
 - controllers/Users.php - Added profile function.
+- controllers/Users.php - Added settings function.
+- templates/default/pages/users/settings.php
 
 ## [0.0.1] - 2015-06-02
 ### Changed

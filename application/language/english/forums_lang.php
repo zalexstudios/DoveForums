@@ -307,3 +307,7 @@ $lang['tbl_description'] = 'Description';
 $lang['tbl_language'] = 'Language';
 $lang['tbl_code'] = 'Code';
 $lang['tbl_icon'] = 'Icon';
+
+// Tool Tips
+$lang['tip_report_user'] = 'Report this user to a moderator.';
+$lang['tip_send_user_pm'] = 'Send this user a private message.';

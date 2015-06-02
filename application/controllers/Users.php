@@ -773,8 +773,8 @@ class Users extends Front_Controller {
             'total_discussions' => $this->forums->count_user_discussions($user->id),
             'total_comments' => $this->forums->count_user_comments($user->id),
             // Buttons.
-            'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
-            'btn_report_user' => anchor( site_url('users/report_user/'.$user->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this user to a moderator.')),
+            'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
+            'btn_report_user' => anchor( site_url('users/report_user/'.$user->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_user'))),
             'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
             'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
             // Other

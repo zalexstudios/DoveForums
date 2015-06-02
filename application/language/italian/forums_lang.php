@@ -1,6 +1,5 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 /**
  * Name:  Forums Language
  * Language: Italian
@@ -17,7 +16,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Description:  English language file..
  *
  * Requirements: PHP5 or above
- *
  */
 
 // Buttons
@@ -77,10 +75,11 @@ $lang['lnk_language_packs'] = 'Pacchi Lingua';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Discussioni Recenti';
-$lang['tle_new_reply'] = 'Inserisci una Risposta';
-$lang['tle_new_discussion'] = 'Crea una nuova Discussione';
+$lang['tle_new_reply'] = 'Inserisci Una Risposta';
+$lang['tle_new_discussion'] = 'Crea Nuova Discussione';
 $lang['tle_report_discussion'] = 'Segnala Discussione';
 $lang['tle_all_discussions'] = 'Tutte le Discussioni';
+$lang['tle_all_categories'] = 'Tutte le Categorie';
 $lang['tle_register'] = 'Registrati';
 $lang['tle_login'] = 'Login';
 $lang['tle_change_password'] = 'Cambia Password';
@@ -93,34 +92,114 @@ $lang['tle_categories'] = 'Categorie';
 $lang['tle_all_categories'] = 'Tutte le Categorie';
 $lang['tle_edit_comment'] = 'Modifica Commento';
 $lang['tle_report_comment'] = 'Segnala Commento';
-$lang['tle_all_users'] = 'Tutti gli Users';
 $lang['tle_discussions'] = 'Discussioni';
 $lang['tle_settings'] = 'Impostazioni';
 $lang['tle_language_packs'] = 'Pacchi Lingua';
 $lang['tle_add_language'] = 'Aggiungi Lingua';
 $lang['tle_add'] = 'Aggiungi';
 $lang['tle_edit'] = 'Modifica';
+$lang['tle_profile'] = 'Profilo';
 
-//Page Elements
-$lang['pg_username'] = 'Username:';
-$lang['pg_your_message'] = 'Il tuo Messaggio:';
-$lang['pg_report_reason'] = 'Ragione Segnalazione:';
-$lang['pg_recent_discussions'] = 'Discussioni Recenti';
-$lang['pg_no_discussions'] = 'Nessuna Discussione';
+// Static Text
+$lang['txt_no_discussions'] = 'Nessuna Discussione';
+$lang['txt_views'] = 'Visite';
+$lang['txt_comments'] = 'Commenti';
+$lang['txt_discussions'] = 'Discussioni';
+$lang['txt_most_recent_by'] = 'Piu\' recente da';
+$lang['txt_most_recent'] = 'Piu\' recente';
+$lang['txt_by'] = 'Da';
+$lang['txt_all_categories'] = 'Tutte le Categorie';
+$lang['txt_username'] = 'Username:';
+$lang['txt_your_message'] = 'Il tuo Messaggio:';
+$lang['txt_report_reason'] = 'Ragione Segnalazione';
+$lang['txt_active'] = '<span class="text-success">Attivo</span>';
+$lang['txt_inactive'] = '<span class="text-danger">Inattivo</span>';
+$lang['txt_site'] = 'Sito';
+$lang['txt_gravatar'] = 'Gravatar';
+$lang['txt_reading'] = 'In Lettura';
+$lang['txt_no_comments'] = 'Nessun commento da visualizzare, perche\' non ne scrivi uno?';
+$lang['txt_displaying'] = 'Mostrando';
+$lang['txt_to'] = 'da';
+$lang['txt_of'] = 'di';
+$lang['txt_quick_reply'] = 'Risposta Veloce:';
+$lang['txt_reply_to_discussion'] = 'Rispondi alla discussione:';
+$lang['txt_subject'] = 'Oggetto:';
+$lang['txt_category'] = 'Categoria:';
+$lang['txt_real_name'] = 'Nome Reale:';
+$lang['txt_joined'] = 'Iscritto il:';
+$lang['txt_last_visit'] = 'Ultima Visita:';
+$lang['txt_total_discussions'] = 'Discussioni Totali:';
+$lang['txt_total_comments'] = 'Commenti Totali:';
 
-//Report Reasons
-$lang['rr_default_reason'] = 'Seleziona un motivo...';
-$lang['rr_break_rule'] ='Rottura regole dei Forums';
-$lang['rr_inappropriate'] = 'Contenuto Inappropriato';
-$lang['rr_spam'] = 'Spam';
-$lang['rr_wrong_forum'] = 'Sezione Sbagliata';
-$lang['rr_other'] =  'Altro';
+// Labels
+$lang['lbl_username'] = 'Username:';
+$lang['lbl_email'] = 'Email:';
+$lang['lbl_confirm_email'] = 'Conferma Email:';
+$lang['lbl_password'] = 'Password:';
+$lang['lbl_confirm_password'] = 'Conferma Password:';
+$lang['lbl_old_password'] = 'Vecchia Password:';
+$lang['lbl_new_password'] = 'Nuova Password:';
+$lang['lbl_first_name'] = 'Nome:';
+$lang['lbl_last_name'] = 'Cognome:';
+$lang['lbl_name'] = 'Nome:';
+$lang['lbl_description'] = 'Descrizione:';
+$lang['lbl_slug'] = 'Slug:';
+$lang['lbl_site_name'] = 'Nome del Sito:';
+$lang['lbl_site_email'] = 'Email del Sito:';
+$lang['lbl_site_keywords'] = 'Keywords del Sito';
+$lang['lbl_site_language'] = 'Lingua del Sito:';
+$lang['lbl_site_description'] = 'Descrizione del Sito';
+$lang['lbl_gravatar_rating'] = 'Valutazione Gravatar';
+$lang['lbl_gravatar_default_image'] = 'Immagine di Default Gravatar:';
+$lang['lbl_gravatar_size'] = 'Dimensione Gravatar:';
+$lang['lbl_discussions_per_page'] = 'Discussioni Per Pagina:';
+$lang['lbl_comments_per_page'] = 'Commenti Per Pagina:';
+$lang['lbl_code'] = 'Code:';
+$lang['lbl_language'] = 'Lingua:';
+$lang['lbl_icon'] = 'Icone:';
+
+// Dropdown Menus.
+$lang['dd_default_reason'] = 'Scegli un Motivo...';
+$lang['dd_break_rules'] = 'Rottura delle Regole del Forum';
+$lang['dd_inappropriate_content'] = 'Contenuto Inappropriato';
+$lang['dd_spam_content'] = 'Spam';
+$lang['dd_wrong_forum'] = 'Categoria Errata';
+$lang['dd_other'] = 'Altro';
+$lang['dd_g'] = 'G: Adatta a qualsiasi sito web con spettatori di qualsiasi tipo';
+$lang['dd_pg'] = 'PG: Puo\' contenere riferimenti a gestacci, individui con vestiti provocanti, imprecazioni minori o leggera violenza';
+$lang['dd_r'] = 'R: Puo\' contenere riferimenti a come dure profanita\', intensa violenza, nudita\' o utilizzo di droghe';
+$lang['dd_x'] = 'X: Puo\' contenere riferimenti a immagini sessuali esplicite o violenza estremamente disturbante';
+$lang['dd_mm'] = 'Una semplice siluette di una persona in stile cartoon';
+$lang['dd_identicon'] = 'Un pattern geometrico basato sull\'hash della propria email';
+$lang['dd_monsterid'] = 'Un `mostro` generato con differenti colori, facce, etc';
+$lang['dd_wavatar'] = 'Visi generati con differenti caratteristiche e sfondi';
+$lang['dd_retro'] = 'Facce generate per raffigurare visi in stile Arcade ad 8-bit';
+$lang['dd_blank'] = 'Un immagine PNG trasparente';
+$lang['dd_10_10'] = '10px x 10px';
+$lang['dd_20_20'] = '20px x 20px';
+$lang['dd_30_30'] = '30px x 30px';
+$lang['dd_40_40'] = '40px x 40px';
+$lang['dd_50_50'] = '50px x 50px';
+$lang['dd_60_60'] = '60px x 60px';
+$lang['dd_5'] = '5';
+$lang['dd_10'] = '10';
+$lang['dd_15'] = '15';
+$lang['dd_20'] = '20';
+$lang['dd_25'] = '25';
+$lang['dd_30'] = '30';
+$lang['dd_35'] = '35';
+$lang['dd_40'] = '40';
+$lang['dd_45'] = '45';
+$lang['dd_50'] = '50';
+$lang['dd_category_default'] = 'Scegli una Categoria...';
 
 // Breadcrumbs
 $lang['crumb_categories'] = 'Categorie';
 $lang['crumb_all_categories'] = 'Tutte le Categorie';
 $lang['crumb_edit_comment'] = 'Modifica Commento';
 $lang['crumb_report_comment'] = 'Segnala Commento';
+$lang['crumb_report_discussion'] = 'Segnala Discussione';
+$lang['crumb_edit_discussion'] = 'Modifica Discussione';
 $lang['crumb_dashboard'] = 'Cruscotto';
 $lang['crumb_users'] = 'Users';
 $lang['crumb_groups'] = 'Gruppi';
@@ -130,6 +209,14 @@ $lang['crumb_settings'] = 'Impostazioni';
 $lang['crumb_language_packs'] = 'Pacchi Lingua';
 $lang['crumb_add'] = 'Aggiungi';
 $lang['crumb_edit'] = 'Modifica';
+$lang['crumb_recent_discussions'] = 'Discussioni Recenti';
+$lang['crumb_create_discussion'] = 'Crea Discussione';
+$lang['crumb_register'] = 'Registrati';
+$lang['crumb_login'] = 'Login';
+$lang['crumb_change_password'] = 'Cambia Password';
+$lang['crumb_forgot_password'] = 'Password Dimenticata';
+$lang['crumb_reset_password'] = 'Resetta Password';
+$lang['crumb_profile'] = 'Profilo';
 
 // Success Messages.
 $lang['success_login'] = 'Login effettuato con successo.';
@@ -208,15 +295,19 @@ $lang['rules_site_description'] = 'Descrizione Sito';
 
 // Table Headers
 $lang['tbl_username'] = 'Username';
-$lang['tbl_first_name'] = 'First Name';
-$lang['tbl_last_name'] = 'Last Name';
-$lang['tbl_status'] = 'Status';
-$lang['tbl_action'] = 'Action';
-$lang['tbl_name'] = 'Name';
-$lang['tbl_discussion_count'] = 'Discussions';
-$lang['tbl_comment_count'] = 'Comments';
+$lang['tbl_first_name'] = 'Nome';
+$lang['tbl_last_name'] = 'Cognome';
+$lang['tbl_status'] = 'Stato';
+$lang['tbl_action'] = 'Azione';
+$lang['tbl_name'] = 'Nome';
+$lang['tbl_discussion_count'] = 'Discussioni';
+$lang['tbl_comment_count'] = 'Commenti';
 $lang['tbl_slug'] = 'Slug';
-$lang['tbl_description'] = 'Description';
-$lang['tbl_language'] = 'Language';
+$lang['tbl_description'] = 'Descrizione';
+$lang['tbl_language'] = 'Lingua';
 $lang['tbl_code'] = 'Code';
 $lang['tbl_icon'] = 'Icon';
+
+// Tool Tips
+$lang['tip_report_user'] = 'Segnala quest\'user ad un moderatore.';
+$lang['tip_send_user_pm'] = 'Invia a quest\' user un messaggio privato.';

@@ -41,7 +41,7 @@
 
                             <h5 class="media-heading"><strong>{name}</strong></h5>
 
-                            <p class="small">{view_count} Views&nbsp;&nbsp;&nbsp;&nbsp;{comment_count} Comments&nbsp;&nbsp;&nbsp;&nbsp;Most recent by {last_comment_username}&nbsp;&nbsp;&nbsp;&nbsp;{last_comment_date}&nbsp;&nbsp;&nbsp;&nbsp;{category_name}</p>
+                            <p class="small">{view_count} <?=lang('txt_views');?>&nbsp;&nbsp;&nbsp;&nbsp;{comment_count} <?=lang('txt_comments');?>&nbsp;&nbsp;&nbsp;&nbsp;<?=lang('txt_most_recent_by');?> {last_comment_username}&nbsp;&nbsp;&nbsp;&nbsp;{last_comment_date}&nbsp;&nbsp;&nbsp;&nbsp;{category_name}</p>
 
                         </div>
 
@@ -55,7 +55,7 @@
 
                         <div class="media-body">
 
-                            <h4 class="media-heading"><strong>{pg_no_discussions}</strong></h4>
+                            <h4 class="media-heading"><strong><?=lang('txt_no_discussions');?></strong></h4>
 
                         </div>
 

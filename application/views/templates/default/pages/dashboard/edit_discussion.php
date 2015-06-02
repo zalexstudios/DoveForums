@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Edit Discussion</h3>
+        <h3 class="panel-title"><?=lang('tle_edit');?></h3>
 
     </div>
 

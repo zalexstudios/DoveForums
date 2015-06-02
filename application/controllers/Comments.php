@@ -76,10 +76,6 @@ class Comments extends Front_Controller {
                 'btn_update_comment' => form_submit('submit', lang('btn_update_comment'), 'class="btn btn-primary btn-sm"'),
                 // Hidden.
                 'comment_id_hidden_field' => form_hidden('comment_id', $comment_id),
-				//fixed page element language
-				'tle_edit_comment' => lang('tle_edit_comment'),
-				'pg_username' => lang('pg_username'),
-				'pg_your_message' => lang('pg_your_message'),
                 // Other.
                 'breadcrumbs' => $this->crumbs->output(),
                 'logged_in_user' => $this->session->userdata('username'),
@@ -178,12 +174,12 @@ class Comments extends Front_Controller {
 
             // Build the reason dropdown.
             $reason = array(
-                '' => lang('rr_default_reason'),
-                '1' => lang('rr_break_rule'),
-                '2' => lang('rr_inappropriate'),
-                '3' => lang('rr_spam'),
-                '4' => lang('rr_wrong_forum'),
-                '5' => lang('rr_other'),
+                '' => lang('dd_default_reason'),
+                '1' => lang('dd_break_rules'),
+                '2' => lang('dd_inappropriate_content'),
+                '3' => lang('dd_spam_content'),
+                '4' => lang('dd_wrong_forum'),
+                '5' => lang('dd_other'),
             );
 
             $data['page'] = array(
@@ -198,10 +194,6 @@ class Comments extends Front_Controller {
                 'comment_id_hidden_field' => form_hidden('comment_id', $comment_id),
                 // Buttons
                 'btn_report_comment' => form_submit('submit', lang('btn_report_comment'), 'class="btn btn-primary btn-sm"'),
-				//fixed page element language
-				'tle_report_comment' => lang('tle_report_comment'),
-				'pg_username' => lang('pg_username'),
-				'pg_report_reason' => lang('pg_report_reason'),
                 // Other.
                 'breadcrumbs' => $this->crumbs->output(),
                 'logged_in_user' => $this->session->userdata('username'),

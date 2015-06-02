@@ -421,7 +421,7 @@ class Discussions extends Front_Controller {
             $data['template'] = 'pages/discussions/new';
 
             // Build the page breadcrumbs.
-            $this->crumbs->add('Create Discussion');
+            $this->crumbs->add( lang('crumb_create_discussion') );
 
             // Get all the categories.
             $categories = $this->forums->get_categories_dropdown();
@@ -429,7 +429,7 @@ class Discussions extends Front_Controller {
             // Build the category dropdown.
             if(!empty($categories))
             {
-                $category_options[NULL] = 'Pick Category...';
+                $category_options[NULL] = lang('dd_category_default');
 
                 foreach($categories as $row)
                 {
@@ -519,16 +519,16 @@ class Discussions extends Front_Controller {
             $data['template'] = 'pages/discussions/report';
 
             // Build the page breadcrumbs.
-            $this->crumbs->add('Report Discussion');
+            $this->crumbs->add( lang('crumb_report_discussions') );
 
             // Build the reason dropdown.
             $reason = array(
-                '' => 'Pick Reason...',
-                '1' => 'Breaks Forum Rules',
-                '2' => 'Inappropriate Content',
-                '3' => 'Spam Content',
-                '4' => 'Wrong Forum',
-                '5' => 'Other',
+                '' => lang('dd_default_reason'),
+                '1' => lang('dd_break_rules'),
+                '2' => lang('dd_inappropriate_content'),
+                '3' => lang('dd_spam_content'),
+                '4' => lang('dd_wrong_forum'),
+                '5' => lang('dd_other'),
             );
 
             $data['page'] = array(
@@ -609,7 +609,7 @@ class Discussions extends Front_Controller {
             $data['template'] = 'pages/discussions/edit';
 
             // Build the page breadcrumbs.
-            $this->crumbs->add('Edit Discussion');
+            $this->crumbs->add( lang('crumb_edit_discussion') );
 
             // Get the discussion from the database.
             $discussion = $this->forums->get_discussion_by_id($discussion_id);
@@ -620,7 +620,7 @@ class Discussions extends Front_Controller {
             // Build the category dropdown.
             if(!empty($categories))
             {
-                $category_options[NULL] = 'Pick Category...';
+                $category_options[NULL] = lang('dd_category_default');
 
                 foreach($categories as $row)
                 {

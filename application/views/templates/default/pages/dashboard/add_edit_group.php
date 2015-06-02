@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Add Group</h3>
+        <h3 class="panel-title"><?php if($this->uri->segment('2') === 'add_group') { echo lang('tle_add'); } else { echo lang('tle_edit'); } ?></h3>
 
     </div>
 

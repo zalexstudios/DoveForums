@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Settings</h3>
+        <h3 class="panel-title"><?=lang('tle_settings');?></h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
         <fieldset>
 
-            <legend>Site</legend>
+            <legend><?=lang('txt_site');?></legend>
 
             <div class="row">
 
@@ -71,7 +71,7 @@
 
         <fieldset>
 
-            <legend>Gravatar</legend>
+            <legend><?=lang('txt_gravatar');?></legend>
 
             <div class="row">
 
@@ -104,7 +104,7 @@
 
         <fieldset>
 
-            <legend>Reading</legend>
+            <legend><?=lang('txt_reading');?></legend>
 
             <div class="row">
 

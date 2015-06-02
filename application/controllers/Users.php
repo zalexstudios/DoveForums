@@ -210,8 +210,8 @@ class Users extends Front_Controller {
             $data['template'] = 'pages/users/register';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Users', 'users');
-            $this->crumbs->add('Register');
+            $this->crumbs->add( lang('crumb_users'), 'users');
+            $this->crumbs->add( lang('crumb_register') );
 
             // Define the page data.
             $data['page'] = array(
@@ -225,11 +225,11 @@ class Users extends Front_Controller {
                 'email_field' => form_input( $this->form_fields['register'][3], set_value( $this->form_fields['register'][3]['name'], $this->input->post('email') ) ),
                 'confirm_email_field' => form_input( $this->form_fields['register'][4], set_value( $this->form_fields['register'][4]['name'], $this->input->post('confirm_email') ) ),
                 // Labels.
-                'username_label' => form_label('Username:', $this->form_fields['register'][0]['id']),
-                'password_label' => form_label('Password:', $this->form_fields['register'][1]['id']),
-                'confirm_password_label' => form_label('Confirm Password:', $this->form_fields['register'][2]['id']),
-                'email_label' => form_label('Email:', $this->form_fields['register'][3]['id']),
-                'confirm_email_label' => form_label('Confirm Email:', $this->form_fields['register'][4]['id']),
+                'username_label' => form_label( lang('lbl_users'), $this->form_fields['register'][0]['id']),
+                'password_label' => form_label( lang('lbl_password'), $this->form_fields['register'][1]['id']),
+                'confirm_password_label' => form_label( lang('lbl_confirm_password'), $this->form_fields['register'][2]['id']),
+                'email_label' => form_label( lang('lbl_email'), $this->form_fields['register'][3]['id']),
+                'confirm_email_label' => form_label( lang('lbl_confirm_email'), $this->form_fields['register'][4]['id']),
                 // Errors.
                 'username_error' => form_error($this->form_fields['register'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'password_error' => form_error($this->form_fields['register'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
@@ -304,8 +304,8 @@ class Users extends Front_Controller {
             $data['template'] = 'pages/users/login';
 
             // Build the page breadcrumbs.
-            $this->crumbs->add('Users', 'users');
-            $this->crumbs->add('Login');
+            $this->crumbs->add( lang('crumb_users'), 'users');
+            $this->crumbs->add( lang('crumb_login') );
 
             $data['page'] = array(
                 // Form Data.
@@ -315,8 +315,8 @@ class Users extends Front_Controller {
                 'identity_field' => form_input( $this->form_fields['login'][0], set_value( $this->form_fields['login'][0]['name'], $this->input->post('identity') ) ),
                 'password_field' => form_input( $this->form_fields['login'][1] ),
                 // Labels.
-                'identity_label' => form_label( 'Email:', $this->form_fields['login'][0]['id'] ),
-                'password_label' => form_label( 'Password:', $this->form_fields['login'][1]['id'] ),
+                'identity_label' => form_label( lang('lbl_email'), $this->form_fields['login'][0]['id'] ),
+                'password_label' => form_label( lang('lbl_password'), $this->form_fields['login'][1]['id'] ),
                 // Buttons.
                 'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
                 'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
@@ -463,8 +463,8 @@ class Users extends Front_Controller {
             $data['template'] = 'pages/users/change_password';
 
             // Build the breadcrumbs.
-            $this->crumbs->add('Users', 'users');
-            $this->crumbs->add('Change Password');
+            $this->crumbs->add( lang('crumb_users'), 'users');
+            $this->crumbs->add( lang('crumb_change_password') );
 
             // Get the user.
             $user = $this->ion_auth->user()->row();
@@ -479,9 +479,9 @@ class Users extends Front_Controller {
                 'new_password_field' => form_input( $this->form_fields['change_password'][1], set_value( $this->form_fields['change_password'][1]['name'], $this->input->post('new_password') ) ),
                 'confirm_new_password_field' => form_input( $this->form_fields['change_password'][2], set_value( $this->form_fields['change_password'][2]['name'], $this->input->post('confirm_new_password') ) ),
                 // Labels.
-                'old_password_label' => form_label('Old Password:', $this->form_fields['change_password'][0]['id']),
-                'new_password_label' => form_label('New Password:', $this->form_fields['change_password'][1]['id']),
-                'confirm_new_password_label' => form_label('Confirm New Password:', $this->form_fields['change_password'][2]['id']),
+                'old_password_label' => form_label( lang('lbl_old_password'), $this->form_fields['change_password'][0]['id']),
+                'new_password_label' => form_label( lang('lbl_new_password'), $this->form_fields['change_password'][1]['id']),
+                'confirm_new_password_label' => form_label( lang('lbl_confirm_password'), $this->form_fields['change_password'][2]['id']),
                 // Errors.
                 'old_password_error' => form_error($this->form_fields['change_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'new_password_error' => form_error($this->form_fields['change_password'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
@@ -545,8 +545,8 @@ class Users extends Front_Controller {
             $data['template'] = 'pages/users/forgot_password';
 
             // Build the page breadcrumbs.
-            $this->crumbs->add('Users', 'users');
-            $this->crumbs->add('Forgot Password');
+            $this->crumbs->add( lang('crumb_users'), 'users');
+            $this->crumbs->add( lang('crumb_forgot_password') );
 
             $data['page'] = array(
                 // Form Data.
@@ -555,7 +555,7 @@ class Users extends Front_Controller {
                 // Fields.
                 'identity_field' => form_input( $this->form_fields['forgot_password'][0], set_value( $this->form_fields['forgot_password'][0]['name'], $this->input->post('identity') ) ),
                 // Labels.
-                'identity_label' => form_label( 'Email:', $this->form_fields['forgot_password'][0]['id'] ),
+                'identity_label' => form_label( lang('lbl_email'), $this->form_fields['forgot_password'][0]['id'] ),
                 // Errors.
                 'identity_error' => form_error($this->form_fields['forgot_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -645,8 +645,8 @@ class Users extends Front_Controller {
                 $data['template'] = 'pages/users/reset_password';
 
                 // Build the page breadcrumbs.
-                $this->crumbs->add('Users', 'users');
-                $this->crumbs->add('Reset Password');
+                $this->crumbs->add( lang('crumb_users'), 'users');
+                $this->crumbs->add( lang('crumb_reset_password') );
 
                 $data['page'] = array(
                     // Form Data.
@@ -656,8 +656,8 @@ class Users extends Front_Controller {
                     'new_password_field' => form_input( $this->form_fields['reset_password'][0], set_value( $this->form_fields['reset_password'][0]['name'], $this->input->post('new_password') ) ),
                     'confirm_new_password_field' => form_input( $this->form_fields['reset_password'][1], set_value( $this->form_fields['reset_password'][1]['name'], $this->input->post('confirm_new_password') ) ),
                     // Labels.
-                    'new_password_label' => form_label( 'New Password:', $this->form_fields['reset_password'][0]['id'] ),
-                    'confirm_new_password_label' => form_label( 'Confirm New Password:', $this->form_fields['reset_password'][1]['id'] ),
+                    'new_password_label' => form_label( lang('lbl_new_password'), $this->form_fields['reset_password'][0]['id'] ),
+                    'confirm_new_password_label' => form_label( lang('lbl_confirm_password'), $this->form_fields['reset_password'][1]['id'] ),
                     // Errors.
                     'new_password_error' => form_error($this->form_fields['reset_password'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                     'confirm_new_password_error' => form_error($this->form_fields['reset_password'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),

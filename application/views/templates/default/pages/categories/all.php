@@ -21,7 +21,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">{tle_all_categories}</h3>
+        <h3 class="panel-title"><?= lang('tle_all_categories'); ?></h3>
 
     </div>
 
@@ -44,9 +44,9 @@
                             <p>
                                 {description}<br />
                                 <span class="small">
-                                    {discussion_count} Discussions&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {comment_count} Comments&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Most recent {latest_discussion}&nbsp;By {last_comment_by}
+                                    {discussion_count} <?= lang('txt_discussions'); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {comment_count} <?= lang('txt_comments'); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <?= lang('txt_most_recent'); ?> {latest_discussion}&nbsp;<?= lang('by'); ?> {last_comment_by}
                                 </span>
                             </p>
 
@@ -62,7 +62,7 @@
 
                         <div class="media-body">
 
-                            <h4 class="media-heading"><strong>{pg_no_discussions}</strong></h4>
+                            <h4 class="media-heading"><strong><?= lang('txt_no_discussions'); ?></strong></h4>
 
                         </div>
 

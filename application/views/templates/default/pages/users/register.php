@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Register</h3>
+        <h3 class="panel-title"><?=lang('tle_register');?></h3>
 
     </div>
 

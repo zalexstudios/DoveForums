@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Reset Password</h3>
+        <h3 class="panel-title"><?=lang('tle_resert_password');?></h3>
 
     </div>
 

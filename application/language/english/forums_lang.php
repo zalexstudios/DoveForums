@@ -98,6 +98,7 @@ $lang['tle_language_packs'] = 'Language Packs';
 $lang['tle_add_language'] = 'Add Language';
 $lang['tle_add'] = 'Add';
 $lang['tle_edit'] = 'Edit';
+$lang['tle_profile'] = 'Profile';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -124,6 +125,11 @@ $lang['txt_quick_reply'] = 'Quick Reply:';
 $lang['txt_reply_to_discussion'] = 'Reply to discussion:';
 $lang['txt_subject'] = 'Subject:';
 $lang['txt_category'] = 'Category:';
+$lang['txt_real_name'] = 'Real Name:';
+$lang['txt_joined'] = 'Joined:';
+$lang['txt_last_visit'] = 'Last Visit:';
+$lang['txt_total_discussions'] = 'Total Discussions:';
+$lang['txt_total_comments'] = 'Total Comments:';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -210,6 +216,7 @@ $lang['crumb_login'] = 'Login';
 $lang['crumb_change_password'] = 'Change Password';
 $lang['crumb_forgot_password'] = 'Forgot Password';
 $lang['crumb_reset_password'] = 'Reset Password';
+$lang['crumb_profile'] = 'Profile';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';

@@ -407,6 +407,28 @@ class Forums_M extends CI_Model {
     }
 
     /**
+     * Count User Discussions
+     *
+     * Counts all the users discussions that have not been flagged.
+     *
+     * @param       integer     $user_id
+     * @return      int
+     * @author      Chris Baines
+     * @since       0.2.0
+     */
+    public function count_user_discussions($user_id)
+    {
+        //Query.
+        $query = $this->db->select('*')
+            ->where('flag', '0')
+            ->where('insert_user_id', $user_id)
+            ->get($this->tables['discussions']);
+
+        // Result
+        return $query->num_rows() > 0 ? $query->num_rows() : 0;
+    }
+
+    /**
      * Update Discussion Count
      *
      * Updates the discussion view count.
@@ -876,6 +898,28 @@ class Forums_M extends CI_Model {
         );
 
         return ($this->_update_comment($comment_id, $data) === TRUE) ? TRUE : FALSE;
+    }
+
+    /**
+     * Count User Comments
+     *
+     * Counts all the users comments that have not been flagged.
+     *
+     * @param       integer     $user_id
+     * @return      int
+     * @author      Chris Baines
+     * @since       0.2.0
+     */
+    public function count_user_comments($user_id)
+    {
+        //Query.
+        $query = $this->db->select('*')
+            ->where('flag', '0')
+            ->where('insert_user_id', $user_id)
+            ->get($this->tables['comments']);
+
+        // Result
+        return $query->num_rows() > 0 ? $query->num_rows() : 0;
     }
 
     /*****************************************************************************************

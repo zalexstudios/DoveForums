@@ -734,11 +734,54 @@ class Users extends Front_Controller {
      * Allows the user to view their profile.
      *
      * @author      Chris Baines
-     * @since       0.0.1
+     * @since       0.2.0
      */
-    public function profile()
+    public function profile($user_id=NULL)
     {
+        // Define the page title.
+        $data['title'] = lang('tle_profile');
 
+        // Define the page template.
+        $data['template'] = 'pages/users/profile';
+
+        // Build the page breadcrumbs.
+        $this->crumbs->add( lang('crumb_users'), 'users');
+        $this->crumbs->add( lang('crumb_profile') );
+
+        // Get the user from the database.
+        if(!$user_id)
+        {
+            $user = $this->ion_auth->user()->row();
+        } else {
+            $user = $this->ion_auth->user($user_id)->row();
+        }
+
+        // Build the discussion starters avatar.
+        $data['avatar'] = array(
+            'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), 100, $this->config->item('gravatar_default_image') ),
+            'class' => 'media-object img-circle center-block'
+        );
+
+        $data['page'] = array(
+            // User data.
+            'username' => $user->username,
+            'joined' => unix_to_human($user->created_on ),
+            'last_visit' => unix_to_human($user->last_login),
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'avatar' => img( element('avatar', $data ) ),
+            'total_discussions' => $this->forums->count_user_discussions($user->id),
+            'total_comments' => $this->forums->count_user_comments($user->id),
+            // Buttons.
+            'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a private message.')),
+            'btn_report_user' => anchor( site_url('users/report_user/'.$user->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this user to a moderator.')),
+            'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
+            'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
     function _get_csrf_nonce()

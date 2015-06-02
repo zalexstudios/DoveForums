@@ -5,6 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Changed
 
+## [0.0.2] - 2015-06-02
+### Changed
+- core/MY_Controller, changed version number for minor feature additions.
+- language/english/forums_lang.php, added additional language files for new pages.
+
+### Added
+- templates/default/pages/users/profile.php
+- models/Forums_m.php - Added count_user_discussions($user_id) function.
+- models/Forums_m.php - Added count_user_comments($user_id) function.
+- controllers/Users.php - Added profile function.
+
 ## [0.0.1] - 2015-06-02
 ### Changed
 - controllers/Forums.php, updated any static text to come from language file.

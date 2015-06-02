@@ -53,6 +53,7 @@ $lang['btn_update_settings'] = 'Update Settings';
 $lang['btn_add_language'] = 'Add Language';
 $lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> PM';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
+$lang['btn_report_user'] = 'Report User';
 
 //Links
 $lang['lnk_discussions'] = 'Discussions';
@@ -98,7 +99,8 @@ $lang['tle_language_packs'] = 'Language Packs';
 $lang['tle_add_language'] = 'Add Language';
 $lang['tle_add'] = 'Add';
 $lang['tle_edit'] = 'Edit';
-$lang['tle_profile'] = 'Profile';
+$lang['tle_profile'] = '%s`s Profile';
+$lang['tle_report_user'] = 'Report User';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -130,6 +132,7 @@ $lang['txt_joined'] = 'Joined:';
 $lang['txt_last_visit'] = 'Last Visit:';
 $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
+$lang['txt_personal'] = 'Personal';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -216,7 +219,8 @@ $lang['crumb_login'] = 'Login';
 $lang['crumb_change_password'] = 'Change Password';
 $lang['crumb_forgot_password'] = 'Forgot Password';
 $lang['crumb_reset_password'] = 'Reset Password';
-$lang['crumb_profile'] = '%s\'s Profile';
+$lang['crumb_profile'] = '%s`s Profile';
+$lang['crumb_report'] = 'Report User';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -240,6 +244,7 @@ $lang['success_delete_comment'] = 'The comment has been removed.';
 $lang['success_report_discussion'] = 'The discussion has been reported.';
 $lang['success_report_comment'] = 'The comment has been reported.';
 $lang['success_update_settings'] = 'The settings have been updated.';
+$lang['success_report_user'] = 'The user has been reported to a moderator.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -270,6 +275,8 @@ $lang['error_delete_comment'] = 'There was a problem removing the comment.';
 $lang['error_report_discussion'] = 'There was a problem reporting the discussion.';
 $lang['error_report_comment'] = 'There was a problem reporting the comment.';
 $lang['error_update_settings'] = 'There was a problem updating the settings.';
+$lang['error_report_self'] = 'You can not report yourself!';
+$lang['error_report_user'] = 'There was a problem reporting the user.';
 
 // Form Rules
 $lang['rules_comment'] = 'Comment';

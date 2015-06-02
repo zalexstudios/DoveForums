@@ -337,7 +337,7 @@ class Forums_M extends CI_Model {
      * This function grabs a single discussion
      * from the database.
      *
-     * @param       string      $discussion_slug
+     * @param       integer      $discussion_id
      * @return      object
      * @author      Chris Baines
      * @since       0.0.1
@@ -947,6 +947,30 @@ class Forums_M extends CI_Model {
         return $this->db->affected_rows() > 0 ? TRUE : FALSE;
     }
 
+    /**
+     * Report User.
+     *
+     * Allows a user to report another user..
+     *
+     * @param       integer     $user_id
+     * @param       array       $data
+     * @return      mixed
+     * @author      Chris Baines
+     * @since       0.2.0
+     */
+    public function report_user($user_id, $data)
+    {
+        // Build the data.
+        $data = array(
+            'reported' => 1,
+            'report_reason' => $data['reason'],
+            'report_date' => $this->_date(),
+            'report_user_id' => $this->session->userdata('user_id'),
+        );
+
+        return ($this->ion_auth->update($user_id, $data) === TRUE) ? TRUE : FALSE;
+    }
+
     /*****************************************************************************************
      * Misc Functions
      *****************************************************************************************/
@@ -1031,6 +1055,8 @@ class Forums_M extends CI_Model {
     {
         return $this->_update( 'discussion_id', $discussion_id, $this->tables['discussions'], $data );
     }
+
+
 
     /**
      * Update Category

@@ -1467,7 +1467,7 @@ class Dashboard extends Admin_Controller {
             lang('tbl_action')
         );
 
-        // Get all the categories.
+        // Get all the languages.
         $languages = $this->forums->get_languages();
 
         if (!empty($languages))

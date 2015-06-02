@@ -98,7 +98,7 @@ $lang['tle_language_packs'] = 'Pacchi Lingua';
 $lang['tle_add_language'] = 'Aggiungi Lingua';
 $lang['tle_add'] = 'Aggiungi';
 $lang['tle_edit'] = 'Modifica';
-$lang['tle_profile'] = 'Profilo';
+$lang['tle_profile'] = 'Profilo di %s';
 
 // Static Text
 $lang['txt_no_discussions'] = 'Nessuna Discussione';

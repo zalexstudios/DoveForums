@@ -216,7 +216,7 @@ $lang['crumb_login'] = 'Login';
 $lang['crumb_change_password'] = 'Change Password';
 $lang['crumb_forgot_password'] = 'Forgot Password';
 $lang['crumb_reset_password'] = 'Reset Password';
-$lang['crumb_profile'] = 'Profile';
+$lang['crumb_profile'] = '%s\'s Profile';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';

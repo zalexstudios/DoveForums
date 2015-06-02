@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">{username}`s <?=lang('tle_profile');?></h3>
+        <h3 class="panel-title"><?=sprintf(lang('tle_profile'), $username) ;?></h3>
 
     </div>
 

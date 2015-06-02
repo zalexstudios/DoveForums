@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - core/MY_Controller, changed version number for minor feature additions.
 - language/english/forums_lang.php, added additional language files for new pages.
+- models/Install_m.php, updated the users table creation.
 
 ### Added
 - templates/default/pages/users/profile.php
@@ -16,7 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - models/Forums_m.php - Added count_user_comments($user_id) function.
 - controllers/Users.php - Added profile function.
 - controllers/Users.php - Added settings function.
+- controllers/Users.php - Added report function.
 - templates/default/pages/users/settings.php
+- templates/default/pages/users/report.php
 
 ## [0.0.1] - 2015-06-02
 ### Changed

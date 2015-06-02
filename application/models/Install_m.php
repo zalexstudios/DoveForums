@@ -210,8 +210,12 @@ class Install_M extends CI_Model {
               `comments` int(11) DEFAULT NULL,
               `discussions` int(11) DEFAULT NULL,
               `language` varchar(255) DEFAULT 'english',
+              `reported` int(11) NOT NULL DEFAULT '0',
+              `report_reason` varchar(255) NOT NULL,
+              `report_date` datetime NOT NULL,
+              `report_user_id` int(11) NOT NULL,
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";
 
         if(!$this->db->query($sql))

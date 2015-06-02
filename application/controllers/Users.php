@@ -78,6 +78,14 @@ class Users extends Front_Controller {
                 'label' => 'lang:rules_email',
             ),
         ),
+        'report_user' => array(
+            //0
+            array(
+                'field' => 'reason',
+                'rules' => 'required',
+                'label' => 'lang:rules_reason',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -256,7 +264,7 @@ class Users extends Front_Controller {
                 'email_field' => form_input( $this->form_fields['register'][3], set_value( $this->form_fields['register'][3]['name'], $this->input->post('email') ) ),
                 'confirm_email_field' => form_input( $this->form_fields['register'][4], set_value( $this->form_fields['register'][4]['name'], $this->input->post('confirm_email') ) ),
                 // Labels.
-                'username_label' => form_label( lang('lbl_users'), $this->form_fields['register'][0]['id']),
+                'username_label' => form_label( lang('lbl_username'), $this->form_fields['register'][0]['id']),
                 'password_label' => form_label( lang('lbl_password'), $this->form_fields['register'][1]['id']),
                 'confirm_password_label' => form_label( lang('lbl_confirm_password'), $this->form_fields['register'][2]['id']),
                 'email_label' => form_label( lang('lbl_email'), $this->form_fields['register'][3]['id']),
@@ -845,6 +853,7 @@ class Users extends Front_Controller {
      *
      * Allows the user to view their profile.
      *
+     * @param       integer     $user_id
      * @author      Chris Baines
      * @since       0.2.0
      */
@@ -856,10 +865,6 @@ class Users extends Front_Controller {
         // Define the page template.
         $data['template'] = 'pages/users/profile';
 
-        // Build the page breadcrumbs.
-        $this->crumbs->add( lang('crumb_users'), 'users');
-        $this->crumbs->add( lang('crumb_profile') );
-
         // Get the user from the database.
         if(!$user_id)
         {
@@ -867,6 +872,10 @@ class Users extends Front_Controller {
         } else {
             $user = $this->ion_auth->user($user_id)->row();
         }
+
+        // Build the page breadcrumbs.
+        $this->crumbs->add( lang('crumb_users'), 'users');
+        $this->crumbs->add( sprintf(lang('crumb_profile'), $user->username ));
 
         // Build the discussion starters avatar.
         $data['avatar'] = array(
@@ -894,6 +903,106 @@ class Users extends Front_Controller {
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    /**
+     * Report User
+     *
+     * Allows a user to report another user.
+     *
+     * @param       integer     $user_id
+     * @author      Chris Baines
+     * @since       0.2.0
+     */
+    public function report_user($user_id)
+    {
+        // Check a discussion ID was supplied.
+        if ( empty($user_id) || $user_id === NULL )
+        {
+            // Create a message.
+            $this->messageci->set ( lang('error_invalid_id'), 'error' );
+
+            // Redirect.
+            redirect( site_url(), 'refresh' );
+        }
+
+        // Check to make sure the user is not reporting them self.
+        if ($this->session->userdata('user_id') === $user_id )
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_report_self'), 'error' );
+
+            // Redirect
+            redirect( site_url(), 'refresh');
+        }
+
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['report_user']);
+
+        // See if the form has been run.
+        if($this->form_validation->run() === FALSE) {
+
+            // Define the page title.
+            $data['title'] = lang('tle_report_user');
+
+            // Define the page template.
+            $data['template'] = 'pages/users/report';
+
+            // Build the page breadcrumbs.
+            $this->crumbs->add( lang('crumb_users') );
+            $this->crumbs->add( lang('crumb_report') );
+
+            // Build the reason dropdown.
+            $reason = array(
+                '' => lang('dd_default_reason'),
+                '1' => lang('dd_break_rules'),
+                '2' => lang('dd_inappropriate_content'),
+                '3' => lang('dd_spam_content'),
+                '4' => lang('dd_wrong_forum'),
+                '5' => lang('dd_other'),
+            );
+
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open('users/report_user/' . $user_id),
+                'form_close' => form_close(),
+                // Fields.
+                'report_field' => form_dropdown('reason', $reason, '0', 'class="form-control"'),
+                // Errors
+                'report_error' => form_error('reason', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
+                // Hidden
+                'user_id_hidden_field' => form_hidden('user_id', $user_id),
+                // Buttons
+                'btn_report_user' => form_submit('submit', lang('btn_report_user'), 'class="btn btn-primary btn-sm"'),
+                // Other.
+                'breadcrumbs' => $this->crumbs->output(),
+                'logged_in_user' => $this->session->userdata('username'),
+            );
+
+            $this->render(element('page', $data), element('title', $data), element('template', $data));
+        }
+        else
+        {
+            // Gather the data.
+            $data = array(
+                'reason' => $this->input->post('reason'),
+            );
+
+            if ($this->forums->report_user($this->input->post('user_id'), $data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_report_user'),  'success');
+
+                // Redirect.
+                redirect( site_url(), 'refresh' );
+            } else {
+                // Create a message.
+                $this->messageci->set( lang('error_report_user'),  'error');
+
+                // Redirect.
+                redirect( site_url(), 'refresh');
+            }
+        }
     }
 
     function _get_csrf_nonce()

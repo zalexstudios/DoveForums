@@ -55,7 +55,7 @@
 
                         <div class="media-body">
 
-                            <h4 class="media-heading"><strong>No Discussions</strong></h4>
+                            <h4 class="media-heading"><strong>{pg_no_discussions}</strong></h4>
 
                         </div>
 

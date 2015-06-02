@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Report Comment</h3>
+        <h3 class="panel-title">{tle_report_comment}</h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
             <div class="col-md-3">
 
-                <strong>Username:</strong>
+                <strong>{pg_username}</strong>
 
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="col-md-3">
 
-                <strong>Report Reason:</strong>
+                <strong>{pg_report_reason}</strong>
 
             </div>
 

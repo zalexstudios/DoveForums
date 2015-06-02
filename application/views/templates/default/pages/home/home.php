@@ -21,7 +21,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Recent Discussions</h3>
+        <h3 class="panel-title">{pg_recent_discussions}</h3>
 
     </div>
 
@@ -55,7 +55,7 @@
 
                     <div class="media-body">
 
-                        <h4 class="media-heading"><strong>No Discussions</strong></h4>
+                        <h4 class="media-heading"><strong>{pg_no_discussions}</strong></h4>
 
                     </div>
 

@@ -79,7 +79,6 @@ $lang['tle_new_reply'] = 'Post a New Reply';
 $lang['tle_new_discussion'] = 'Create a New Discussion';
 $lang['tle_report_discussion'] = 'Report Discussion';
 $lang['tle_all_discussions'] = 'All Discussions';
-$lang['tle_report_comment'] = 'Report Comment';
 $lang['tle_register'] = 'Register';
 $lang['tle_login'] = 'Login';
 $lang['tle_change_password'] = 'Change Password';
@@ -89,6 +88,9 @@ $lang['tle_dashboard'] = 'Dashboard';
 $lang['tle_users'] = 'Users';
 $lang['tle_groups'] = 'Groups';
 $lang['tle_categories'] = 'Categories';
+$lang['tle_all_categories'] = 'All Categories';
+$lang['tle_edit_comment'] = 'Edit Comment';
+$lang['tle_report_comment'] = 'Report Comment';
 $lang['tle_discussions'] = 'Discussions';
 $lang['tle_settings'] = 'Settings';
 $lang['tle_language_packs'] = 'Language Packs';
@@ -96,7 +98,26 @@ $lang['tle_add_language'] = 'Add Language';
 $lang['tle_add'] = 'Add';
 $lang['tle_edit'] = 'Edit';
 
+//Page Elements
+$lang['pg_username'] = 'Username:';
+$lang['pg_your_message'] = 'Your Message:';
+$lang['pg_report_reason'] = 'Report Reason:';
+$lang['pg_recent_discussions'] = 'Recent Discussions';
+$lang['pg_no_discussions'] = 'No Discussions';
+
+//Report Reasons
+$lang['rr_default_reason'] = 'Pick Reason...';
+$lang['rr_break_rule'] ='Breaks Forum Rules';
+$lang['rr_inappropriate'] = 'Inappropriate Content';
+$lang['rr_spam'] = 'Spam Content';
+$lang['rr_wrong_forum'] = 'Wrong Forum';
+$lang['rr_other'] =  'Other';
+
 // Breadcrumbs
+$lang['crumb_categories'] = 'Categories';
+$lang['crumb_all_categories'] = 'All Categories';
+$lang['crumb_edit_comment'] = 'Edit Comment';
+$lang['crumb_report_comment'] = 'Report Comment';
 $lang['crumb_dashboard'] = 'Dashboard';
 $lang['crumb_users'] = 'Users';
 $lang['crumb_groups'] = 'Groups';

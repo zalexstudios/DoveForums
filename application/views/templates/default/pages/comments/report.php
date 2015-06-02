@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">{tle_report_comment}</h3>
+        <h3 class="panel-title"><?=lang('tle_report_comment');?></h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
             <div class="col-md-3">
 
-                <strong>{pg_username}</strong>
+                <strong><?=lang('txt_username');?></strong>
 
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="col-md-3">
 
-                <strong>{pg_report_reason}</strong>
+                <strong><?=lang('txt_report_reason');?></strong>
 
             </div>
 

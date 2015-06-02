@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Add Category</h3>
+        <h3 class="panel-title"><?=lang('tle_add');?></h3>
 
     </div>
 

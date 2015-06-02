@@ -16,7 +16,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">All Categories</h3>
+        <h3 class="panel-title"><?=lang('tle_categories');?></h3>
 
     </div>
 

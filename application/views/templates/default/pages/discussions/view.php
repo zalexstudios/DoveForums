@@ -189,7 +189,7 @@
 
 <?php } else { ?>
 
-    <div class="alert alert-info"><p>No comments to show, why not create one?</p></div>
+    <div class="alert alert-info"><p><?=lang('txt_no_comments');?></p></div>
 
 <?php } ?>
 
@@ -217,7 +217,7 @@
 <div class="text-center">
 
     {pagination} <br />
-    <p class="text-muted small">Displaying {result_start} to {result_end} of {total}</p>
+    <p class="text-muted small"><?=lang('txt_displaying');?> {result_start} <?=lang('txt_to');?> {result_end} <?=lang('txt_of');?> {total}</p>
 
 </div>
 
@@ -228,7 +228,7 @@
 
         <div class="panel-heading">
 
-            <p class="panel-title">Quick Reply:</p>
+            <p class="panel-title"><?=lang('txt_quick_reply');?></p>
 
         </div>
 

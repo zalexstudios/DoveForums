@@ -1,0 +1,59 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased][unreleased]
+### Changed
+
+## [0.0.2] - 2015-06-02
+### Changed
+- core/MY_Controller, changed version number for minor feature additions.
+- language/english/forums_lang.php, added additional language files for new pages.
+
+### Added
+- templates/default/pages/users/profile.php
+- models/Forums_m.php - Added count_user_discussions($user_id) function.
+- models/Forums_m.php - Added count_user_comments($user_id) function.
+- controllers/Users.php - Added profile function.
+
+## [0.0.1] - 2015-06-02
+### Changed
+- controllers/Forums.php, updated any static text to come from language file.
+- controllers/Categories.php, updated any static text to come from language file.
+- controllers/Comments.php, updated any static text to come from language file.
+- controllers/Dashboard.php, updated any static text to come from language file.
+- controllers/Users.php, updated any static text to come from language file.
+- language/english/forums_lang.php, added some more updates.
+- templates/default/pages/home/home.php, added <?= lang(''); ?> calls where static text was present.
+- templates/default/pages/categories/all.php added <?= lang(''); ?> calls where static text was present.
+- templates/default/pages/categories/view/php added <?= lang(''); ?> calls where static text was present.
+- templates/default/pages/comments/edit.php <?= lang(''); ?> calls where static text was present.
+- templates/default/pages/comments/report.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/dashboard.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/users.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/add_user.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/edit_user.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/groups.php <?= lang(''): ?> calls where static text was present & updated template link.
+- templates/default/pages/dashboard/add_edit_group.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/categories.php <?= lang(''): ?> calls where static text was present & updated template link.
+- templates/default/pages/dashboard/add_category.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/edit_category.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/discussions.php <?= lang(''): ?> calls where static text was present & updated template link.
+- templates/default/pages/dashboard/edit_discussion.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/settings.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/language_packs.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/dashboard/add_edit_language.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/discussions/view.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/discussions/reply.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/discussions/new.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/discussions/edit.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/discussions/report.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/users/register.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/users/login.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/users/change_password.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/users/forgot_password.php <?= lang(''): ?> calls where static text was present.
+- templates/default/pages/users/reset_password.php <?= lang(''): ?> calls where static text was present.
+### Renamed
+- templates/default/pages/dashboard/all_groups.php to templates/default/pages/dashboard/groups.php
+- templates/default/pages/dashboard/all_categories.php to templates/default/pages/dashboard/categories.php
+- templates/default/pages/dashboard/all_discussions.php to templates/default/pages/dashboard/discussions.php

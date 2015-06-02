@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Edit Discussion</h3>
+        <h3 class="panel-title"><?=lang('tle_edit_discussion');?></h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
             <div class="col-md-3">
 
-                <strong>Username:</strong>
+                <strong><?=lang('txt_username');?></strong>
 
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="col-md-3">
 
-                <strong>Subject:</strong>
+                <strong><?=lang('txt_subject');?></strong>
 
             </div>
 
@@ -59,7 +59,7 @@
 
             <div class="col-md-3">
 
-                <strong>Category:</strong>
+                <strong><?=lang('txt_category');?></strong>
 
             </div>
 
@@ -82,7 +82,7 @@
 
             <div class="col-md-3">
 
-                <strong>Your Message:</strong>
+                <strong><?=lang('txt_your_message');?></strong>
 
             </div>
 

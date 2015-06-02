@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Change Password</h3>
+        <h3 class="panel-title"><?=lang('tle_change_password'); ?></h3>
 
     </div>
 

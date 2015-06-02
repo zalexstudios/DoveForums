@@ -16,7 +16,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">All Users</h3>
+        <h3 class="panel-title"><?=lang('tle_users');?></h3>
 
     </div>
 

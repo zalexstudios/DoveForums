@@ -15,7 +15,7 @@ class Categories extends Front_Controller {
     public function index()
     {
         // Define the page title.
-        $data['title'] = lang('tle_all_discussions');
+        $data['title'] = lang('tle_all_categories');
 
         // Define the page template.
         $data['template'] = 'pages/categories/all';
@@ -53,9 +53,6 @@ class Categories extends Front_Controller {
         $data['page'] = array(
             // Buttons
             'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-            //fixed page element language
-			'tle_all_categories' => lang('tle_all_categories'),
-			'pg_no_discussions' => lang('pg_no_discussions'),
 			// Other
             'categories' => element('categories', $data),
             'has_categories' => (!empty($categories)) ? 1 : 0,
@@ -106,8 +103,6 @@ class Categories extends Front_Controller {
         $data['page'] = array(
             // Buttons
             'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-             //fixed page element language
-			'pg_no_discussions' => lang('pg_no_discussions'),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,

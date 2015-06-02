@@ -388,7 +388,7 @@ class Dashboard extends Admin_Controller {
                     $row->username,
                     $row->first_name,
                     $row->last_name,
-                    ($row->active == 1) ? anchor( site_url('dashboard/deactivate_user/'.$row->id), '<span class="text-success">Active</span>') : anchor( site_url('dashboard/activate_user/'.$row->id), '<span class="text-danger">Inactive</span>'),
+                    ($row->active == 1) ? anchor( site_url('dashboard/deactivate_user/'.$row->id), lang('txt_active') ) : anchor( site_url('dashboard/activate_user/'.$row->id), lang('txt_inactive') ),
                     ''.anchor( site_url('dashboard/edit_user/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     ''.anchor( site_url('dashboard/view_user/'.$row->id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     anchor( site_url('dashboard/delete_user/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
@@ -450,11 +450,11 @@ class Dashboard extends Admin_Controller {
                 'email_error' => form_error($this->form_fields['add_user'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'password_error' => form_error($this->form_fields['add_user'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'username_label' => form_label('Username:', $this->form_fields['add_user'][0]['id']),
-                'email_label' => form_label('Email:', $this->form_fields['add_user'][1]['id']),
-                'password_label' => form_label('Password:', $this->form_fields['add_user'][2]['id']),
-                'first_name_label' => form_label('First Name:', $this->form_fields['add_user'][3]['id']),
-                'last_name_label' => form_label('Last Name:', $this->form_fields['add_user'][4]['id']),
+                'username_label' => form_label( lang('lbl_username'), $this->form_fields['add_user'][0]['id']),
+                'email_label' => form_label( lang('lbl_email'), $this->form_fields['add_user'][1]['id']),
+                'password_label' => form_label( lang('lbl_password'), $this->form_fields['add_user'][2]['id']),
+                'first_name_label' => form_label( lang('lbl_first_name'), $this->form_fields['add_user'][3]['id']),
+                'last_name_label' => form_label( lang('lbl_last_name'), $this->form_fields['add_user'][4]['id']),
                 // Buttons.
                 'btn_add_user' => form_submit('submit', lang('btn_add_user'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -545,10 +545,10 @@ class Dashboard extends Admin_Controller {
                 'username_error' => form_error($this->form_fields['edit_user'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'email_error' => form_error($this->form_fields['edit_user'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'username_label' => form_label('Username:', $this->form_fields['edit_user'][0]['id']),
-                'email_label' => form_label('Email:', $this->form_fields['edit_user'][1]['id']),
-                'first_name_label' => form_label('First Name:', $this->form_fields['edit_user'][2]['id']),
-                'last_name_label' => form_label('Last Name:', $this->form_fields['edit_user'][3]['id']),
+                'username_label' => form_label( lang('lbl_username'), $this->form_fields['edit_user'][0]['id']),
+                'email_label' => form_label( lang('lbl_email'), $this->form_fields['edit_user'][1]['id']),
+                'first_name_label' => form_label( lang('lbl_first_name'), $this->form_fields['edit_user'][2]['id']),
+                'last_name_label' => form_label( lang('lbl_last_name'), $this->form_fields['edit_user'][3]['id']),
                 // Buttons.
                 'btn_add_user' => form_submit('submit', lang('btn_update_user'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -717,7 +717,7 @@ class Dashboard extends Admin_Controller {
         $data['title'] = lang('tle_groups');
 
         // Define the page template.
-        $data['template'] = 'pages/dashboard/all_groups';
+        $data['template'] = 'pages/dashboard/groups';
 
         // Build the breadcrumbs.
         $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
@@ -797,12 +797,13 @@ class Dashboard extends Admin_Controller {
                 'name_error' => form_error($this->form_fields['add_edit_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'description_error' => form_error($this->form_fields['add_edit_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'name_label' => form_label('Name:', $this->form_fields['add_edit_group'][0]['id']),
-                'description_label' => form_label('Description:', $this->form_fields['add_edit_group'][1]['id']),
+                'name_label' => form_label( lang('lbl_name'), $this->form_fields['add_edit_group'][0]['id']),
+                'description_label' => form_label( lang('lbl_description'), $this->form_fields['add_edit_group'][1]['id']),
                 // Buttons.
                 'btn_add_edit_group' => form_submit('submit', lang('btn_add_group'), 'class="btn btn-primary btn-sm"'),
                 // Other
                 'breadcrumbs' => $this->crumbs->output(),
+                'action' => 'add',
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
@@ -869,8 +870,8 @@ class Dashboard extends Admin_Controller {
                 'name_error' => form_error($this->form_fields['add_edit_group'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'description_error' => form_error($this->form_fields['add_edit_group'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'name_label' => form_label('Name:', $this->form_fields['add_edit_group'][0]['id']),
-                'description_label' => form_label('Description:', $this->form_fields['add_edit_group'][1]['id']),
+                'name_label' => form_label( lang('lbl_name'), $this->form_fields['add_edit_group'][0]['id']),
+                'description_label' => form_label( lang('lbl_description'), $this->form_fields['add_edit_group'][1]['id']),
                 // Buttons.
                 'btn_add_edit_group' => form_submit('submit', lang('btn_edit_group'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -946,7 +947,7 @@ class Dashboard extends Admin_Controller {
         $data['title'] = lang('tle_categories');
 
         // Define the page template.
-        $data['template'] = 'pages/dashboard/all_categories';
+        $data['template'] = 'pages/dashboard/categories';
 
         // Build the breadcrumbs.
         $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
@@ -1040,8 +1041,8 @@ class Dashboard extends Admin_Controller {
                 'name_error' => form_error($this->form_fields['add_category'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'description_error' => form_error($this->form_fields['add_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'name_label' => form_label('Name:', $this->form_fields['add_category'][0]['id']),
-                'description_label' => form_label('Description:', $this->form_fields['add_category'][1]['id']),
+                'name_label' => form_label( lang('lbl_name'), $this->form_fields['add_category'][0]['id']),
+                'description_label' => form_label( lang('lbl_description'), $this->form_fields['add_category'][1]['id']),
                 // Buttons.
                 'btn_add_category' => form_submit('submit', lang('btn_add_category'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -1129,9 +1130,9 @@ class Dashboard extends Admin_Controller {
                 'description_error' => form_error($this->form_fields['edit_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'slug_error' => form_error($this->form_fields['edit_category'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'name_label' => form_label('Name:', $this->form_fields['edit_category'][0]['id']),
-                'description_label' => form_label('Description:', $this->form_fields['edit_category'][1]['id']),
-                'slug_label' => form_label('Slug:', $this->form_fields['edit_category'][2]['id']),
+                'name_label' => form_label( lang('lbl_name'), $this->form_fields['edit_category'][0]['id']),
+                'description_label' => form_label( lang('lbl_description'), $this->form_fields['edit_category'][1]['id']),
+                'slug_label' => form_label( lang('lbl_slug'), $this->form_fields['edit_category'][2]['id']),
                 // Hidden.
                 'category_id_hidden_field' => form_hidden('category_id', $category->category_id),
                 // Buttons.
@@ -1229,7 +1230,7 @@ class Dashboard extends Admin_Controller {
         $data['title'] = lang('tle_discussions');
 
         // Define the page template.
-        $data['template'] = 'pages/dashboard/all_discussions';
+        $data['template'] = 'pages/dashboard/discussions';
 
         // Build the breadcrumbs.
         $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
@@ -1318,44 +1319,44 @@ class Dashboard extends Admin_Controller {
 
             // Build the gravatar rating options.
             $gravatar_rating = array(
-                'g' => 'G: Suitable for display on all websites with any audience type',
-                'pg' => 'PG: May contain rude gestures, provocatively dressed individuals, the lesser swear words, or mild violence',
-                'r' => 'R: May contain such things as harsh profanity, intense violence, nudity, or hard drug use',
-                'x' => 'X: May contain hardcore sexual imagery or extremely disturbing violence',
+                'g' => lang('dd_g'),
+                'pg' => lang('dd_pg'),
+                'r' => lang('dd_r'),
+                'x' => lang('dd_x'),
             );
 
             // Build the gravatar default image options.
             $gravatar_default_image = array(
-                'mm' => 'A simple, cartoon-style silhouetted outline of a person',
-                'identicon' => 'A geometric pattern based on an email hash',
-                'monsterid' => 'A generated `monster` with different colors, faces, etc',
-                'wavatar' => 'Generated faces with differing features and backgrounds',
-                'retro' => 'Awesome generated, 8-bit arcade-style pixelated faces',
-                'blank' => 'A transparent PNG image',
+                'mm' => lang('dd_mm'),
+                'identicon' => lang('dd_identicon'),
+                'monsterid' => lang('dd_monsterid'),
+                'wavatar' => lang('dd_wavatar'),
+                'retro' => lang('dd_retro'),
+                'blank' => lang('dd_blank'),
             );
 
             // Build the gravatar size options.
             $gravatar_size = array(
-                '10' => '10px x 10px',
-                '20' => '20px x 20px',
-                '30' => '30px x 30px',
-                '40' => '40px x 40px',
-                '50' => '50px x 50px',
-                '60' => '60px x 60px',
+                '10' => lang('dd_10_10'),
+                '20' => lang('dd_20_20'),
+                '30' => lang('dd_30_30'),
+                '40' => lang('dd_40_40'),
+                '50' => lang('dd_50_50'),
+                '60' => lang('dd_60_60'),
             );
 
             // Build the per page options.
             $per_page = array(
-                '5' => '5',
-                '10' => '10',
-                '15' => '15',
-                '20' => '20',
-                '25' => '25',
-                '30' => '30',
-                '35' => '35',
-                '40' => '40',
-                '45' => '45',
-                '50' => '50',
+                '5' => lang('dd_5'),
+                '10' => lang('dd_10'),
+                '15' => lang('dd_15'),
+                '20' => lang('dd_20'),
+                '25' => lang('dd_25'),
+                '30' => lang('dd_30'),
+                '35' => lang('dd_35'),
+                '40' => lang('dd_40'),
+                '45' => lang('dd_45'),
+                '50' => lang('dd_50'),
             );
 
             // Build the site language options.
@@ -1391,16 +1392,16 @@ class Dashboard extends Admin_Controller {
                 'site_keywords_error' => form_error($this->form_fields['settings'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'site_description_error' => form_error($this->form_fields['settings'][3]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'site_name_label' => form_label('Site Name:', $this->form_fields['settings'][0]['id']),
-                'site_email_label' => form_label('Site Email:', $this->form_fields['settings'][1]['id']),
-                'site_keywords_label' => form_label('Site Keywords:', $this->form_fields['settings'][2]['id']),
-                'site_language_label' => form_label('Site Language:', 'site_language'),
-                'site_description_label' => form_label('Site Description:', $this->form_fields['settings'][3]['id']),
-                'gravatar_rating_label' => form_label('Gravatar Rating:', 'gravatar_rating'),
-                'gravatar_default_image_label' => form_label('Gravatar Default Image:', 'gravatar_default_image'),
-                'gravatar_size_label' => form_label('Gravatar Size:', 'gravatar_size'),
-                'discussions_per_page_label' => form_label('Discussions Per Page:', 'discussions_per_page'),
-                'comments_per_page_label' => form_label('Comments Per Page:', 'comments_per_page'),
+                'site_name_label' => form_label( lang('lbl_site_name'), $this->form_fields['settings'][0]['id']),
+                'site_email_label' => form_label( lang('lbl_site_email'), $this->form_fields['settings'][1]['id']),
+                'site_keywords_label' => form_label( lang('lbl_site_keywords'), $this->form_fields['settings'][2]['id']),
+                'site_language_label' => form_label( lang('lbl_site_language'), 'site_language'),
+                'site_description_label' => form_label( lang('lbl_site_description'), $this->form_fields['settings'][3]['id']),
+                'gravatar_rating_label' => form_label( lang('lbl_gravatar_rating'), 'gravatar_rating'),
+                'gravatar_default_image_label' => form_label( lang('lbl_gravatar_default_image'), 'gravatar_default_image'),
+                'gravatar_size_label' => form_label( lang('lbl_gravatar_size'), 'gravatar_size'),
+                'discussions_per_page_label' => form_label( lang('lbl_discussions_per_page'), 'discussions_per_page'),
+                'comments_per_page_label' => form_label( lang('lbl_comments_per_page'), 'comments_per_page'),
                 // Buttons.
                 'btn_update_settings' => form_submit('submit', lang('btn_update_settings'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -1528,9 +1529,9 @@ class Dashboard extends Admin_Controller {
                 'code_error' => form_error('code', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'icon_error' => form_error('icon', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Labels.
-                'language_label' => form_label('Language:', $this->form_fields['settings'][0]['id']),
-                'code_label' => form_label('Code:', $this->form_fields['settings'][1]['id']),
-                'icon_label' => form_label('Icon:', $this->form_fields['settings'][2]['id']),
+                'language_label' => form_label( lang('lbl_language'), $this->form_fields['settings'][0]['id']),
+                'code_label' => form_label( lang('lbl_code'), $this->form_fields['settings'][1]['id']),
+                'icon_label' => form_label( lang('lbl_icon'), $this->form_fields['settings'][2]['id']),
                 // Buttons.
                 'btn_add_edit_language' => form_submit('submit', lang('btn_add_language'), 'class="btn btn-primary btn-sm"'),
                 // Other

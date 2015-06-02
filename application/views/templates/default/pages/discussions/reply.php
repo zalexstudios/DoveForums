@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Post a New Reply</h3>
+        <h3 class="panel-title"><?=lang('tl_new_reply');?></h3>
 
     </div>
 
@@ -16,7 +16,7 @@
 
             <div class="col-md-12">
 
-                <strong>Reply to discussion: {discussion_name}</strong>
+                <strong><?=lang('txt_reply_to_discussion');?> {discussion_name}</strong>
 
             </div>
 
@@ -28,7 +28,7 @@
 
             <div class="col-md-3">
 
-                <strong>Username:</strong>
+                <strong><?=lang('txt_username');?></strong>
 
             </div>
 
@@ -48,7 +48,7 @@
 
             <div class="col-md-3">
 
-                <strong>Your Message</strong>
+                <strong><?=lang('txt_your_message');?></strong>
 
             </div>
 

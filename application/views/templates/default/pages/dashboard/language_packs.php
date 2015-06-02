@@ -16,7 +16,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title">Language Packs</h3>
+        <h3 class="panel-title"><?=lang('tle_language_packs');?></h3>
 
     </div>
 

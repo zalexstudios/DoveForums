@@ -804,7 +804,7 @@ class Users extends Front_Controller {
                 'email_field' => form_input( $this->form_fields['settings'][0], set_value( $this->form_fields['settings'][0]['name'], $user->email ) ),
                 'first_name_field' => form_input( $this->form_fields['settings'][1], set_value( $this->form_fields['settings'][1]['name'], $user->first_name ) ),
                 'last_name_field' => form_input( $this->form_fields['settings'][2], set_value( $this->form_fields['settings'][2]['name'], $user->last_name ) ),
-                'language_field' => form_dropdown('category', $language_options, $user->language, 'class="form-control"'),
+                'language_field' => form_dropdown('language', $language_options, $user->language, 'class="form-control"'),
                 // Labels.
                 'email_label' => form_label( lang('lbl_email'), $this->form_fields['settings'][0]['id']),
                 'first_name_label' => form_label( lang('lbl_first_name'), $this->form_fields['settings'][1]['id']),

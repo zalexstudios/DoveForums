@@ -2,7 +2,7 @@
 
 <ul class="list-group">
 
-    <li class="list-group-item list-group-item-info">Categories</li>
+    <li class="list-group-item list-group-item-info"><?= lang('tle_categories');?></li>
 
     {categories}
 

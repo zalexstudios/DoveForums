@@ -82,7 +82,7 @@ class Front_Controller extends MY_Controller{
                 );
             }
 
-            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), 'All Categories'), 'discussion_count' => $this->forums->count_discussions() ) );
+            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), lang('lnk_all_categories')), 'discussion_count' => $this->forums->count_discussions() ) );
         } else {
             $data['categories'] = array(
                 array(
@@ -96,7 +96,7 @@ class Front_Controller extends MY_Controller{
             // Navigation.
             'navigation' => array(
                 'links' => array(
-                    array( 'link' => anchor( site_url(), lang('lnk_discussions') ) ),
+                    array( 'link' => anchor( site_url('forums'), lang('lnk_discussions') ) ),
                 ),
                 'logo' => anchor( site_url(), $this->site_name, array( 'class' => 'navbar-brand' ) ),
                 'username' => ucfirst( $this->session->userdata('username') ),

@@ -65,6 +65,7 @@ $lang['lnk_change_password'] = 'Change Password';
 $lang['lnk_dashboard'] = 'Dashboard';
 $lang['lnk_register'] = 'Register';
 $lang['lnk_categories'] = 'Categories';
+$lang['lnk_all_categories'] = 'All Categories';
 $lang['lnk_add_category'] = 'Add Category';
 $lang['lnk_users'] = 'Users';
 $lang['lnk_add_user'] = 'Add User';
@@ -104,6 +105,7 @@ $lang['tle_report_user'] = 'Report User';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
+$lang['txt_no_categories'] = 'No Categories';
 $lang['txt_views'] = 'Views';
 $lang['txt_comments'] = 'Comments';
 $lang['txt_discussions'] = 'Discussions';

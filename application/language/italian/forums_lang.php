@@ -64,6 +64,7 @@ $lang['lnk_change_password'] = 'Cambia Password';
 $lang['lnk_dashboard'] = 'Cruscotto';
 $lang['lnk_register'] = 'Registrati';
 $lang['lnk_categories'] = 'Categorie';
+$lang['lnk_all_categories'] = 'Tutte le Categorie';
 $lang['lnk_add_category'] = 'Aggiungi Categoria';
 $lang['lnk_users'] = 'Users';
 $lang['lnk_add_user'] = 'Aggiungi User';
@@ -99,9 +100,11 @@ $lang['tle_add_language'] = 'Aggiungi Lingua';
 $lang['tle_add'] = 'Aggiungi';
 $lang['tle_edit'] = 'Modifica';
 $lang['tle_profile'] = 'Profilo di %s';
+$lang['tle_report_user'] = 'Segnala User';
 
 // Static Text
 $lang['txt_no_discussions'] = 'Nessuna Discussione';
+$lang['txt_no_categories'] = 'Nessuna Categoria';
 $lang['txt_views'] = 'Visite';
 $lang['txt_comments'] = 'Commenti';
 $lang['txt_discussions'] = 'Discussioni';
@@ -130,6 +133,7 @@ $lang['txt_joined'] = 'Iscritto il:';
 $lang['txt_last_visit'] = 'Ultima Visita:';
 $lang['txt_total_discussions'] = 'Discussioni Totali:';
 $lang['txt_total_comments'] = 'Commenti Totali:';
+$lang['txt_personal'] = 'Personale';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -216,7 +220,8 @@ $lang['crumb_login'] = 'Login';
 $lang['crumb_change_password'] = 'Cambia Password';
 $lang['crumb_forgot_password'] = 'Password Dimenticata';
 $lang['crumb_reset_password'] = 'Resetta Password';
-$lang['crumb_profile'] = 'Profilo';
+$lang['crumb_profile'] = 'Profilo di %s';
+$lang['crumb_report'] = 'Segnala User';
 
 // Success Messages.
 $lang['success_login'] = 'Login effettuato con successo.';
@@ -240,6 +245,7 @@ $lang['success_delete_comment'] = 'Il commento e\' stato rimosso.';
 $lang['success_report_discussion'] = 'La discussione e\' stata segnalata.';
 $lang['success_report_comment'] = 'Il commento e\' stato segnalato.';
 $lang['success_update_settings'] = 'le impostazione sono state aggiornate.';
+$lang['success_report_user'] = 'L\'user e\' stato segnalato ad un moderatore.';
 
 // Error Messages
 $lang['error_slug'] = 'Nessuno slug fornito, per favore riprova!';
@@ -270,6 +276,8 @@ $lang['error_delete_comment'] = 'C\'e\' stato un problema nella rimozione del co
 $lang['error_report_discussion'] = 'C\'e\' stato un problema nella segnalazione della discussione.';
 $lang['error_report_comment'] = 'C\'e\' stato un problema nella segnalazione del commento.';
 $lang['error_update_settings'] = 'C\'e\' stato un problema nell\'aggiornamento delle impostazioni.';
+$lang['error_report_self'] = 'Non puoi segnalare te stesso!';
+$lang['error_report_user'] = 'C\'e\' stato un problema nel segnalare l\'user.';
 
 // Form Rules
 $lang['rules_comment'] = 'Commento';

@@ -310,7 +310,8 @@ class Install_M extends CI_Model {
         $sql = "
             INSERT INTO `language_packs` (`id`, `language`, `code`, `icon`, `deletable`)
             VALUES
-                (1,'English','english','gb.png',0);
+                (1,'English','english','gb.png',0),
+                (2, 'Italian', 'italian', 'it.png', 0);
         ";
 
         if(!$this->db->query($sql))

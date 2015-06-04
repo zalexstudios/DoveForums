@@ -115,6 +115,14 @@
 
                     </div>
 
+                    <div class="form-group <?php if(form_error('site_language')){echo 'has-error';} ?>">
+
+                        <label for="site_language">Site Language</label>
+                        <?php echo $site_language; ?>
+                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Select the sites default language.</small></p>
+
+                    </div>
+
                 </div>
 
             </div>

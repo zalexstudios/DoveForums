@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Install extends CI_Controller {
 
+    public $tables = array();
+
     public function __construct()
     {
         parent::__construct();
@@ -15,6 +17,12 @@ class Install extends CI_Controller {
 
         // Load some libraries.
         $this->load->library(array('form_validation', 'session', 'messageci'));
+
+        // Load the default config.
+        $this->config->load('forums');
+
+        // Add the tables.
+        $this->tables = $this->config->item('tables');
     }
 
     public function index()
@@ -144,6 +152,28 @@ class Install extends CI_Controller {
             setcookie('db_name', '', time() - 3600);
         }
 
+        // Load the database.
+        $this->load->database();
+
+        // Load the forums model.
+        $this->load->model('forums_m', 'forums');
+
+        // Get the language packs installed.
+        $language = $this->forums->get_languages();
+
+        if(!empty($language))
+        {
+            $language_options[NULL] = 'Select Language...';
+
+            foreach($language as $row)
+            {
+                $language_options[$row->code] = $row->language;
+            }
+        }
+
+        // Create the dropdown.
+        $data['site_language'] = form_dropdown('site_language', $language_options, NULL, 'class="form-control"');
+
         // Set some validation rules.
         $this->form_validation->set_rules('base_url', 'Base Url', 'trim|required|max_length[255]');
         $this->form_validation->set_rules('site_title', 'Site Title', 'trim|required|max_length[255]');
@@ -154,11 +184,12 @@ class Install extends CI_Controller {
         $this->form_validation->set_rules('admin_email', 'Admin Email', 'trim|required|valid_email');
         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
+        $this->form_validation->set_rules('site_language', 'Site Language', 'required');
 
         if ($this->form_validation->run() === FALSE)
         {
             $this->load->view('install/header');
-            $this->load->view('install/settings');
+            $this->load->view('install/settings', $data);
             $this->load->view('install/footer');
 
         }
@@ -207,7 +238,7 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('comments_per_page', 10, 'comments', 'yes');
                 $this->settings->add_setting('site_keywords', 'key, words, here', 'site', 'yes');
                 $this->settings->add_setting('site_description', 'Enter a site description here.', 'site', 'yes');
-                $this->settings->add_setting('site_language', 'english', 'site', 'yes');
+                $this->settings->add_setting('site_language', $this->input->post('site_language'), 'site', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

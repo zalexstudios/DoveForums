@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - core/MY_Controller, changed version number for minor feature additions.
 - language/english/forums_lang.php, added additional language files for new pages.
 - models/Install_m.php, updated the users table creation.
+- models/Install_m.php, updated language packs sql to include italian by default.
+- controllers/Install.php, Updated the install process to allow users to pick the sites default language.
+- templates/install/settings.php, Added the language dropdown box.
 
 ### Added
 - templates/default/pages/users/profile.php

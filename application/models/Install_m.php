@@ -279,13 +279,69 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create permissions table.
+        $sql = "
+            CREATE TABLE `permissions` (
+              `permission_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `permission` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+              `key` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+              `category` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+              PRIMARY KEY (`permission_id`),
+              UNIQUE KEY `key` (`key`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Create permission_map table.
+        $sql = "
+            CREATE TABLE `permission_map` (
+              `group_id` int(11) NOT NULL DEFAULT '0',
+              `permission_id` int(11) NOT NULL DEFAULT '0'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default groups.
 
         $sql = "
             INSERT INTO `groups` (`id`, `name`, `description`)
             VALUES
-                (1,'admin','Administrator'),
-                (2,'members','General User');
+                (1,'guest','Guest'),
+                (2,'admin','Administrator'),
+                (3,'members','General User'),
+                (4,'moderator','Moderators');
+	    ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add default guest user.
+        $sql = "
+            INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`, `language`, `reported`, `report_reason`, `report_date`, `report_user_id`)
+            VALUES
+                (1,'::0','Guest','',NULL,'',NULL,NULL,NULL,NULL,1433427728,NULL,0,'Guest','User',NULL,NULL,1,NULL,NULL,'english',0,'','0000-00-00 00:00:00',0);
+	    ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add the default users_groups.
+        $sql = "
+            INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
+            VALUES
+                (1,1,1);
 	    ";
 
         if(!$this->db->query($sql))
@@ -310,7 +366,60 @@ class Install_M extends CI_Model {
         $sql = "
             INSERT INTO `language_packs` (`id`, `language`, `code`, `icon`, `deletable`)
             VALUES
-                (1,'English','english','gb.png',0);
+                (1,'English','english','gb.png',0),
+                (2, 'Italian', 'italian', 'it.png', 0);
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add the default permissions
+        $sql = "
+            INSERT INTO `permissions` (`permission_id`, `permission`, `key`, `category`)
+            VALUES
+                (1,'Create Discussions','create_discussions','discussions'),
+                (2,'Edit Discussions','edit_discussions','discussions'),
+                (3,'Delete Discussions','delete_discussions','discussions'),
+                (4,'Create Comments','create_comments','comments'),
+                (5,'Edit Comments','edit_comments','comments'),
+                (6,'Delete Comments','delete_comments','comments'),
+                (7,'Report Discussions','report_discussions','discussions'),
+                (8,'Report Comments','report_comments','comments'),
+                (9,'View Discussions','view_discussions','discussions'),
+                (10,'Change Password','change_password','users'),
+                (11,'Change Settings','change_settings','settings'),
+                (12,'Report Users','report_users','users'),
+                (13,'Edit User Settings','edit_user_settings','users'),
+                (14,'View Profile','view_profile','users');
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add the default permission_map
+        $sql = "
+            INSERT INTO `permission_map` (`group_id`, `permission_id`)
+            VALUES
+                (1,9),
+                (1,14),
+                (2,3),
+                (2,2),
+                (2,1),
+                (2,4),
+                (2,5),
+                (2,6),
+                (2,7),
+                (2,8),
+                (2,9),
+                (2,10),
+                (2,11),
+                (2,12),
+                (2,13),
+                (2,14);
         ";
 
         if(!$this->db->query($sql))

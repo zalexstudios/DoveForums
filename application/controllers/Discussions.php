@@ -139,6 +139,16 @@ class Discussions extends Front_Controller {
      */
     public function view($category_slug, $discussion_slug)
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('view_discussions'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
 
@@ -313,6 +323,16 @@ class Discussions extends Front_Controller {
      */
     public function reply($category_slug, $discussion_slug)
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('create_comments'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // See if the user is logged in.
         if ($this->ion_auth->logged_in() === FALSE)
         {
@@ -408,6 +428,16 @@ class Discussions extends Front_Controller {
      */
     public function new_discussion()
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('create_discussions'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_discussion']);
 
@@ -496,6 +526,15 @@ class Discussions extends Front_Controller {
      */
     public function report_discussion ( $discussion_id = NULL )
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('report_discussion'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {
@@ -586,6 +625,16 @@ class Discussions extends Front_Controller {
      */
     public function edit_discussion ( $discussion_id = NULL )
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('edit_discussion'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {
@@ -689,6 +738,16 @@ class Discussions extends Front_Controller {
      */
     public function delete_discussion ( $discussion_id = NULL )
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('delete_discussion'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {

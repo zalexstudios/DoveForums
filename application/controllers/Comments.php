@@ -36,6 +36,16 @@ class Comments extends Front_Controller {
 
     public function edit_comment( $comment_id )
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('edit_comment'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Check a comment ID was supplied.
         if ( empty($comment_id) || $comment_id === NULL )
         {
@@ -117,6 +127,15 @@ class Comments extends Front_Controller {
      */
     public function delete_comment( $comment_id = NULL )
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('edit_comments'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
 
         // Check a comment ID was supplied.
         if ( empty($comment_id) || $comment_id === NULL )
@@ -147,6 +166,16 @@ class Comments extends Front_Controller {
 
     public function report_comment($comment_id = NULL)
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('report_comments'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Check a comment ID was supplied.
         if ( empty($comment_id) || $comment_id === NULL )
         {

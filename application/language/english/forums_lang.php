@@ -279,6 +279,7 @@ $lang['error_report_comment'] = 'There was a problem reporting the comment.';
 $lang['error_update_settings'] = 'There was a problem updating the settings.';
 $lang['error_report_self'] = 'You can not report yourself!';
 $lang['error_report_user'] = 'There was a problem reporting the user.';
+$lang['error_permission_required'] = 'You do not have permission to do that!.';
 
 // Form Rules
 $lang['rules_comment'] = 'Comment';

@@ -479,6 +479,15 @@ class Users extends Front_Controller {
      */
     public function change_password()
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('change_password'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
         // First make sure the user is logged in.
         if ( !$this->ion_auth->logged_in() === TRUE )
         {
@@ -764,6 +773,16 @@ class Users extends Front_Controller {
      */
     public function settings()
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('edit_user_settings'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Set the form validation rules.
         $this->form_validation->set_rules( $this->validation_rules['settings'] );
 
@@ -859,6 +878,16 @@ class Users extends Front_Controller {
      */
     public function profile($user_id=NULL)
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('view_profile'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Define the page title.
         $data['title'] = lang('tle_profile');
 
@@ -916,6 +945,16 @@ class Users extends Front_Controller {
      */
     public function report_user($user_id)
     {
+        // Check if the user has permission.
+        if(!$this->permission->has_permission('report_users'))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_permission_required'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
         // Check a discussion ID was supplied.
         if ( empty($user_id) || $user_id === NULL )
         {

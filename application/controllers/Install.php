@@ -208,7 +208,7 @@ class Install extends CI_Controller {
             $username = $this->input->post('admin_username');
             $password = $this->input->post('admin_password');
             $email = $this->input->post('admin_email');
-            $group = array('1');
+            $group = array('2');
             $additional_data = array(
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),

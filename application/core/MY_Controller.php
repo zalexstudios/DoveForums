@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
-    public $version = '0.2.0';
+    public $version = '0.3.0';
 
     /**
      * Construct Functions
@@ -28,8 +28,19 @@ class MY_Controller extends CI_Controller{
         if ($this->ion_auth->logged_in() === TRUE)
         {
             $user = $this->ion_auth->user()->row();
+            $groups = $this->ion_auth->get_users_groups()->result();
+            $config['group_id'] = $groups[0]->id;
+
+            // Load the permissions library, but only send the first group ID.
+            $this->load->library('permission', $config);
+
             $language = $user->language;
         } else {
+
+            $config['group_id'] = 1;
+            // Load the permissions library.
+            $this->load->library('permission', $config);
+
             $language = $this->config->item('site_language');
         }
 

@@ -5,7 +5,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Changed
 
-## [0.0.2] - 2015-06-02
+## [0.3.0] - 2015-06-04
+### Changed
+- controllers/Discussions.php - Added permission checks.
+- controllers/Comments.php - Added permission checks.
+- controllers/Users.php - Added permission checks.
+- language/english/forums_lang.php - Added new error message for permissions system.
+
+### Added
+- libraries/Permission.php - Added a simple group based permissions system.
+- models/Install_m.php - Added more sql to create permissions and permission_map table along with default data.
+
+
+## [0.2.0] - 2015-06-02
 ### Changed
 - core/MY_Controller, changed version number for minor feature additions.
 - language/english/forums_lang.php, added additional language files for new pages.

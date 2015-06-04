@@ -53,6 +53,7 @@ $lang['btn_update_settings'] = 'Aggiorna Impostazioni';
 $lang['btn_add_language'] = 'Aggiungi Lingua';
 $lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> MP';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
+$lang['btn_report_user'] = 'Segnala User';
 
 //Links
 $lang['lnk_discussions'] = 'Discussioni';
@@ -278,6 +279,7 @@ $lang['error_report_comment'] = 'C\'e\' stato un problema nella segnalazione del
 $lang['error_update_settings'] = 'C\'e\' stato un problema nell\'aggiornamento delle impostazioni.';
 $lang['error_report_self'] = 'Non puoi segnalare te stesso!';
 $lang['error_report_user'] = 'C\'e\' stato un problema nel segnalare l\'user.';
+$lang['error_permission_required'] = 'Non hai i permessi per completare questa azione!.';
 
 // Form Rules
 $lang['rules_comment'] = 'Commento';

@@ -54,6 +54,8 @@ $lang['btn_add_language'] = 'Add Language';
 $lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> PM';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_report_user'] = 'Report User';
+$lang['btn_add_achievement'] = 'Add Achievement';
+$lang['btn_add_achievement_trigger'] = 'Add Achievement Trigger';
 
 //Links
 $lang['lnk_discussions'] = 'Discussions';
@@ -74,6 +76,8 @@ $lang['lnk_add_group'] = 'Add Group';
 $lang['lnk_visit_site'] = 'Visit Site';
 $lang['lnk_discussions'] = 'Discussions';
 $lang['lnk_language_packs'] = 'Language Packs';
+$lang['lnk_achievements'] = 'Achievements';
+$lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -102,6 +106,8 @@ $lang['tle_add'] = 'Add';
 $lang['tle_edit'] = 'Edit';
 $lang['tle_profile'] = '%s`s Profile';
 $lang['tle_report_user'] = 'Report User';
+$lang['tle_achievements'] = 'Achievements';
+$lang['tle_achievement_triggers'] = 'Achievement Triggers';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -223,6 +229,8 @@ $lang['crumb_forgot_password'] = 'Forgot Password';
 $lang['crumb_reset_password'] = 'Reset Password';
 $lang['crumb_profile'] = '%s`s Profile';
 $lang['crumb_report'] = 'Report User';
+$lang['crumb_achievements'] = 'Achievements';
+$lang['crumb_achievement_triggers'] = 'Achievement Triggers';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -320,6 +328,9 @@ $lang['tbl_description'] = 'Description';
 $lang['tbl_language'] = 'Language';
 $lang['tbl_code'] = 'Code';
 $lang['tbl_icon'] = 'Icon';
+$lang['tbl_points'] = 'Points';
+$lang['tbl_condition'] = 'Condition';
+$lang['tbl_achievement'] = 'Achievement';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

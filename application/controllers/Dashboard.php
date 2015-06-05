@@ -1578,4 +1578,118 @@ class Dashboard extends Admin_Controller {
 
     }
 
+    public function achievements()
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_achievements');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/achievements';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_achievements'));
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_name'),
+            lang('tbl_description'),
+            lang('tbl_points'),
+            lang('tbl_action')
+        );
+
+        // Get all the languages.
+        $achievements = $this->achievements->get_achievements();
+
+        if (!empty($achievements))
+        {
+            foreach($achievements as $row)
+            {
+                $this->table->add_row(
+                    $row->name,
+                    $row->description,
+                    $row->points,
+                    ''.anchor( site_url('dashboard/edit_achievement/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_achievement/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_achievements' => $this->table->generate(),
+            // Buttons.
+            'btn_add_achievement' => anchor( site_url('dashboard/add_achievement'), lang('btn_add_achievement'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function achievement_triggers()
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_achievement_triggers');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/achievement_triggers';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_achievement_triggers'));
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_action'),
+            lang('tbl_condition'),
+            lang('tbl_achievement'),
+            lang('tbl_action')
+        );
+
+        // Get all the languages.
+        $achievement_triggers = $this->achievements->get_all_triggers();
+
+        if (!empty($achievement_triggers))
+        {
+            foreach($achievement_triggers as $row)
+            {
+                $this->table->add_row(
+                    $row->action,
+                    $row->condition,
+                    $row->name,
+                    ''.anchor( site_url('dashboard/edit_achievement_trigger/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_achievement_trigger/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_achievement_triggers' => $this->table->generate(),
+            // Buttons.
+            'btn_add_achievement_trigger' => anchor( site_url('dashboard/add_achievement_trigger'), lang('btn_add_achievement_trigger'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
 }

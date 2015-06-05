@@ -56,8 +56,7 @@ class Achievements {
     public function get_triggers($action)
     {
         // Query.
-        $query = $this->_ci->db->select('*')
-            ->where('action', $action)
+        $query = $this->_ci->db->where('action', $action)
             ->get('achievement_triggers');
 
         // Result.
@@ -69,6 +68,17 @@ class Achievements {
         {
             return FALSE;
         }
+    }
+
+    public function get_all_triggers()
+    {
+        // Query.
+        $query = $this->_ci->db->select('achievement_triggers.id, achievement_triggers.action, achievement_triggers.condition, achievement_triggers.achievement_id, achievements.name')
+        ->join('achievements', 'achievements.id = achievement_triggers.achievement_id')
+        ->get('achievement_triggers');
+
+        // Result
+        return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
     public function get_achievement($achievement_id)
@@ -83,6 +93,15 @@ class Achievements {
         {
             return $query->row_array();
         }
+    }
+
+    public function get_achievements()
+    {
+        // Query.
+        $query = $this->_ci->db->get('achievements');
+
+        // Result
+        return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
     public function award_achievement($achievement)

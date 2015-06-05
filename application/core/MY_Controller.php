@@ -216,6 +216,7 @@ class Admin_Controller extends Front_Controller {
                     array('link' => anchor(site_url('dashboard/all_users'), lang('lnk_users'))),
                     array('link' => anchor(site_url('dashboard/all_groups'), lang('lnk_groups'))),
                     array('link' => anchor(site_url('dashboard/settings'), lang('lnk_settings'))),
+                    array('link' => anchor(site_url('dashboard/achievements'), lang('lnk_achievements'))),
                 ),
                 'logo' => anchor(site_url(), $this->site_name, array('class' => 'navbar-brand')),
                 'username' => ucfirst($this->session->userdata('username')),
@@ -233,6 +234,8 @@ class Admin_Controller extends Front_Controller {
                 'add_group' => anchor( site_url('dashboard/add_group'), lang('lnk_add_group')),
                 'all_settings' => anchor( site_url('dashboard/settings'), lang('lnk_settings')),
                 'language_packs' => anchor( site_url('dashboard/language'), lang('lnk_language_packs')),
+                'achievements' => anchor( site_url('dashboard/achievements'), lang('lnk_achievements')),
+                'achievement_triggers' => anchor( site_url('dashboard/achievement_triggers'), lang('lnk_achievement_triggers')),
             ),
             // Footer.
             'footer' => array(

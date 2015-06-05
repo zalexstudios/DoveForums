@@ -34,6 +34,10 @@ class MY_Controller extends CI_Controller{
             // Load the permissions library, but only send the first group ID.
             $this->load->library('permission', $config);
 
+            // Load the achievements library.
+            $config['user_id'] = $this->session->userdata('user_id');
+            $this->load->library('achievements', $config);
+
             $language = $user->language;
         } else {
 

@@ -132,6 +132,46 @@ class Dashboard extends Admin_Controller {
                 'label' => 'lang:rules_icon',
             ),
         ),
+        'add_edit_achievement' => array(
+            //0
+            array(
+                'field' => 'name',
+                'rules' => 'required',
+                'label' => 'lang:rules_name',
+            ),
+            //1
+            array(
+                'field' => 'description',
+                'rules' => 'required',
+                'label' => 'lang:rules_description',
+            ),
+            //2
+            array(
+                'field' => 'points',
+                'rules' => 'required|numeric',
+                'label' => 'lang:rules_points',
+            ),
+        ),
+        'add_edit_achievement_trigger' => array(
+            //0
+            array(
+                'field' => 'action',
+                'rules' => 'required',
+                'label' => 'lang:rules_action',
+            ),
+            //1
+            array(
+                'field' => 'condition',
+                'rules' => 'required',
+                'label' => 'lang:rules_condition',
+            ),
+            //2
+            array(
+                'field' => 'achievement',
+                'rules' => 'required',
+                'label' => 'lang:rules_achievement',
+            ),
+        ),
     );
 
     private $form_fields = array(
@@ -312,6 +352,38 @@ class Dashboard extends Admin_Controller {
                 'class' => 'form-control',
                 'type' => 'text',
                 'placeholder' => 'gb.png',
+            ),
+        ),
+        'add_edit_achievement' => array(
+            //0
+            array(
+                'id' => 'name',
+                'name' => 'name',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //1
+            array(
+                'id' => 'description',
+                'name' => 'description',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //2
+            array(
+                'id' => 'points',
+                'name' => 'points',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+        ),
+        'add_edit_achievement_trigger' => array(
+            //0
+            array(
+                'id' => 'condition',
+                'name' => 'condition',
+                'class' => 'form-control',
+                'type' => 'text',
             ),
         ),
     );
@@ -1635,6 +1707,110 @@ class Dashboard extends Admin_Controller {
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
+    public function add_achievement()
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_edit_achievement']);
+
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = lang('tle_add');
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_edit_achievement';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/add_achievement') ),
+                'form_close' => form_close(),
+                // Fields
+                'name_field' => form_input( $this->form_fields['add_edit_achievement'][0], set_value( $this->form_fields['add_edit_achievement'][0]['name'], $this->input->post('name') ) ),
+                'description_field' => form_input( $this->form_fields['add_edit_achievement'][1], set_value( $this->form_fields['add_edit_achievement'][1]['name'], $this->input->post('description') ) ),
+                'points_field' => form_input( $this->form_fields['add_edit_achievement'][2], set_value( $this->form_fields['add_edit_achievement'][2]['name'], $this->input->post('points') ) ),
+                // Errors.
+                'name_error' => form_error($this->form_fields['add_edit_achievement'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'description_error' => form_error($this->form_fields['add_edit_achievement'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'points_error' => form_error($this->form_fields['add_edit_achievement'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'name_label' => form_label( lang('lbl_name'), $this->form_fields['add_edit_achievement'][0]['id']),
+                'description_label' => form_label( lang('lbl_description'), $this->form_fields['add_edit_achievement'][1]['id']),
+                'points_label' => form_label( lang('lbl_points'), $this->form_fields['add_edit_achievement'][2]['id']),
+                // Buttons.
+                'btn_add_edit_achievement' => form_submit('submit', lang('btn_add_achievement'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+                'action' => 'add',
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+            // Data
+            $data = array(
+                'name' => $this->input->post('name'),
+                'description' => $this->input->post('description'),
+                'points' => $this->input->post('points'),
+            );
+
+            if($this->achievements->add_achievement($data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_create_achievement'), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/achievements'), 'refresh' );
+            }
+            else
+            {
+                // Create a message.
+                $this->messageci->set( lang('error_create_achievement'), 'error');
+
+                // Redirect
+                redirect( site_url('dashboard/achievements'), 'refresh' );
+            }
+        }
+    }
+
+    public function delete_achievement($achievement_id)
+    {
+
+        if(empty($achievement_id))
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_invalid_id'), 'error');
+
+            // Redirect.
+            redirect($this->agent->referrer());
+        }
+
+        $delete = $this->achievements->delete_achievement($achievement_id);
+
+        if($delete === TRUE)
+        {
+            // Create a message.
+            $this->messageci->set( lang('success_delete_achievement'), 'success');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+        else
+        {
+            // Create a message.
+            $this->messageci->set( lang('error_delete_achievement'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+    }
+
     public function achievement_triggers()
     {
         // Define the page title.
@@ -1690,6 +1866,103 @@ class Dashboard extends Admin_Controller {
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function add_achievement_trigger()
+    {
+        // Set the form validation rules.
+        $this->form_validation->set_rules($this->validation_rules['add_edit_achievement_trigger']);
+
+        // See if the form has been submitted.
+        if($this->form_validation->run() === FALSE)
+        {
+            // Define the page title.
+            $data['title'] = lang('tle_add');
+
+            // Define the page template.
+            $data['template'] = 'pages/dashboard/add_edit_achievement_trigger';
+
+            // Build the breadcrumbs.
+            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+            $this->crumbs->add(lang('crumb_add'));
+
+            // Build the trigger options.
+            $action_options = array(
+                'create_discussion' => 'Create Discussion',
+                'edit_discussion' => 'Edit Discussion',
+                'delete_discussion' => 'Delete Discussion',
+                'create_comment' => 'Create Comment',
+                'edit_comment' => 'Edit Comment',
+                'delete_comment' => 'Delete Comment',
+            );
+
+            // Get the achievements.
+            $achievements = $this->achievements->get_achievements();
+
+            if(!empty($achievements))
+            {
+                $achievement_options[NULL] = lang('dd_achievement_default');
+
+                foreach($achievements as $row)
+                {
+                    $achievement_options[$row->id] = $row->name;
+                }
+            }
+
+            // Define the page data.
+            $data['page'] = array(
+                // Form Data.
+                'form_open' => form_open( site_url('dashboard/add_achievement_trigger') ),
+                'form_close' => form_close(),
+                // Fields
+                'condition_field' => form_input( $this->form_fields['add_edit_achievement_trigger'][0], set_value( $this->form_fields['add_edit_achievement_trigger'][0]['name'], $this->input->post('condition') ) ),
+                'action_field' => form_dropdown('action', $action_options, '0', 'class="form-control"'),
+                'achievement_field' => form_dropdown('achievement', $achievement_options, '0', 'class="form-control"'),
+                // Errors.
+                'condition_error' => form_error($this->form_fields['add_edit_achievement_trigger'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'action_error' => form_error('action', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'achievement_error' => form_error('achievement', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                // Labels.
+                'condition_label' => form_label( lang('lbl_condition'), $this->form_fields['add_edit_achievement_trigger'][0]['id']),
+                'action_label' => form_label( lang('lbl_action'), 'action'),
+                'achievement_label' => form_label( lang('lbl_achievement'), 'achievement'),
+                // Buttons.
+                'btn_add_edit_achievement_trigger' => form_submit('submit', lang('btn_add_achievement_trigger'), 'class="btn btn-primary btn-sm"'),
+                // Other
+                'breadcrumbs' => $this->crumbs->output(),
+                'action' => 'add',
+            );
+
+            $this->render( element('page', $data), element('title', $data), element('template', $data) );
+
+        } else {
+
+            // Data
+            $data = array(
+                'condition' => $this->input->post('condition'),
+                'action' => $this->input->post('action'),
+                'achievement_id' => $this->input->post('achievement'),
+            );
+
+            if($this->achievements->add_achievement_trigger($data) === TRUE)
+            {
+                // Create a message.
+                $this->messageci->set( lang('success_create_achievement_trigger'), 'success');
+
+                // Redirect.
+                redirect( site_url('dashboard/achievements'), 'refresh' );
+            }
+            else
+            {
+                // Create a message.
+                $this->messageci->set( lang('error_create_achievement_trigger'), 'error');
+
+                // Redirect
+                redirect( site_url('dashboard/achievements'), 'refresh' );
+            }
+
+            print_r($data);
+        }
     }
 
 }

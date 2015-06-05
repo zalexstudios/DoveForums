@@ -193,4 +193,26 @@ class Achievements {
             return FALSE;
         }
     }
+
+    public function add_achievement($data)
+    {
+        $this->_ci->db->insert('achievements', $data);
+
+        return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
+
+    public function delete_achievement($achievement_id)
+    {
+        $this->_ci->db->where('id', $achievement_id)
+            ->delete('achievements');
+
+        return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
+
+    public function add_achievement_trigger($data)
+    {
+        $this->_ci->db->insert('achievement_triggers', $data);
+
+        return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
 }

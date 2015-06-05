@@ -214,6 +214,7 @@ class Install_M extends CI_Model {
               `report_reason` varchar(255) NOT NULL,
               `report_date` datetime NOT NULL,
               `report_user_id` int(11) NOT NULL,
+              `points` int(11) DEFAULT 0,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";
@@ -309,8 +310,53 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
-        // Add default groups.
+        // Create achievements table.
+        $sql = "
+            CREATE TABLE IF NOT EXISTS `achievements` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(255) NOT NULL,
+              `description` text NOT NULL,
+              `points` int(11) NOT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+        ";
 
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Create achievement_triggers table.
+        $sql = "
+            CREATE TABLE IF NOT EXISTS `achievement_triggers` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `action` varchar(255) NOT NULL,
+              `condition` varchar(255) NOT NULL,
+              `achievement_id` int(11) NOT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Create user_achievements table.
+        $sql = "
+            CREATE TABLE IF NOT EXISTS `user_achievements` (
+              `achievement_id` int(11) NOT NULL,
+              `user_id` int(11) NOT NULL,
+              `date_received` datetime NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add default groups.
         $sql = "
             INSERT INTO `groups` (`id`, `name`, `description`)
             VALUES
@@ -327,9 +373,9 @@ class Install_M extends CI_Model {
 
         // Add default guest user.
         $sql = "
-            INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`, `language`, `reported`, `report_reason`, `report_date`, `report_user_id`)
+            INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`, `language`, `reported`, `report_reason`, `report_date`, `report_user_id`, `points`)
             VALUES
-                (1,'::0','Guest','',NULL,'',NULL,NULL,NULL,NULL,1433427728,NULL,0,'Guest','User',NULL,NULL,1,NULL,NULL,'english',0,'','0000-00-00 00:00:00',0);
+                (1,'::0','Guest','',NULL,'',NULL,NULL,NULL,NULL,1433427728,NULL,0,'Guest','User',NULL,NULL,1,NULL,NULL,'english',0,'','0000-00-00 00:00:00',0, 0);
 	    ";
 
         if(!$this->db->query($sql))
@@ -392,7 +438,8 @@ class Install_M extends CI_Model {
                 (11,'Change Settings','change_settings','settings'),
                 (12,'Report Users','report_users','users'),
                 (13,'Edit User Settings','edit_user_settings','users'),
-                (14,'View Profile','view_profile','users');
+                (14,'View Profile','view_profile','users'),
+                (15,'Unlock Achievements', 'unlock_achievements', 'achievements');
         ";
 
         if(!$this->db->query($sql))
@@ -419,7 +466,32 @@ class Install_M extends CI_Model {
                 (2,11),
                 (2,12),
                 (2,13),
-                (2,14);
+                (2,14),
+                (2,15);
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add some default achievements.
+        $sql = "
+            INSERT INTO `achievements` (`id`, `name`, `description`, `points`) VALUES
+                (1, 'Create your First Comment.', 'You have created your very first comment!', 5),
+                (2, 'Create your First Discussion', 'You have created your very first discussion!', 5);
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Insert some default triggers.
+        $sql = "
+            INSERT INTO `achievement_triggers` (`id`, `action`, `condition`, `achievement_id`) VALUES
+                (1, 'create_comment', '1', 1),
+                (2, 'create_discussion', '1', 2);
         ";
 
         if(!$this->db->query($sql))

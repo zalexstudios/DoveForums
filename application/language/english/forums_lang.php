@@ -281,6 +281,9 @@ $lang['error_report_self'] = 'You can not report yourself!';
 $lang['error_report_user'] = 'There was a problem reporting the user.';
 $lang['error_permission_required'] = 'You do not have permission to do that!.';
 
+// Achievements.
+$lang['achievement_unlocked'] = '<strong>Achievement Unlocked</strong><br />%s<br>%s<span class="pull-right">%s xp</span>';
+
 // Form Rules
 $lang['rules_comment'] = 'Comment';
 $lang['rules_email'] = 'Email';

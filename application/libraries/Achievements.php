@@ -1,6 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Name:  Achievements Library
+ *
+ * Version: 0.3.0
+ *
+ * Author:  Chris Baines
+ * 		    chris@doveforums.com
+ *
+ * Location: http://github.com/chrisbaines/DoveForums
+ *
+ * Description:  A simple achievements library.
+ *
+ * Requirements: PHP5 or above
+ *
+ */
+
 class Achievements {
 
     private $_ci;

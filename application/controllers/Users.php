@@ -888,6 +888,21 @@ class Users extends Front_Controller {
             redirect( $this->agent->referrer(), 'refresh');
         }
 
+        // Get the users achievements.
+        $achievements = $this->achievements->get_user_achievements();
+
+        if(!empty($achievements))
+        {
+            foreach($achievements as $row)
+            {
+                $data['achievements'][] = array(
+                    'name' => $row->name,
+                    'description' => $row->description,
+                    'points' => $row->points,
+                );
+            }
+        }
+
         // Define the page title.
         $data['title'] = lang('tle_profile');
 
@@ -919,9 +934,13 @@ class Users extends Front_Controller {
             'last_visit' => unix_to_human($user->last_login),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
+            'points' => $user->points,
             'avatar' => img( element('avatar', $data ) ),
             'total_discussions' => $this->forums->count_user_discussions($user->id),
             'total_comments' => $this->forums->count_user_comments($user->id),
+            // Achievements.
+            'achievements' => element( 'achievements', $data ),
+            'has_achievements' =>  (!empty($achievements)) ? 1 : 0,
             // Buttons.
             'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
             'btn_report_user' => anchor( site_url('users/report_user/'.$user->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_user'))),

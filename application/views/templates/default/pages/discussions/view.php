@@ -37,7 +37,7 @@
 
         <div class="media-body">
 
-            <p>{created_by}</p>
+            <p>{created_by}<br><span class="label label-success">{points} Xp</span></p>
 
         </div>
 
@@ -117,7 +117,7 @@
 
             <div class="media-body">
 
-                <p>{created_by}</p>
+                <p>{created_by}<br><span class="label label-success">{points} Xp</span></p>
 
             </div>
 

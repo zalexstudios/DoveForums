@@ -210,6 +210,7 @@ class Discussions extends Front_Controller {
                         'created_by' => anchor( site_url('users/profile/'.$row->user_id.''), ucwords($row->username)),
                         'body' => $row->body,
                         'avatar' => img( element('avatar', $data) ),
+                        'points' => $row->points,
                         'created_date' => date('jS M Y - h:i:s A', strtotime( $row->insert_date ) ),
                         'report_button' => anchor( site_url('comments/report_comment/'.$row->comment_id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
                         'pm_button' => anchor( site_url('messages/send/'.$row->user_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
@@ -263,6 +264,7 @@ class Discussions extends Front_Controller {
                 'created_by' => anchor( site_url('users/profile/'.$discussion->user_id), ucwords( $discussion->username ) ),
                 'body' => nl2br($discussion->body),
                 'avatar' => img( element('avatar', $data ) ),
+                'points' => $discussion->points,
                 'created_date' => date('jS M Y - h:i:s A', strtotime( $discussion->insert_date )),
                 // Comment Data.
                 'comments' => element( 'comments', $data ),

@@ -20,11 +20,11 @@
 
                     {avatar}
 
+                <p class="text-center"><span class="label label-success">{points} Xp</span></p>
+
             </div>
 
         </div>
-
-        <br />
 
         <div class="row">
 
@@ -129,3 +129,45 @@
     </div>
 
 </div>
+
+<?php if($has_achievements) { ?>
+
+<div class="panel panel-info">
+
+    <div class="panel-heading">
+
+        <h3 class="panel-title"><?=lang('tle_achievements');?></h3>
+
+    </div>
+
+    <div class="panel-body">
+
+        {achievements}
+
+            <div class="alert alert-info">
+
+                <div class="row">
+
+                    <div class="col-md-1">
+
+                        <i class="fa fa-trophy fa-3x"></i>
+
+                    </div>
+
+                    <div class="col-md-11">
+
+                        <strong>{name}<span class="badge pull-right">{points} Xp</span></strong><br />
+                        <p>{description}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {/achievements}
+    </div>
+
+</div>
+
+<?php } ?>

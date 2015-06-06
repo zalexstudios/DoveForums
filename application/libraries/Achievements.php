@@ -154,6 +154,19 @@ class Achievements {
         return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
+    public function get_user_achievements()
+    {
+
+        // Query
+        $query = $this->_ci->db->select('achievements.name, achievements.description, achievements.points, user_achievements.date_received')
+            ->join('achievements', 'achievements.id = user_achievements.achievement_id')
+            ->where('user_achievements.user_id', $this->user_id)
+            ->get('user_achievements');
+
+        // Result.
+        return $query->num_rows() > 0 ? $query->result() : NULL;
+    }
+
     /**
      * Award Achievement
      *
@@ -172,7 +185,7 @@ class Achievements {
         $data = array(
             'achievement_id' => $achievement['id'],
             'user_id' => $this->user_id,
-            'date_received' => time(),
+            'date_received' => $this->_date(),
         );
 
         if($this->_ci->db->insert('user_achievements', $data))
@@ -376,5 +389,23 @@ class Achievements {
             ->update( 'achievement_triggers', $data);
 
         return $this->db->affected_rows() > 0 ? TRUE : NULL;
+    }
+
+    /**
+     * Date
+     *
+     * Returns the current timestamp.
+     *
+     *
+     * @return      bool|string
+     * @author      Chris Baines
+     * @since       0.0.1
+     */
+    private function _date()
+    {
+        // Set the timezone.
+        date_default_timezone_set ($this->config->item('default_timezone') );
+
+        return date('Y-m-d G:i:s', time());
     }
 }

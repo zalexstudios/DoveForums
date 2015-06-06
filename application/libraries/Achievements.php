@@ -162,7 +162,7 @@ class Achievements {
             {
                 if(array_key_exists('condition', $val))
                 {
-                    if($val['condition'] == $condition)
+                    if($condition == $val['condition'])
                     {
                         // Get the achievement.
                         $achievement = $this->get_achievement($val['achievement_id']);
@@ -178,11 +178,8 @@ class Achievements {
                             return FALSE;
                         }
                     }
-                    else
-                    {
-                        return FALSE;
-                    }
-                } else
+                }
+                else
                 {
                     return FALSE;
                 }

@@ -624,7 +624,7 @@ class Discussions extends Front_Controller {
     public function report_discussion ( $discussion_id = NULL )
     {
         // Check if the user has permission.
-        if(!$this->permission->has_permission('report_discussion'))
+        if(!$this->permission->has_permission('report_discussions'))
         {
             // Create a message.
             $this->messageci->set( lang('error_permission_required'), 'error');
@@ -723,7 +723,7 @@ class Discussions extends Front_Controller {
     public function edit_discussion ( $discussion_id = NULL )
     {
         // Check if the user has permission.
-        if(!$this->permission->has_permission('edit_discussion'))
+        if(!$this->permission->has_permission('edit_discussions'))
         {
             // Create a message.
             $this->messageci->set( lang('error_permission_required'), 'error');
@@ -836,7 +836,7 @@ class Discussions extends Front_Controller {
     public function delete_discussion ( $discussion_id = NULL )
     {
         // Check if the user has permission.
-        if(!$this->permission->has_permission('delete_discussion'))
+        if(!$this->permission->has_permission('delete_discussions'))
         {
             // Create a message.
             $this->messageci->set( lang('error_permission_required'), 'error');

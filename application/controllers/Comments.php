@@ -37,7 +37,7 @@ class Comments extends Front_Controller {
     public function edit_comment( $comment_id )
     {
         // Check if the user has permission.
-        if(!$this->permission->has_permission('edit_comment'))
+        if(!$this->permission->has_permission('edit_comments'))
         {
             // Create a message.
             $this->messageci->set( lang('error_permission_required'), 'error');

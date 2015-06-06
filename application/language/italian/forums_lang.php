@@ -54,6 +54,8 @@ $lang['btn_add_language'] = 'Aggiungi Lingua';
 $lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> MP';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_report_user'] = 'Segnala User';
+$lang['btn_add_achievement'] = 'Aggiungi Achievement';
+$lang['btn_add_achievement_trigger'] = 'Aggiungi Attivatore Achievement';
 
 //Links
 $lang['lnk_discussions'] = 'Discussioni';
@@ -74,6 +76,8 @@ $lang['lnk_add_group'] = 'Aggiungi Gruppo';
 $lang['lnk_visit_site'] = 'Visita il Sito';
 $lang['lnk_discussions'] = 'Discussioni';
 $lang['lnk_language_packs'] = 'Pacchi Lingua';
+$lang['lnk_achievements'] = 'Achievements';
+$lang['lnk_achievement_triggers'] = 'Attivatore Achievement';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Discussioni Recenti';
@@ -102,6 +106,8 @@ $lang['tle_add'] = 'Aggiungi';
 $lang['tle_edit'] = 'Modifica';
 $lang['tle_profile'] = 'Profilo di %s';
 $lang['tle_report_user'] = 'Segnala User';
+$lang['tle_achievements'] = 'Achievements';
+$lang['tle_achievement_triggers'] = 'Attivatore Achievement';
 
 // Static Text
 $lang['txt_no_discussions'] = 'Nessuna Discussione';
@@ -162,6 +168,10 @@ $lang['lbl_comments_per_page'] = 'Commenti Per Pagina:';
 $lang['lbl_code'] = 'Code:';
 $lang['lbl_language'] = 'Lingua:';
 $lang['lbl_icon'] = 'Icone:';
+$lang['lbl_points'] = 'Punti:';
+$lang['lbl_condition'] = 'Condizione:';
+$lang['lbl_action'] = 'Azione:';
+$lang['lbl_achievement'] = 'Achievement:';
 
 // Dropdown Menus.
 $lang['dd_default_reason'] = 'Scegli un Motivo...';
@@ -197,6 +207,7 @@ $lang['dd_40'] = '40';
 $lang['dd_45'] = '45';
 $lang['dd_50'] = '50';
 $lang['dd_category_default'] = 'Scegli una Categoria...';
+$lang['dd_achievement_default'] = 'Scegli Achievement...';
 
 // Breadcrumbs
 $lang['crumb_categories'] = 'Categorie';
@@ -223,6 +234,8 @@ $lang['crumb_forgot_password'] = 'Password Dimenticata';
 $lang['crumb_reset_password'] = 'Resetta Password';
 $lang['crumb_profile'] = 'Profilo di %s';
 $lang['crumb_report'] = 'Segnala User';
+$lang['crumb_achievements'] = 'Achievements';
+$lang['crumb_achievement_triggers'] = 'Attivatore Achievement';
 
 // Success Messages.
 $lang['success_login'] = 'Login effettuato con successo.';
@@ -247,6 +260,9 @@ $lang['success_report_discussion'] = 'La discussione e\' stata segnalata.';
 $lang['success_report_comment'] = 'Il commento e\' stato segnalato.';
 $lang['success_update_settings'] = 'le impostazione sono state aggiornate.';
 $lang['success_report_user'] = 'L\'user e\' stato segnalato ad un moderatore.';
+$lang['success_create_achievement'] = 'L\'achievement e\' stato creato.';
+$lang['success_delete_achievement'] = 'L\'achievement e\' stato rimosso.';
+$lang['success_create_achievement_trigger'] = 'L\'attivatore achievement e\' stato creato.';
 
 // Error Messages
 $lang['error_slug'] = 'Nessuno slug fornito, per favore riprova!';
@@ -280,6 +296,12 @@ $lang['error_update_settings'] = 'C\'e\' stato un problema nell\'aggiornamento d
 $lang['error_report_self'] = 'Non puoi segnalare te stesso!';
 $lang['error_report_user'] = 'C\'e\' stato un problema nel segnalare l\'user.';
 $lang['error_permission_required'] = 'Non hai i permessi per completare questa azione!.';
+$lang['error_create_achievement'] = 'C\'e\' stato un problema nella creazione dell\'achievement.';
+$lang['error_delete_achievement'] = 'C\'e\' stato un problema nella rimozione dell\'achievement.';
+$lang['error_create_achievement_trigger'] = 'C\'e\' stato un problema nella creazione dell\'attivatore achievement.';
+
+// Achievements.
+$lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Sbloccato</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
 
 // Form Rules
 $lang['rules_comment'] = 'Commento';
@@ -302,6 +324,7 @@ $lang['rules_site_name'] = 'Nome Sito';
 $lang['rules_site_email'] = 'Email Sito';
 $lang['rules_site_keywords'] = 'Keywords Sito';
 $lang['rules_site_description'] = 'Descrizione Sito';
+$lang['rules_points'] = 'Punti';
 
 // Table Headers
 $lang['tbl_username'] = 'Username';
@@ -316,7 +339,10 @@ $lang['tbl_slug'] = 'Slug';
 $lang['tbl_description'] = 'Descrizione';
 $lang['tbl_language'] = 'Lingua';
 $lang['tbl_code'] = 'Code';
-$lang['tbl_icon'] = 'Icon';
+$lang['tbl_icon'] = 'Icona';
+$lang['tbl_points'] = 'Punti';
+$lang['tbl_condition'] = 'Condizione';
+$lang['tbl_achievement'] = 'Achievement';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Segnala quest\'user ad un moderatore.';

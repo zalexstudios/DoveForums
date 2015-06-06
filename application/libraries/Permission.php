@@ -87,7 +87,7 @@ class Permission {
      */
     public function get_permissions($group_id = NULL)
     {
-        $this->_ci->db->select('DISTINCT(category');
+        $this->_ci->db->select('DISTINCT(category)');
 
         // If a group id is supplied select for that group.
         if (!empty($group_id))

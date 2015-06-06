@@ -294,11 +294,42 @@ class Discussions extends Front_Controller {
 
             if($add_comment === TRUE)
             {
-                // Create a message.
-                $this->messageci->set( lang('success_creating_comment'), 'success' );
+                if($this->permission->has_permission('unlock_achievements'))
+                {
+                    // Get the users comment count.
+                    $comment_count = $this->forums->count_user_comments($this->session->userdata('user_id'));
 
-                // Redirect.
-                redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    // See if the user is due an achievement.
+                    $achievement = $this->achievements->give_achievement('create_comment', $comment_count);
+
+                    if(is_array($achievement))
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                        // Create achievement
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+
+                        // Redirect.
+                        redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    }
+                    else
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                        // Redirect.
+                        redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    }
+                }
+                else
+                {
+                    // Create a message.
+                    $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                    // Redirect.
+                    redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                }
             }
             else
             {
@@ -400,11 +431,42 @@ class Discussions extends Front_Controller {
 
             if($add_comment === TRUE)
             {
-                // Create a message.
-                $this->messageci->set( lang('success_creating_comment'), 'success' );
+                if($this->permission->has_permission('unlock_achievements'))
+                {
+                    // Get the users comment count.
+                    $comment_count = $this->forums->count_user_comments($this->session->userdata('user_id'));
 
-                // Redirect.
-                redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    // See if the user is due an achievement.
+                    $achievement = $this->achievements->give_achievement('create_comment', $comment_count);
+
+                    if(is_array($achievement))
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                        // Create achievement
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+
+                        // Redirect.
+                        redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    }
+                    else
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                        // Redirect.
+                        redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                    }
+                }
+                else
+                {
+                    // Create a message.
+                    $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                    // Redirect.
+                    redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
+                }
             }
             else
             {
@@ -497,19 +559,52 @@ class Discussions extends Front_Controller {
                 'category' => $this->input->post('category'),
             );
 
-            if ($this->forums->create_discussion($data) === TRUE)
+            if($this->forums->create_discussion($data) === TRUE)
+            {
+                if($this->permission->has_permission('unlock_achievements'))
+                {
+                    // Get the users comment count.
+                    $discussion_count = $this->forums->count_user_discussions($this->session->userdata('user_id'));
+
+                    // See if the user is due an achievement.
+                    $achievement = $this->achievements->give_achievement('create_discussion', $discussion_count);
+
+                    if(is_array($achievement))
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_create_discussion'), 'success' );
+
+                        // Create achievement
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+
+                        // Redirect.
+                        redirect( site_url(), 'refresh' );
+                    }
+                    else
+                    {
+                        // Create a message.
+                        $this->messageci->set( lang('success_create_discussion'), 'success' );
+
+                        // Redirect.
+                        redirect( site_url(), 'refresh' );
+                    }
+                }
+                else
+                {
+                    // Create a message.
+                    $this->messageci->set( lang('success_create_discussion'), 'success' );
+
+                    // Redirect.
+                    redirect( site_url(), 'refresh' );
+                }
+            }
+            else
             {
                 // Create a message.
-                $this->messageci->set( lang('success_create_discussion'), 'success');
+                $this->messageci->set( lang('error_create_discussion'), 'error' );
 
                 // Redirect.
                 redirect( site_url(), 'refresh' );
-            } else {
-                // Create a message.
-                $this->messageci->set( lang('error_create_discussion'), 'error');
-
-                // Redirect.
-                redirect( site_url(), 'refresh');
             }
 
         }

@@ -54,6 +54,8 @@ $lang['btn_add_language'] = 'Add Language';
 $lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> PM';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_report_user'] = 'Report User';
+$lang['btn_add_achievement'] = 'Add Achievement';
+$lang['btn_add_achievement_trigger'] = 'Add Achievement Trigger';
 
 //Links
 $lang['lnk_discussions'] = 'Discussions';
@@ -74,6 +76,8 @@ $lang['lnk_add_group'] = 'Add Group';
 $lang['lnk_visit_site'] = 'Visit Site';
 $lang['lnk_discussions'] = 'Discussions';
 $lang['lnk_language_packs'] = 'Language Packs';
+$lang['lnk_achievements'] = 'Achievements';
+$lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -102,6 +106,8 @@ $lang['tle_add'] = 'Add';
 $lang['tle_edit'] = 'Edit';
 $lang['tle_profile'] = '%s`s Profile';
 $lang['tle_report_user'] = 'Report User';
+$lang['tle_achievements'] = 'Achievements';
+$lang['tle_achievement_triggers'] = 'Achievement Triggers';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -162,6 +168,10 @@ $lang['lbl_comments_per_page'] = 'Comments Per Page:';
 $lang['lbl_code'] = 'Code:';
 $lang['lbl_language'] = 'Language:';
 $lang['lbl_icon'] = 'Icon:';
+$lang['lbl_points'] = 'Points:';
+$lang['lbl_condition'] = 'Condition:';
+$lang['lbl_action'] = 'Action:';
+$lang['lbl_achievement'] = 'Achievement:';
 
 // Dropdown Menus.
 $lang['dd_default_reason'] = 'Pick Reason...';
@@ -197,6 +207,7 @@ $lang['dd_40'] = '40';
 $lang['dd_45'] = '45';
 $lang['dd_50'] = '50';
 $lang['dd_category_default'] = 'Pick Category...';
+$lang['dd_achievement_default'] = 'Pick Achievement...';
 
 // Breadcrumbs
 $lang['crumb_categories'] = 'Categories';
@@ -223,6 +234,8 @@ $lang['crumb_forgot_password'] = 'Forgot Password';
 $lang['crumb_reset_password'] = 'Reset Password';
 $lang['crumb_profile'] = '%s`s Profile';
 $lang['crumb_report'] = 'Report User';
+$lang['crumb_achievements'] = 'Achievements';
+$lang['crumb_achievement_triggers'] = 'Achievement Triggers';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -247,6 +260,9 @@ $lang['success_report_discussion'] = 'The discussion has been reported.';
 $lang['success_report_comment'] = 'The comment has been reported.';
 $lang['success_update_settings'] = 'The settings have been updated.';
 $lang['success_report_user'] = 'The user has been reported to a moderator.';
+$lang['success_create_achievement'] = 'The achievement has been created.';
+$lang['success_delete_achievement'] = 'The achievement has been removed.';
+$lang['success_create_achievement_trigger'] = 'The achievement trigger has been created.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -280,6 +296,12 @@ $lang['error_update_settings'] = 'There was a problem updating the settings.';
 $lang['error_report_self'] = 'You can not report yourself!';
 $lang['error_report_user'] = 'There was a problem reporting the user.';
 $lang['error_permission_required'] = 'You do not have permission to do that!.';
+$lang['error_create_achievement'] = 'There was a problem creating the achievement.';
+$lang['error_delete_achievement'] = 'There was a problem removing the achievement.';
+$lang['error_create_achievement_trigger'] = 'There was a problem creating the achievement trigger.';
+
+// Achievements.
+$lang['achievement_unlocked'] = '<strong>Achievement Unlocked</strong><br />%s<br>%s<span class="pull-right">%s xp</span>';
 
 // Form Rules
 $lang['rules_comment'] = 'Comment';
@@ -302,6 +324,7 @@ $lang['rules_site_name'] = 'Site Name';
 $lang['rules_site_email'] = 'Site Email';
 $lang['rules_site_keywords'] = 'Site Keywords';
 $lang['rules_site_description'] = 'Site Description';
+$lang['rules_points'] = 'Points';
 
 // Table Headers
 $lang['tbl_username'] = 'Username';
@@ -317,6 +340,9 @@ $lang['tbl_description'] = 'Description';
 $lang['tbl_language'] = 'Language';
 $lang['tbl_code'] = 'Code';
 $lang['tbl_icon'] = 'Icon';
+$lang['tbl_points'] = 'Points';
+$lang['tbl_condition'] = 'Condition';
+$lang['tbl_achievement'] = 'Achievement';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

@@ -301,7 +301,7 @@ $lang['error_delete_achievement'] = 'There was a problem removing the achievemen
 $lang['error_create_achievement_trigger'] = 'There was a problem creating the achievement trigger.';
 
 // Achievements.
-$lang['achievement_unlocked'] = '<strong>Achievement Unlocked</strong><br />%s<br>%s<span class="pull-right">%s xp</span>';
+$lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
 
 // Form Rules
 $lang['rules_comment'] = 'Comment';

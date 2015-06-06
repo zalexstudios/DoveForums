@@ -275,7 +275,7 @@ class Forums_M extends CI_Model {
         $this->db->select('discussions.name as discussion_name, discussions.comment_count,
             discussions.last_comment_date, discussions.last_comment_user_id, discussions.insert_user_id,
             discussions.category_id, discussions.view_count, discussions.slug as discussion_slug,
-            users.username, users.id as user_id, categories.name as category_name, categories.slug as category_slug,')
+            users.username, users.id as user_id, users.points, categories.name as category_name, categories.slug as category_slug,')
             ->where('discussions.flag', 0)
             ->order_by('discussions.discussion_id', 'desc')
             ->join($this->tables['users'], 'users.id = discussions.last_comment_user_id')
@@ -320,7 +320,7 @@ class Forums_M extends CI_Model {
         $query = $this->db->select('discussions.discussion_id, discussions.category_id, discussions.name as discussion_name, discussions.insert_user_id,
         discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
         discussions.comment_count, discussions.first_comment_id, categories.name as category_name, categories.slug as category_slug,
-        users.username, users.id as user_id, users.email')
+        users.username, users.id as user_id, users.email, users.points')
             ->where('discussions.slug', $discussion_slug)
             ->where('discussions.flag', 0)
             ->join($this->tables['categories'], 'categories.category_id = discussions.category_id')
@@ -348,7 +348,7 @@ class Forums_M extends CI_Model {
         $query = $this->db->select('discussions.discussion_id, discussions.category_id, discussions.name as discussion_name, discussions.insert_user_id,
         discussions.slug as discussion_slug, discussions.body, discussions.insert_date, discussions.view_count,
         discussions.comment_count, discussions.first_comment_id, categories.name as category_name, categories.slug as category_slug,
-        users.username, users.id as user_id, users.email')
+        users.username, users.id as user_id, users.email, users.points')
             ->where('discussions.discussion_id', $discussion_id)
             ->where('discussions.flag', 0)
             ->join($this->tables['categories'], 'categories.category_id = discussions.category_id')
@@ -644,7 +644,7 @@ class Forums_M extends CI_Model {
     public function get_comments($discussion_id, $limit=NULL, $offset=NULL)
     {
         // Query.
-        $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, comments.insert_user_id, users.id as user_id, users.username, users.email')
+        $query = $this->db->select('comments.comment_id, comments.body, comments.insert_date, comments.insert_user_id, users.id as user_id, users.username, users.email, users.points')
             ->join($this->tables['users'], 'users.id = comments.insert_user_id')
             ->where('comments.discussion_id', $discussion_id)
             ->where('comments.flag', 0)

@@ -308,7 +308,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                         // Create achievement
-                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
 
                         // Redirect.
                         redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
@@ -445,7 +445,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                         // Create achievement
-                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
 
                         // Redirect.
                         redirect( site_url('discussions/'.$category_slug.'/'.$discussion_slug.'') );
@@ -575,7 +575,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( lang('success_create_discussion'), 'success' );
 
                         // Create achievement
-                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['name'], $achievement['description'], $achievement['points']),  'info');
+                        $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
 
                         // Redirect.
                         redirect( site_url(), 'refresh' );

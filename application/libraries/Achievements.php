@@ -31,6 +31,15 @@ class Achievements {
         $this->achievement_triggers = $this->get_achievement_triggers();
     }
 
+    /**
+     * Get Achievement Triggers
+     *
+     * Gets all the achievements triggers from the database.
+     *
+     * @return      array|bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function get_achievement_triggers()
     {
         // Query.
@@ -53,6 +62,16 @@ class Achievements {
         }
     }
 
+    /**
+     * Get Triggers
+     *
+     * Gets all the achievement triggers for the supplied action.
+     *
+     * @param       string      $action
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function get_triggers($action)
     {
         // Query.
@@ -70,6 +89,16 @@ class Achievements {
         }
     }
 
+    /**
+     * Gets all triggers.
+     *
+     * Gets all the triggers and linked achievements
+     * for the purpose of showing them in the admin panel.
+     *
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function get_all_triggers()
     {
         // Query.
@@ -81,6 +110,17 @@ class Achievements {
         return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
+    /**
+     * Get Achievement
+     *
+     * Gets a achievement from the database for the supplied
+     * achievement_id
+     *
+     * @param       integer     $achievement_id
+     * @return      array
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function get_achievement($achievement_id)
     {
         // Query.
@@ -95,6 +135,16 @@ class Achievements {
         }
     }
 
+    /**
+     * Get Achievements.
+     *
+     * Gets all the achievements in the database for the
+     * purpose of showing them in the admin panel/drop down boxes.
+     *
+     * @return      object
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function get_achievements()
     {
         // Query.
@@ -104,6 +154,18 @@ class Achievements {
         return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
+    /**
+     * Award Achievement
+     *
+     * Once the conditions have been met to award a achievement
+     * this function handles updating the database and awarding
+     * the achievement to the user.
+     *
+     * @param       array       $achievement
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function award_achievement($achievement)
     {
         // Data.
@@ -151,6 +213,19 @@ class Achievements {
         }
     }
 
+    /**
+     * Give Achievement
+     *
+     * Checks for the supplied action from the triggers, if the action is
+     * found it then compares the condition, if we have a match the achievement
+     * is awarded.
+     *
+     * @param       string      $action
+     * @param       integer     $condition
+     * @return      array|bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function give_achievement($action, $condition)
     {
         if(in_array($action, $this->achievement_triggers))
@@ -191,13 +266,34 @@ class Achievements {
         }
     }
 
-    public function add_achievement($data)
+    /**
+     * Add Achievement
+     *
+     * Adds a achievement into the database.
+     *
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
+    public function add_achievement($data=array())
     {
         $this->_ci->db->insert('achievements', $data);
 
         return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
     }
 
+    /**
+     * Delete Achievement.
+     *
+     * Removes a achievement from the database by
+     * the supplied achievement_id.
+     *
+     * @param       integer     $achievement_id
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
     public function delete_achievement($achievement_id)
     {
         $this->_ci->db->where('id', $achievement_id)
@@ -206,10 +302,79 @@ class Achievements {
         return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
     }
 
-    public function add_achievement_trigger($data)
+    /**
+     * Update Achievement
+     *
+     * Updates a achievement in the database by the supplied
+     * achievement_id.
+     *
+     * @param       integer     $achievement_id
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
+    public function update_achievement($achievement_id, $data=array())
+    {
+        $this->db->where('id', $achievement_id)
+            ->update( 'achievements', $data);
+
+        return $this->db->affected_rows() > 0 ? TRUE : NULL;
+    }
+
+    /**
+     * Add Achievement Trigger
+     *
+     * Adds a achievement trigger into the database.
+     *
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
+    public function add_achievement_trigger($data=array())
     {
         $this->_ci->db->insert('achievement_triggers', $data);
 
         return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
+
+    /**
+     * Delete Achievement Trigger
+     *
+     * Removes a achievement trigger from the database
+     * by the supplied trigger_id.
+     *
+     * @param       integer     $trigger_id
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
+    public function delete_achievement_trigger($trigger_id)
+    {
+        $this->_ci->db->where('id', $trigger_id)
+            ->delete('achievement_triggers');
+
+        return $this->_ci->db->affected_rows() > 0 ? TRUE : FALSE;
+    }
+
+    /**
+     * Update Achievement Trigger
+     *
+     * Updates a achievement trigger by the supplied
+     * trigger_id.
+     *
+     * @param       integer     $trigger_id
+     * @param       array       $data
+     * @return      bool
+     * @author      Chris Baines
+     * @since       0.3.0
+     */
+    public function update_achievement_trigger($trigger_id, $data = array())
+    {
+        $this->db->where('id', $trigger_id)
+            ->update( 'achievement_triggers', $data);
+
+        return $this->db->affected_rows() > 0 ? TRUE : NULL;
     }
 }

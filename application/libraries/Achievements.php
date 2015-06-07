@@ -27,7 +27,7 @@ class Achievements {
     {
         $this->_ci =& get_instance();
 
-        $this->user_id = $config['group_id'];
+        $this->user_id = $config['user_id'];
         $this->achievement_triggers = $this->get_achievement_triggers();
     }
 

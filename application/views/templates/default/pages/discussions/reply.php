@@ -6,7 +6,7 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title"><?=lang('tl_new_reply');?></h3>
+        <h3 class="panel-title"><?=lang('tle_new_reply');?></h3>
 
     </div>
 

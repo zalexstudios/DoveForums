@@ -888,6 +888,13 @@ class Users extends Front_Controller {
             redirect( $this->agent->referrer(), 'refresh');
         }
 
+        // Check if a user is logged in, otherwise load the achievements library.
+        if($this->ion_auth->logged_in() === FALSE)
+        {
+            $config['user_id'] = $user_id;
+            $this->load->library('achievements', $config);
+        }
+
         // Get the users achievements.
         $achievements = $this->achievements->get_user_achievements();
 
@@ -903,12 +910,6 @@ class Users extends Front_Controller {
             }
         }
 
-        // Define the page title.
-        $data['title'] = lang('tle_profile');
-
-        // Define the page template.
-        $data['template'] = 'pages/users/profile';
-
         // Get the user from the database.
         if(!$user_id)
         {
@@ -916,6 +917,12 @@ class Users extends Front_Controller {
         } else {
             $user = $this->ion_auth->user($user_id)->row();
         }
+
+        // Define the page title.
+        $data['title'] = sprintf(lang('tle_profile'), $user->username);
+
+        // Define the page template.
+        $data['template'] = 'pages/users/profile';
 
         // Build the page breadcrumbs.
         $this->crumbs->add( lang('crumb_users'), 'users');

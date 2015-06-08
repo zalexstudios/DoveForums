@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
-    public $version = '0.3.0';
+    public $version = '0.3.1';
 
     /**
      * Construct Functions

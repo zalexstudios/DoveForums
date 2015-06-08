@@ -404,7 +404,7 @@ class Achievements {
     private function _date()
     {
         // Set the timezone.
-        date_default_timezone_set ($this->config->item('default_timezone') );
+        date_default_timezone_set ($this->_ci->config->item('default_timezone') );
 
         return date('Y-m-d G:i:s', time());
     }

@@ -108,6 +108,7 @@ $lang['tle_profile'] = '%s`s Profile';
 $lang['tle_report_user'] = 'Report User';
 $lang['tle_achievements'] = 'Achievements';
 $lang['tle_achievement_triggers'] = 'Achievement Triggers';
+$lang['tle_edit_discussion'] = 'Edit Discussion';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';

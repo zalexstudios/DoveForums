@@ -1960,8 +1960,6 @@ class Dashboard extends Admin_Controller {
                 // Redirect
                 redirect( site_url('dashboard/achievements'), 'refresh' );
             }
-
-            print_r($data);
         }
     }
 

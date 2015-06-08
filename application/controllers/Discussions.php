@@ -812,13 +812,13 @@ class Discussions extends Front_Controller {
                 $this->messageci->set( sprintf(lang('success_update_discussion'), $this->input->post('name')), 'success');
 
                 // Redirect.
-                redirect( site_url(), 'refresh' );
+                redirect( site_url('forums'), 'refresh' );
             } else {
                 // Create a message.
                 $this->messageci->set( sprintf(lang('error_update_discussion'), $this->input->post('name')), 'error');
 
                 // Redirect.
-                redirect( site_url(), 'refresh');
+                redirect( site_url('forums'), 'refresh');
             }
         }
 

@@ -21,6 +21,7 @@ class Comment_m extends MY_Model {
 
     public $_table = 'comments';
     public $primary_key = 'id';
+    protected $soft_delete = TRUE;
 
     /**
      * Count Comments

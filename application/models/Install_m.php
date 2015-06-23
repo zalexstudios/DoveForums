@@ -96,7 +96,7 @@ class Install_M extends CI_Model {
               `posted` int(10) DEFAULT '0' COMMENT 'A Unix timestamp representing the time the comment was created.',
               `editied` int(10) DEFAULT NULL COMMENT 'A Unix timestamp representing the time the comment was edited.',
               `edited_by` varchar(200) DEFAULT NULL COMMENT 'The Username of the user who last edited the post, NULL if it hasn`t been edited.',
-              `deleted` int(10) DEFAULT NULL COMMENT 'Has the comment been deleted?',
+              `deleted` int(10) DEFAULT '0' COMMENT 'Has the comment been deleted?',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
         ";
@@ -124,7 +124,7 @@ class Install_M extends CI_Model {
               `closed` tinyint(1) DEFAULT '0' COMMENT 'Is the discussion closed?',
               `sticky` tinyint(1) DEFAULT '0' COMMENT 'Is the discussion as sticky?',
               `moved_to` int(10) DEFAULT NULL COMMENT 'If the discussion has been moved, the ID of the new discussion (This one now acts as a redirect).',
-              `deleted` int(10) DEFAULT NULL COMMENT 'Has the discussion been deleted?',
+              `deleted` int(10) DEFAULT '0' COMMENT 'Has the discussion been deleted?',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
         ";

@@ -21,6 +21,7 @@ class Discussion_m extends MY_Model {
 
     public $_table = 'discussions';
     public $primary_key = 'id';
+    protected $soft_delete = TRUE;
 
     public function __construct()
     {

@@ -13,6 +13,8 @@
     <li class="list-group-item list-group-item-info"><i class="fa fa-users"></i> <?=lang('tle_groups');?></li>
     <li class="list-group-item">{all_groups}</li>
     <li class="list-group-item">{add_group}</li>
+    <li class="list-group-item list-group-item-info"><i class="fa fa-check-square-o"></i> <?=lang('tle_permissions');?></li>
+    <li class="list-group-item">{permissions}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-trophy"></i> <?=lang('tle_achievements');?></li>
     <li class="list-group-item">{achievements}</li>
     <li class="list-group-item">{achievement_triggers}</li>

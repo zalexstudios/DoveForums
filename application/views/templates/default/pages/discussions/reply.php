@@ -54,10 +54,10 @@
 
             <div class="col-md-9">
 
-                <div class="form-group <?php if(form_error('comment')){echo 'has-error';} ?>">
+                <div class="form-group <?php if(form_error('message')){echo 'has-error';} ?>">
 
-                    {comment_field}
-                    {comment_error}
+                    {message_field}
+                    {message_error}
 
                 </div>
 
@@ -72,7 +72,7 @@
 
             <div class="col-md-12">
 
-                {post_comment_button}
+                {btn_post_comment}
                 {discussion_id_field_hidden}
                 {category_id_field_hidden}
 

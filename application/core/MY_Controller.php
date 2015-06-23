@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
-    public $version = '0.3.1';
+    public $version = '0.4.0';
 
     /**
      * Construct Functions
@@ -17,11 +17,16 @@ class MY_Controller extends CI_Controller{
     {
         parent::__construct();
 
+        $this->load->database();
+
         // Load Models.
-        $this->load->model('forums_m', 'forums');
+        //$this->load->model('forums_m', 'forums');
+        $this->load->model('discussion_m', 'discussions');
+        $this->load->model('category_m', 'categories');
+        $this->load->model('comment_m', 'comments');
+        $this->load->model('user_m', 'users');
 
         // Load libraries.
-		$this->load->database();
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
 
         // See if a user is logged in, if so set their language preference.
@@ -85,19 +90,19 @@ class Front_Controller extends MY_Controller{
     public function render( $page_data=array(), $page_title, $page_template )
     {
         // Get the categories for the sidebar.
-        $categories = $this->forums->get_categories();
+        $categories = $this->categories->get_all();
 
         if( !empty($categories) )
         {
             foreach( $categories as $row )
             {
                 $data['categories'][] = array(
-                        'name' => anchor( site_url('categories/'.$row->category_slug.''), $row->name ),
+                        'name' => anchor( site_url('categories/'.$row->slug.''), $row->name ),
                         'discussion_count' => $row->discussion_count,
                 );
             }
 
-            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), lang('lnk_all_categories')), 'discussion_count' => $this->forums->count_discussions() ) );
+            array_unshift( $data['categories'], array('name' => anchor( site_url('categories'), lang('lnk_all_categories')), 'discussion_count' => $this->discussions->count() ) );
         } else {
             $data['categories'] = array(
                 array(
@@ -129,7 +134,7 @@ class Front_Controller extends MY_Controller{
             ),
             // Footer.
             'footer' => array(
-                'copy_text' => 'Powered By '.anchor( 'http://www.doveforums.com', 'Dove Forums').' &copy; 2011 - 2015 - Version '.$this->version,
+                'copy_text' => 'Powered By '.anchor( 'http://www.doveforums.com', 'Dove Forums Lite').' &copy; 2011 - 2015 - Version '.$this->version,
             ),
         );
 
@@ -236,6 +241,7 @@ class Admin_Controller extends Front_Controller {
                 'language_packs' => anchor( site_url('dashboard/language'), lang('lnk_language_packs')),
                 'achievements' => anchor( site_url('dashboard/achievements'), lang('lnk_achievements')),
                 'achievement_triggers' => anchor( site_url('dashboard/achievement_triggers'), lang('lnk_achievement_triggers')),
+                'permissions' => anchor( site_url('dashboard/permissions'), lang('lnk_permissions')),
             ),
             // Footer.
             'footer' => array(

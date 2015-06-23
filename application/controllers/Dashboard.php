@@ -399,8 +399,17 @@ class Dashboard extends Admin_Controller {
         // Build the breadcrumbs.
         $this->crumbs->add('Dashboard');
 
+        // Get the user count.
+        $user_count = count($this->ion_auth->users()->result());
+        $reported_users = $this->forums->count_reported_users();
+        $banned_users = 0;
+
         // Define the page data.
         $data['page'] = array(
+            // Other
+            'user_count' => $user_count,
+            'reported_user_count' => $reported_users,
+            'banned_user_count' => $banned_users,
             'breadcrumbs' => $this->crumbs->output(),
         );
 
@@ -929,6 +938,13 @@ class Dashboard extends Admin_Controller {
 
             // Get the group.
             $group = $this->ion_auth->group($group_id)->row();
+
+            // Get the group permissions.
+            $permissions = $this->permission->get_permissions($group_id);
+
+            echo '<pre>';
+            print_r($permissions);
+            echo '</pre>';
 
             // Define the page data.
             $data['page'] = array(
@@ -1961,6 +1977,63 @@ class Dashboard extends Admin_Controller {
                 redirect( site_url('dashboard/achievements'), 'refresh' );
             }
         }
+    }
+
+    public function permissions()
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_permissions');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/permissions';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_permissions'));
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_permission'),
+            lang('tbl_key'),
+            lang('tbl_category'),
+            lang('tbl_action')
+        );
+
+        // Get all the permissions.
+        $permissions = $this->permission->get_permissions();
+
+        if (!empty($permissions))
+        {
+            foreach($permissions as $row)
+            {
+                $this->table->add_row(
+                    $row->permission,
+                    $row->key,
+                    $row->category,
+                    ''.anchor( site_url('dashboard/edit_permission/'.$row->permission_id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_permission/'.$row->permission_id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_permissions' => $this->table->generate(),
+            // Buttons.
+            'btn_add_permission' => anchor( site_url('dashboard/add_permission'), lang('btn_add_permission'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
     }
 
 }

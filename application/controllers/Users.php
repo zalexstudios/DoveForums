@@ -380,7 +380,7 @@ class Users extends Front_Controller {
                 // Update the users visit count.
                 $user = $this->ion_auth->user()->row();
 
-                $this->forums->update_visit_count($user->id, ++$user->visit_count);
+                $this->users->update($user->id, array('visit_count' => ++$user->visit_count));
 
                 // Create a message.
                 $this->messageci->set( $this->ion_auth->messages(), 'success' );

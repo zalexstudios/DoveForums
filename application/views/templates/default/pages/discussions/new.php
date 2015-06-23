@@ -42,10 +42,10 @@
 
             <div class="col-md-9">
 
-                <div class="form-group  <?php if(form_error('name')){echo 'has-error';} ?>">
+                <div class="form-group  <?php if(form_error('subject')){echo 'has-error';} ?>">
 
-                    {name_field}
-                    {name_error}
+                    {subject_field}
+                    {subject_error}
 
                 </div>
 
@@ -88,10 +88,10 @@
 
             <div class="col-md-9">
 
-                <div class="form-group <?php if(form_error('body')){echo 'has-error';} ?>">
+                <div class="form-group <?php if(form_error('message')){echo 'has-error';} ?>">
 
-                    {body_field}
-                    {body_error}
+                    {message_field}
+                    {message_error}
 
                 </div>
 

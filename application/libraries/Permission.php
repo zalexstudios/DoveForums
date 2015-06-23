@@ -87,7 +87,7 @@ class Permission {
      */
     public function get_permissions($group_id = NULL)
     {
-        $this->_ci->db->select('DISTINCT(category)');
+        $this->_ci->db->select('*');
 
         // If a group id is supplied select for that group.
         if (!empty($group_id))
@@ -96,32 +96,13 @@ class Permission {
         }
 
         // Set the order.
-        $this->_ci->db->order_by('category');
+        $this->_ci->db->order_by('category', 'asc');
 
         // Query
         $query = $this->_ci->db->get('permissions');
 
         // Result.
-        if($query->num_rows())
-        {
-            foreach($query->result_array() as $row)
-            {
-                if ($cat_perms = $this->get_perms_from_cat($row->category))
-                {
-                    $permissions[$row['category']] = $cat_perms;
-                }
-                else
-                {
-                    $permissions[$row['category']] = 'N/A';
-                }
-            }
-
-            return $permissions;
-        }
-        else
-        {
-            return FALSE;
-        }
+        return $query->num_rows() > 0 ? $query->result() : NULL;
     }
 
     /**

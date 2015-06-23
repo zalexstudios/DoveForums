@@ -12,20 +12,23 @@ class Forums extends Front_Controller
         $data['template'] = 'pages/home/home';
 
         // Get the discussions from the database.
-        $discussions = $this->forums->get_discussions();
+        $discussions = $this->discussions->get_all();
 
         // Loop through the discussions.
         if( !empty($discussions) )
         {
             foreach($discussions as $row)
             {
+                // Get the category associated with the discussion.
+                $cat = $this->categories->get_by('id', $row->category_id);
+
                 $data['discussions'][] = array(
-                    'name' => anchor( site_url('discussions/'.$row->category_slug.'/'.$row->discussion_slug.''), $row->discussion_name),
-                    'comment_count' => $row->comment_count,
-                    'view_count' => $row->view_count,
-                    'last_comment_date' => date("jS M Y - h:i:s A", strtotime( $row->last_comment_date) ),
-                    'last_comment_username' => anchor( site_url('users/profile/'.$row->user_id), $row->username ),
-                    'category_name' => anchor( site_url('categories/'.$row->category_slug.''), $row->category_name ),
+                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
+                    'replies' => $row->replies,
+                    'views' => $row->views,
+                    'last_comment' => unix_to_human($row->last_comment),
+                    'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
+                    'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
                 );
             }
 

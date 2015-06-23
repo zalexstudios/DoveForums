@@ -67,23 +67,14 @@ class Install_M extends CI_Model {
 
         // Create categories table.
         $sql = "
-            CREATE TABLE IF NOT EXISTS `categories` (
-              `category_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `discussion_count` int(11) DEFAULT '0',
-              `comment_count` int(11) DEFAULT '0',
-              `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `insert_user_id` int(11) DEFAULT NULL,
-              `update_user_id` int(11) DEFAULT NULL,
-              `date_inserted` datetime DEFAULT NULL,
-              `date_updated` datetime DEFAULT NULL,
-              `last_comment_date` datetime DEFAULT NULL,
-              `last_comment_id` int(11) DEFAULT NULL,
-              `last_discussion_id` int(11) DEFAULT NULL,
-              `deletable` int(11) DEFAULT '1',
-              PRIMARY KEY (`category_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            CREATE TABLE `categories` (
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key used to identify the category. It has no other meaning. ',
+              `name` varchar(200) DEFAULT 'New Category' COMMENT 'The category name.',
+              `slug` varchar(200) DEFAULT '' COMMENT 'The category slug.',
+              `discussion_count` int(10) DEFAULT '0' COMMENT 'The number of discussions in this category.',
+              `comment_count` int(10) DEFAULT '0' COMMENT 'The number of comments in this category.',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
         ";
 
         if(!$this->db->query($sql))
@@ -93,24 +84,21 @@ class Install_M extends CI_Model {
 
         // Create comments table.
         $sql = "
-            CREATE TABLE IF NOT EXISTS `comments` (
-              `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `discussion_id` int(11) DEFAULT NULL,
-              `insert_user_id` int(11) DEFAULT NULL,
-              `update_user_id` int(11) DEFAULT NULL,
-              `delete_user_id` int(11) DEFAULT NULL,
-              `body` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-              `insert_date` datetime DEFAULT NULL,
-              `delete_date` datetime DEFAULT NULL,
-              `update_date` datetime DEFAULT NULL,
-              `insert_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `update_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `flag` tinyint(4) DEFAULT '0',
-              `report_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `report_date` datetime DEFAULT NULL,
-              `report_user_id` int(11) DEFAULT '0',
-              PRIMARY KEY (`comment_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            CREATE TABLE `comments` (
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key used to identify the comment. It has no other meaning.',
+              `discussion_id` int(10) DEFAULT '0' COMMENT 'The ID of the parent discussion for this comment.',
+              `poster` varchar(200) DEFAULT '' COMMENT 'The username of the user who created the comment.',
+              `poster_id` int(10) DEFAULT '1' COMMENT 'The ID of the user who created the comment.',
+              `poster_ip` varchar(39) DEFAULT NULL COMMENT 'The IP address of the user who created the comment.',
+              `poster_email` varchar(80) DEFAULT NULL COMMENT 'If a guest created the comment, their email address. If a logged in user created it, then NULL.',
+              `message` mediumtext COMMENT 'The contents of the comment.',
+              `hide_smilies` tinyint(1) DEFAULT '0' COMMENT 'Shoult smilies be hidden in this post?',
+              `posted` int(10) DEFAULT '0' COMMENT 'A Unix timestamp representing the time the comment was created.',
+              `editied` int(10) DEFAULT NULL COMMENT 'A Unix timestamp representing the time the comment was edited.',
+              `edited_by` varchar(200) DEFAULT NULL COMMENT 'The Username of the user who last edited the post, NULL if it hasn`t been edited.',
+              `deleted` int(10) DEFAULT NULL COMMENT 'Has the comment been deleted?',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
         ";
 
         if(!$this->db->query($sql))
@@ -120,34 +108,25 @@ class Install_M extends CI_Model {
 
         // Create discussions table.
         $sql = "
-            CREATE TABLE IF NOT EXISTS `discussions` (
-              `discussion_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `category_id` int(11) DEFAULT NULL,
-              `insert_user_id` int(11) DEFAULT NULL,
-              `update_user_id` int(11) DEFAULT NULL,
-              `first_comment_id` int(11) DEFAULT '0',
-              `last_comment_id` int(11) DEFAULT NULL,
-              `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `body` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-              `comment_count` int(11) DEFAULT '0',
-              `bookmark_count` int(11) DEFAULT '0',
-              `view_count` int(11) DEFAULT '0',
-              `closed` tinyint(4) DEFAULT '0',
-              `announce` tinyint(4) DEFAULT '0',
-              `stick` tinyint(4) DEFAULT '0',
-              `flag` tinyint(4) DEFAULT '0',
-              `insert_date` datetime DEFAULT NULL,
-              `update_date` datetime DEFAULT NULL,
-              `insert_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `update_ip` varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `last_comment_date` datetime DEFAULT NULL,
-              `last_comment_user_id` int(11) DEFAULT NULL,
-              `report_reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-              `report_date` datetime DEFAULT NULL,
-              `report_user_id` int(11) DEFAULT '0',
-              PRIMARY KEY (`discussion_id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            CREATE TABLE `discussions` (
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key used to identify the discussion. It has no other meaning.',
+              `category_id` int(10) DEFAULT '0' COMMENT 'The ID of the parent category this discussion belongs to.',
+              `poster` varchar(200) DEFAULT '' COMMENT 'The Username of the user who created the discussion.',
+              `posted` int(10) DEFAULT '0' COMMENT 'A Unix timestamp representing the time the discussion was created.',
+              `subject` varchar(200) DEFAULT '' COMMENT 'The subject of the discussion.',
+              `first_comment_id` int(11) DEFAULT '0' COMMENT 'The ID of the first comment in this discussion.',
+              `last_comment` int(11) DEFAULT '0' COMMENT 'A Unix timestamp of the time the last comment was made to the discussion.',
+              `last_comment_id` int(11) DEFAULT '0' COMMENT 'The ID of the last comment in the discussion.',
+              `last_poster` varchar(200) DEFAULT NULL COMMENT 'The Username of the user who posted the last comment.',
+              `last_poster_id` int(10) DEFAULT NULL COMMENT 'The ID or the user who created the last post.',
+              `views` mediumint(8) DEFAULT '0' COMMENT 'The number of times the discussion has been viewed.',
+              `replies` mediumint(8) DEFAULT '0' COMMENT 'The number of coments to the discussion.',
+              `closed` tinyint(1) DEFAULT '0' COMMENT 'Is the discussion closed?',
+              `sticky` tinyint(1) DEFAULT '0' COMMENT 'Is the discussion as sticky?',
+              `moved_to` int(10) DEFAULT NULL COMMENT 'If the discussion has been moved, the ID of the new discussion (This one now acts as a redirect).',
+              `deleted` int(10) DEFAULT NULL COMMENT 'Has the discussion been deleted?',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
         ";
 
         if(!$this->db->query($sql))
@@ -398,9 +377,9 @@ class Install_M extends CI_Model {
         // Add the default category.
 
         $sql = "
-            INSERT INTO `categories` (`category_id`, `discussion_count`, `comment_count`, `name`, `slug`, `description`, `insert_user_id`, `update_user_id`, `date_inserted`, `date_updated`, `last_comment_date`, `last_comment_id`, `last_discussion_id`, `deletable`)
+            INSERT INTO `categories` (`id`, `name`, `slug`, `discussion_count`, `comment_count`)
             VALUES
-                (1,0,0,'General','general','This is the general category.',1,0,'2015-04-15 15:00:00',NULL,'2015-05-27 11:21:07',0,0,0);
+                (1,'General','general',0,0);
         ";
 
         if(!$this->db->query($sql))
@@ -665,6 +644,9 @@ class Install_M extends CI_Model {
         {
             $this->_delete_files($installation_item);
         }
+
+        // Rename the MY_Model file.
+        rename(APPPATH . 'core/MY_Model_Temp.php', APPPATH . 'core/MY_Model.php');
 
         return TRUE;
     }

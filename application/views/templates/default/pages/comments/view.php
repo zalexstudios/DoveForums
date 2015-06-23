@@ -15,93 +15,17 @@
 
     <div class="btn-group pull-right">
 
-        {reply_button}
+        {btn_reply}
 
     </div>
 
     <div class="btn-group pull-right">
 
-        {new_discussion_button}
+        {btn_new_discussion}
 
     </div>
 
     <?php } ?>
-
-</div>
-
-<div class="panel panel-danger" id="{comment_id}">
-
-    <div class="panel-heading">
-
-        <div class="media-left">{avatar}</div>
-
-        <div class="media-body">
-
-            <p>{created_by}<br><span class="label label-success">{points} Xp</span></p>
-
-        </div>
-
-    </div>
-
-    <div class="panel-body">
-
-        <div class="media">
-
-            <div class="media-body">
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <p class="text-muted">{created_date}</p>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <p class="pull-right"><strong>{comment_id_link}</strong></p>
-
-                    </div>
-
-                </div>
-
-                <hr />
-
-                <p>{body}</p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="panel-footer">
-
-        <div class="btn-toolbar">
-
-            <div class="btn-group">
-
-                {pm_button}
-                {thumbs_up_button}
-
-            </div>
-
-            <!-- Check the user is logged in -->
-            <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
-
-            <div class="btn-group pull-right">
-
-                {delete_discussion_button}
-                {edit_discussion_button}
-                {report_button}
-
-            </div>
-
-            <?php } ?>
-
-        </div>
-
-    </div>
 
 </div>
 
@@ -117,7 +41,7 @@
 
             <div class="media-body">
 
-                <p>{created_by}<br><span class="label label-success">{points} Xp</span></p>
+                <p>{poster}<br><span class="label label-success">{points} Xp</span></p>
 
             </div>
 
@@ -133,7 +57,7 @@
 
                         <div class="col-md-6">
 
-                            <p class="text-muted">{created_date}</p>
+                            <p class="text-muted">{posted}</p>
 
                         </div>
 
@@ -147,7 +71,7 @@
 
                     <hr />
 
-                    <p>{body}</p>
+                    <p>{message}</p>
 
                 </div>
 
@@ -161,8 +85,8 @@
 
                 <div class="btn-group">
 
-                    {pm_button}
-                    {thumbs_up_button}
+                    {btn_pm}
+                    {btn_thumbs_up}
 
                 </div>
 
@@ -171,9 +95,9 @@
 
                 <div class="btn-group pull-right">
 
-                    {delete_comment_button}
-                    {edit_comment_button}
-                    {report_button}
+                    {btn_delete_comment}
+                    {btn_edit_comment}
+                    {btn_report}
 
                 </div>
 
@@ -200,24 +124,17 @@
 
         <div class="btn-group pull-right">
 
-            {reply_button}
+            {btn_reply}
 
         </div>
 
         <div class="btn-group pull-right">
 
-            {new_discussion_button}
+            {btn_new_discussion}
 
         </div>
 
     <?php } ?>
-
-</div>
-
-<div class="text-center">
-
-    {pagination} <br />
-    <p class="text-muted small"><?=lang('txt_displaying');?> {result_start} <?=lang('txt_to');?> {result_end} <?=lang('txt_of');?> {total}</p>
 
 </div>
 
@@ -238,10 +155,10 @@
 
                 {form_open}
 
-                <div class="form-group <?php if(form_error('comment')){echo 'has-error';} ?>">
+                <div class="form-group <?php if(form_error('message')){echo 'has-error';} ?>">
 
-                    {comment_field}
-                    {comment_error}
+                    {message_field}
+                    {message_error}
 
                 </div>
 
@@ -249,7 +166,7 @@
 
                     {discussion_id_field_hidden}
                     {category_id_field_hidden}
-                    {post_comment_button}
+                    {btn_post_comment}
 
                 </div>
 

@@ -56,6 +56,7 @@ $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_report_user'] = 'Report User';
 $lang['btn_add_achievement'] = 'Add Achievement';
 $lang['btn_add_achievement_trigger'] = 'Add Achievement Trigger';
+$lang['btn_add_permission'] = 'Add Permission';
 
 //Links
 $lang['lnk_discussions'] = 'Discussions';
@@ -78,6 +79,7 @@ $lang['lnk_discussions'] = 'Discussions';
 $lang['lnk_language_packs'] = 'Language Packs';
 $lang['lnk_achievements'] = 'Achievements';
 $lang['lnk_achievement_triggers'] = 'Achievement Triggers';
+$lang['lnk_permissions'] = 'Permissions';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -109,6 +111,7 @@ $lang['tle_report_user'] = 'Report User';
 $lang['tle_achievements'] = 'Achievements';
 $lang['tle_achievement_triggers'] = 'Achievement Triggers';
 $lang['tle_edit_discussion'] = 'Edit Discussion';
+$lang['tle_permissions'] = 'Permissions';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -237,6 +240,7 @@ $lang['crumb_profile'] = '%s`s Profile';
 $lang['crumb_report'] = 'Report User';
 $lang['crumb_achievements'] = 'Achievements';
 $lang['crumb_achievement_triggers'] = 'Achievement Triggers';
+$lang['crumb_permissions'] = 'Permissions';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -344,6 +348,9 @@ $lang['tbl_icon'] = 'Icon';
 $lang['tbl_points'] = 'Points';
 $lang['tbl_condition'] = 'Condition';
 $lang['tbl_achievement'] = 'Achievement';
+$lang['tbl_permission'] = 'Permission';
+$lang['tbl_key'] = 'Permission Key';
+$lang['tbl_category'] = 'Category';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

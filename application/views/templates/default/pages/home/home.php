@@ -39,9 +39,9 @@
 
                     <div class="media-body">
 
-                        <h5 class="media-heading"><strong>{name}</strong></h5>
+                        <h5 class="media-heading"><strong>{subject}</strong></h5>
 
-                        <p class="small">{view_count} <?= lang('txt_views'); ?>&nbsp;&nbsp;&nbsp;&nbsp;{comment_count} <?= lang('txt_comments') ?>&nbsp;&nbsp;&nbsp;&nbsp;<?= lang('txt_most_recent_by'); ?> {last_comment_username}&nbsp;&nbsp;&nbsp;&nbsp;{last_comment_date}&nbsp;&nbsp;&nbsp;&nbsp;{category_name}</p>
+                        <p class="small">{views} <?= lang('txt_views'); ?>&nbsp;&nbsp;&nbsp;&nbsp;{replies} <?= lang('txt_comments') ?>&nbsp;&nbsp;&nbsp;&nbsp;<?= lang('txt_most_recent_by'); ?> {last_poster}&nbsp;&nbsp;&nbsp;&nbsp;{last_comment}&nbsp;&nbsp;&nbsp;&nbsp;{category}</p>
 
                     </div>
 

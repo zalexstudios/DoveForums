@@ -45,31 +45,21 @@ class Dashboard extends Admin_Controller {
                 'rules' => 'required',
                 'label' => 'lang:rules_name',
             ),
-            //1
-            array(
-                'field' => 'description',
-                'rules' => 'required',
-                'label' => 'lang:rules_description',
-            ),
         ),
         'edit_category' => array(
             //0
             array(
-                'field' => 'name',
+                'field' => 'name[]',
                 'rules' => 'required',
                 'label' => 'lang:rules_name',
             ),
-            //1
+        ),
+        'delete_category' => array(
+            //0
             array(
-                'field' => 'description',
+                'field' => 'category',
                 'rules' => 'required',
-                'label' => 'lang:rules_description',
-            ),
-            //2
-            array(
-                'field' => 'slug',
-                'rules' => 'required',
-                'label' => 'lang:rules_slug',
+                'label' => 'lang:rules_category',
             ),
         ),
         'add_edit_group' => array(
@@ -250,33 +240,12 @@ class Dashboard extends Admin_Controller {
                 'class' => 'form-control',
                 'type' => 'text',
             ),
-            //1
-            array(
-                'id' => 'description',
-                'name' => 'description',
-                'class' => 'form-control',
-                'type' => 'text',
-            ),
         ),
         'edit_category' => array(
             //0
             array(
                 'id' => 'name',
                 'name' => 'name',
-                'class' => 'form-control',
-                'type' => 'text',
-            ),
-            //1
-            array(
-                'id' => 'description',
-                'name' => 'description',
-                'class' => 'form-control',
-                'type' => 'text',
-            ),
-            //2
-            array(
-                'id' => 'slug',
-                'name' => 'slug',
                 'class' => 'form-control',
                 'type' => 'text',
             ),
@@ -400,15 +369,15 @@ class Dashboard extends Admin_Controller {
         $this->crumbs->add('Dashboard');
 
         // Get the user count.
-        $user_count = count($this->ion_auth->users()->result());
-        $reported_users = $this->forums->count_reported_users();
+        $users = $this->ion_auth->users()->result();
+        $user_count = count($users);
         $banned_users = 0;
 
         // Define the page data.
         $data['page'] = array(
             // Other
             'user_count' => $user_count,
-            'reported_user_count' => $reported_users,
+            'reported_user_count' => 0,
             'banned_user_count' => $banned_users,
             'breadcrumbs' => $this->crumbs->output(),
         );
@@ -942,10 +911,6 @@ class Dashboard extends Admin_Controller {
             // Get the group permissions.
             $permissions = $this->permission->get_permissions($group_id);
 
-            echo '<pre>';
-            print_r($permissions);
-            echo '</pre>';
-
             // Define the page data.
             $data['page'] = array(
                 // Form Data.
@@ -1022,290 +987,201 @@ class Dashboard extends Admin_Controller {
      *****************************************************************************************/
 
     /**
-     * All Categories
+     * Categories
      *
-     * Lists all the categories in the database.
+     * Add, Edit & Delete categories.
      *
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function all_categories()
+    public function categories()
     {
-        // Define the page title.
-        $data['title'] = lang('tle_categories');
-
-        // Define the page template.
-        $data['template'] = 'pages/dashboard/categories';
-
-        // Build the breadcrumbs.
-        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
-        $this->crumbs->add(lang('crumb_categories'));
-
-        // Set the table template.
-        $data['tmpl'] = array (
-            'table_open' => '<table class="table table-hover">',
-        );
-
-        $this->table->set_template(element('tmpl', $data));
-
-        // Set the table headings.
-        $this->table->set_heading(
-            lang('tbl_name'),
-            lang('tbl_slug'),
-            lang('tbl_description'),
-            lang('tbl_discussion_count'),
-            lang('tbl_comment_count'),
-            lang('tbl_action')
-        );
-
-        // Get all the categories.
-        $categories = $this->forums->get_categories_admin();
-
-        if (!empty($categories))
+        // See if the form has been posted.
+        if($this->input->post('action') == 'Add')
         {
-            foreach($categories as $row)
-            {
-                $this->table->add_row(
-                    $row->name,
-                    $row->slug,
-                    $row->description,
-                    $row->discussion_count,
-                    $row->comment_count,
-                    ''.anchor( site_url('dashboard/edit_category/'.$row->category_id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
-                    ''.anchor( site_url('dashboard/view_category/'.$row->category_id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
-                    anchor( site_url('dashboard/delete_category/'.$row->category_id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
-                );
-            }
+            // Set the validation rules.
+            $this->form_validation->set_rules($this->validation_rules['add_category']);
+        }
+        else if($this->input->post('action') == 'Edit')
+        {
+            // Set the validation rules.
+            $this->form_validation->set_rules($this->validation_rules['edit_category']);
+        }
+        else if($this->input->post('action') == 'Delete')
+        {
+            // Set the validation rules.
+            $this->form_validation->set_rules($this->validation_rules['delete_category']);
         }
 
-        // Define the page data.
-        $data['page'] = array(
-            // Table.
-            'categories_table' => $this->table->generate(),
-            // Buttons.
-            'btn_add_category' => anchor( site_url('dashboard/add_category'), lang('btn_add_category'), array('class' => 'btn btn-success btn-sm')),
-            // Other
-            'breadcrumbs' => $this->crumbs->output(),
-        );
-
-        $this->render( element('page', $data), element('title', $data), element('template', $data) );
-    }
-
-    /**
-     * Add Category
-     *
-     * Add a new category to the database.
-     *
-     * @author      Chris Baines
-     * @since       0.0.1
-     */
-    public function add_category()
-    {
-        // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['add_category']);
-
-        // See if the form has been submitted.
+        // See if the form has run.
         if($this->form_validation->run() === FALSE)
         {
             // Define the page title.
-            $data['title'] = lang('tle_add');
+            $data['title'] = lang('tle_categories');
 
             // Define the page template.
-            $data['template'] = 'pages/dashboard/add_category';
+            $data['template'] = 'pages/dashboard/categories';
 
             // Build the breadcrumbs.
             $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
-            $this->crumbs->add(lang('crumb_add'));
+            $this->crumbs->add(lang('crumb_categories'));
+
+            // Get all the categories.
+            $categories = $this->categories->get_all();
+
+            // Build the category dropdown.
+            if(!empty($categories))
+            {
+                // Build the category options.
+                $category_options[NULL] = lang('dd_category_default');
+
+                foreach($categories as $row)
+                {
+                    $category_options[$row->id] = $row->name;
+                }
+
+                // Build the edit fields.
+                foreach($categories as $cat)
+                {
+                    $data['categories'][] = array(
+                        'category' => form_input(array('type' => 'text', 'class' => 'form-control', 'name' => 'name['.$cat->id.']'), set_value($cat->id, $cat->name)),
+                        'hidden' => form_hidden('original_name[]', $cat->name),
+                    );
+                }
+            }
 
             // Define the page data.
             $data['page'] = array(
-                // Form Data.
-                'form_open' => form_open( site_url('dashboard/add_category') ),
+                // Form.
+                'form_open' => form_open( site_url('dashboard/categories') ),
                 'form_close' => form_close(),
+                // Hidden Fields.
+                'add_hidden_field' => form_hidden('action', 'Add'),
+                'edit_hidden_field' => form_hidden('action', 'Edit'),
+                'delete_hidden_field' => form_hidden('action', 'Delete'),
                 // Fields
                 'name_field' => form_input( $this->form_fields['add_category'][0], set_value( $this->form_fields['add_category'][0]['name'], $this->input->post('name') ) ),
-                'description_field' => form_input( $this->form_fields['add_category'][1], set_value( $this->form_fields['add_category'][1]['name'], $this->input->post('description') ) ),
+                'category_field' => form_dropdown('category', $category_options, '0', 'class="form-control"'),
+                'categories' => element('categories', $data),
                 // Errors.
                 'name_error' => form_error($this->form_fields['add_category'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'description_error' => form_error($this->form_fields['add_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
                 // Labels.
                 'name_label' => form_label( lang('lbl_name'), $this->form_fields['add_category'][0]['id']),
-                'description_label' => form_label( lang('lbl_description'), $this->form_fields['add_category'][1]['id']),
+                'category_label' => form_label( 'Category', 'category'),
                 // Buttons.
-                'btn_add_category' => form_submit('submit', lang('btn_add_category'), 'class="btn btn-primary btn-sm"'),
+                'btn_add' => form_submit('submit', 'Add New', 'class="btn btn-primary btn-sm"'),
+                'btn_edit' => form_submit('submit', 'Update', 'class="btn btn-primary btn-sm"'),
+                'btn_delete' => form_submit('submit', 'Delete', 'class="btn btn-primary btn-sm"'),
                 // Other
                 'breadcrumbs' => $this->crumbs->output(),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
-
-        } else {
-
-            // Gather the data.
-            $data = array(
-                'name' => $this->input->post('name'),
-                'description' => $this->input->post('description'),
-            );
-
-            if ($this->forums->add_category($data) === TRUE)
+        }
+        else
+        {
+            if($this->input->post('action') == 'Add')
             {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('success_add_category'), $this->input->post('name')), 'success');
+                // Load the slug library.
+                $config = array(
+                    'field' => 'slug',
+                    'title' => 'name',
+                    'table' => 'categories',
+                    'replacement' => 'underscore'
+                );
+
+                $this->load->library('slug', $config);
+
+                // Build the data.
+                $data = array(
+                    'name' => $this->input->post('name'),
+                    'slug' => $this->slug->create_uri( strip_tags($this->input->post('name') )),
+                );
+
+                // Add to the database.
+                $insert = $this->categories->insert($data);
+
+                if($insert)
+                {
+                    // Create success message.
+                    $this->messageci->set( sprintf(lang('success_add_category'), $this->input->post('name')), 'success');
+                }
+                else
+                {
+                    // Create error message.
+                    $this->messageci->set( sprintf( lang('error_add_category'), $this->input->post('name')), 'error');
+                }
 
                 // Redirect.
-                redirect( site_url('dashboard/all_categories'), 'refresh');
-            } else {
-                // Create a message.
-                $this->messageci->set( lang('error_add_category'), 'error');
+                redirect( site_url('dashboard/categories'), 'refresh');
+            }
+            else if($this->input->post('action') == 'Edit')
+            {
+                // Update the categories.
+                foreach($this->input->post('name') as $key => $val)
+                {
+                    // Load the slug library.
+                    $config = array(
+                        'field' => 'slug',
+                        'title' => 'name',
+                        'id' => 'id',
+                        'table' => 'categories',
+                        'replacement' => 'underscore'
+                    );
+
+                    $this->load->library('slug', $config);
+
+                    // Get the original category.
+                    $cat = $this->categories->get_by('id', $key);
+
+                    // Build the data.
+                    $data = array(
+                        'name' => $val,
+                        'slug' => $this->slug->create_uri(strip_tags($val), $cat->id),
+                    );
+
+                    $update = $this->categories->update_by(array('id' => $key), $data);
+
+                    if($update)
+                    {
+                        // Create a message.
+                        $this->messageci->set( sprintf(lang('success_update_category'), $val), 'success' );
+                    }
+                    else
+                    {
+                        // Create a message.
+                        $this->messageci->set( sprintf(lang('error_update_category'), $val), 'error' );
+                    }
+                }
 
                 // Redirect.
-                redirect( site_url('dashboard/all_categories'), 'refresh');
+                redirect( site_url('dashboard/categories'), 'refresh');
+            }
+            else if($this->input->post('action') == 'Delete')
+            {
+                // Grab the category.
+                $cat = $this->categories->get_by('id', $this->input->post('category'));
+
+                // Delete the category.
+                $delete = $this->categories->delete($this->input->post('category'));
+
+                if($delete)
+                {
+                    // Create success message.
+                    $this->messageci->set( sprintf( lang('success_delete_category'), $cat->name), 'success' );
+                }
+                else
+                {
+                    // Create error message.
+                    $this->messageci->set( sprintf( lang('error_delete_category'), $cat->name), 'error' );
+                }
+
+                // Redirect.
+                redirect( site_url('dashboard/categories'), 'refresh');
             }
         }
 
-    }
-
-    /**
-     * Edit Category
-     *
-     * Edit the supplied category.
-     *
-     * @param       integer     $category_id
-     * @author      Chris Baines
-     * @since       0.0.1
-     */
-    public function edit_category($category_id)
-    {
-        if(empty($category_id))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_invalid_id'), 'error');
-
-            // Redirect.
-            redirect($this->agent->referrer());
-        }
-
-        // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['edit_category']);
-
-        // See if the form has been submitted.
-        if($this->form_validation->run() === FALSE)
-        {
-            // Define the page title.
-            $data['title'] = lang('tle_edit');
-
-            // Define the page template.
-            $data['template'] = 'pages/dashboard/edit_category';
-
-            // Build the breadcrumbs.
-            $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
-            $this->crumbs->add(lang('crumb_edit'));
-
-            // Get the category from the database.
-            $category = $this->forums->get_category_admin($category_id);
-
-            // Define the page data.
-            $data['page'] = array(
-                // Form Data.
-                'form_open' => form_open( site_url('dashboard/edit_category/'.$category_id) ),
-                'form_close' => form_close(),
-                // Fields
-                'name_field' => form_input( $this->form_fields['edit_category'][0], set_value( $this->form_fields['edit_category'][0]['name'], $category->name ) ),
-                'description_field' => form_input( $this->form_fields['edit_category'][1], set_value( $this->form_fields['edit_category'][1]['name'], $category->description ) ),
-                'slug_field' => form_input( $this->form_fields['edit_category'][2], set_value( $this->form_fields['edit_category'][2]['name'], $category->slug ) ),
-                // Errors.
-                'name_error' => form_error($this->form_fields['edit_category'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'description_error' => form_error($this->form_fields['edit_category'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'slug_error' => form_error($this->form_fields['edit_category'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                // Labels.
-                'name_label' => form_label( lang('lbl_name'), $this->form_fields['edit_category'][0]['id']),
-                'description_label' => form_label( lang('lbl_description'), $this->form_fields['edit_category'][1]['id']),
-                'slug_label' => form_label( lang('lbl_slug'), $this->form_fields['edit_category'][2]['id']),
-                // Hidden.
-                'category_id_hidden_field' => form_hidden('category_id', $category->category_id),
-                // Buttons.
-                'btn_update_category' => form_submit('submit', lang('btn_update_category'), 'class="btn btn-primary btn-sm"'),
-                // Other
-                'breadcrumbs' => $this->crumbs->output(),
-            );
-
-            $this->render( element('page', $data), element('title', $data), element('template', $data) );
-
-        } else {
-
-            // Gather the data.
-            $data = array(
-                'name' => $this->input->post('name'),
-                'description' => $this->input->post('description'),
-                'slug' => $this->input->post('slug'),
-            );
-
-            if ($this->forums->update_category( $this->input->post('category_id'), $data) === TRUE)
-            {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('success_update_category'), $this->input->post('name')), 'success');
-
-                // Redirect.
-                redirect( site_url('dashboard/all_categories'), 'refresh');
-            } else {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('error_update_category'), $this->input->post('name')), 'error');
-
-                // Redirect.
-                redirect( site_url('dashboard/all_categories'), 'refresh');
-            }
-
-        }
-    }
-
-    /**
-     * Delete Category
-     *
-     * Deletes the supplied category.
-     *
-     * @param       integer     $category_id
-     * @author      Chris Baines
-     * @since       0.0.1
-     *
-     */
-    public function delete_category($category_id)
-    {
-        if(empty($category_id))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_invalid_id'), 'error');
-
-            // Redirect.
-            redirect($this->agent->referrer());
-        }
-
-        // See if the category is deletable.
-        $deletable = $this->forums->get_row( 'deletable', 'category_id', $category_id, $this->tables['categories']);
-
-        if ($deletable == 0)
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_not_deletable'), 'error');
-
-            // Redirect
-            redirect( $this->agent->referrer() );
-        }
-
-        // Perform the delete.
-        if ($this->forums->delete_category($category_id) === TRUE)
-        {
-            // Create a message.
-            $this->messageci->set( lang('success_delete_category'), 'success');
-
-            // Redirect.
-            redirect( $this->agent->referrer() );
-        } else {
-            // Create a message.
-            $this->messageci->set( lang('error_delete_category'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer() );
-        }
     }
 
     /*****************************************************************************************

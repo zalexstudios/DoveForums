@@ -3,8 +3,7 @@
 <ul class="list-group">
 
     <li class="list-group-item list-group-item-info"><i class="fa fa-tasks"></i> <?=lang('tle_categories');?></li>
-    <li class="list-group-item">{all_categories}</li>
-    <li class="list-group-item">{add_category}</li>
+    <li class="list-group-item">{categories}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-comments-o"></i> <?=lang('tle_discussions');?></li>
     <li class="list-group-item">{all_discussions}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-user"></i> <?=lang('tle_users');?></li>

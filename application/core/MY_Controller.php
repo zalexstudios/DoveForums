@@ -217,7 +217,7 @@ class Admin_Controller extends Front_Controller {
             // Navigation.
             'navigation' => array(
                 'links' => array(
-                    array('link' => anchor(site_url('dashboard/all_categories'), lang('lnk_categories'))),
+                    array('link' => anchor(site_url('dashboard/categories'), lang('lnk_categories'))),
                     array('link' => anchor(site_url('dashboard/all_users'), lang('lnk_users'))),
                     array('link' => anchor(site_url('dashboard/all_groups'), lang('lnk_groups'))),
                     array('link' => anchor(site_url('dashboard/settings'), lang('lnk_settings'))),
@@ -232,8 +232,7 @@ class Admin_Controller extends Front_Controller {
             'sidebar' => array(
                 'all_users' => anchor( site_url('dashboard/all_users'), lang('lnk_users')),
                 'add_user' => anchor( site_url('dashboard/add_user'), lang('lnk_add_user')),
-                'all_categories' => anchor( site_url('dashboard/all_categories'), lang('lnk_categories')),
-                'add_category' => anchor( site_url('dashboard/add_category'), lang('lnk_add_category')),
+                'categories' => anchor( site_url('dashboard/categories'), lang('lnk_categories')),
                 'all_discussions' => anchor( site_url('dashboard/all_discussions'), lang('lnk_discussions')),
                 'all_groups' => anchor( site_url('dashboard/all_groups'), lang('lnk_groups')),
                 'add_group' => anchor( site_url('dashboard/add_group'), lang('lnk_add_group')),

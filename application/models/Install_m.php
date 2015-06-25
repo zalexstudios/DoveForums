@@ -652,42 +652,4 @@ class Install_M extends CI_Model {
         return TRUE;
     }
 
-    public function delete_files()
-    {
-        $installation_items = array(
-            APPPATH . 'controllers/Install.php',
-            APPPATH . 'views/install',
-            APPPATH . 'models/Install_m.php',
-        );
-
-        foreach ($installation_items as $installation_item)
-        {
-            $this->_delete_files($installation_item);
-        }
-
-        return TRUE;
-    }
-
-    private function _delete_files($target)
-    {
-        if (is_dir($target))
-        {
-            $files = glob($target . '*', GLOB_MARK);
-
-            foreach($files as $file)
-            {
-                $this->_delete_files($file);
-            }
-
-            if(file_exists($target) && is_dir($target))
-            {
-                rmdir($target);
-            }
-        }
-        elseif (is_file($target))
-        {
-            unlink( $target );
-        }
-    }
-
 }

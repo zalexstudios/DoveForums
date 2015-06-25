@@ -25,6 +25,8 @@ class MY_Controller extends CI_Controller{
         $this->load->model('category_m', 'categories');
         $this->load->model('comment_m', 'comments');
         $this->load->model('user_m', 'users');
+        $this->load->model('language_m', 'language');
+        $this->load->model('report_m', 'reports');
 
         // Load libraries.
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
@@ -212,6 +214,11 @@ class Admin_Controller extends Front_Controller {
      */
     public function render( $page_data=array(), $page_title, $page_template )
     {
+
+        // See if any reports exist.
+        $reports = $this->reports->count_by('zapped', NULL);
+
+
         // Build the template data array.
         $data = array(
             // Navigation.
@@ -233,7 +240,7 @@ class Admin_Controller extends Front_Controller {
                 'all_users' => anchor( site_url('dashboard/all_users'), lang('lnk_users')),
                 'add_user' => anchor( site_url('dashboard/add_user'), lang('lnk_add_user')),
                 'categories' => anchor( site_url('dashboard/categories'), lang('lnk_categories')),
-                'all_discussions' => anchor( site_url('dashboard/all_discussions'), lang('lnk_discussions')),
+                'reports' => (empty($reports) ? anchor( site_url('dashboard/reports'), lang('lnk_reports')) : anchor( site_url('dashboard/reports'), ''.lang('lnk_reports').' <span class="pull-right label label-danger">'.$reports.'</span>' )),
                 'all_groups' => anchor( site_url('dashboard/all_groups'), lang('lnk_groups')),
                 'add_group' => anchor( site_url('dashboard/add_group'), lang('lnk_add_group')),
                 'all_settings' => anchor( site_url('dashboard/settings'), lang('lnk_settings')),

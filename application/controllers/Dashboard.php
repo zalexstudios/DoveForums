@@ -1185,22 +1185,27 @@ class Dashboard extends Admin_Controller {
     }
 
     /*****************************************************************************************
-     * Discussion Functions
+     * Reports Functions
      *****************************************************************************************/
 
-    public function all_discussions()
+    public function reports()
     {
         // Define the page title.
-        $data['title'] = lang('tle_discussions');
+        $data['title'] = lang('tle_reports');
 
         // Define the page template.
-        $data['template'] = 'pages/dashboard/discussions';
+        $data['template'] = 'pages/dashboard/reports';
 
         // Build the breadcrumbs.
         $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
-        $this->crumbs->add(lang('crumb_discussions'));
+        $this->crumbs->add(lang('crumb_reports'));
 
-        /* TODO - Build the all discussions page. */
+        // Get any unread reports from the database.
+        $unread = $this->reports->get_by('zapped', NULL);
+
+        // Get all the reports from the database.
+        $reports = $this->reports->get_all();
+
 
         // Define the page data.
         $data['page'] = array(
@@ -1208,51 +1213,6 @@ class Dashboard extends Admin_Controller {
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
-    }
-
-    public function edit_discussion($discussion_id)
-    {
-        if(empty($discussion_id))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_invalid_id'), 'error');
-
-            // Redirect.
-            redirect($this->agent->referrer());
-        }
-
-        // Define the page title.
-        $data['title'] = lang('tle_edit');
-
-        // Define the page template.
-        $data['template'] = 'pages/dashboard/edit_discussion';
-
-        // Build the breadcrumbs.
-        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
-        $this->crumbs->add(lang('crumb_edit'));
-
-        /* TODO - Build the edit discussion page. */
-
-        // Define the page data.
-        $data['page'] = array(
-            'breadcrumbs' => $this->crumbs->output(),
-        );
-
-        $this->render( element('page', $data), element('title', $data), element('template', $data) );
-    }
-
-    public function delete_discussion($discussion_id)
-    {
-        if(empty($discussion_id))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_invalid_id'), 'error');
-
-            // Redirect.
-            redirect($this->agent->referrer());
-        }
-
-        /* TODO */
     }
 
     /*****************************************************************************************
@@ -1324,15 +1284,7 @@ class Dashboard extends Admin_Controller {
             );
 
             // Build the site language options.
-            $languages = $this->forums->get_languages();
-
-            if(!empty($languages))
-            {
-                foreach($languages as $row)
-                {
-                    $language_options[$row->code] = $row->language;
-                }
-            }
+            $language_options = $this->language->dropdown('code', 'language');
 
             // Define the page data.
             $data['page'] = array(
@@ -1432,7 +1384,7 @@ class Dashboard extends Admin_Controller {
         );
 
         // Get all the languages.
-        $languages = $this->forums->get_languages();
+        $languages = $this->language->get_all();
 
         if (!empty($languages))
         {

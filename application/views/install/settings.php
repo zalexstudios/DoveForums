@@ -28,9 +28,6 @@
             {
                 echo '<div class="alert alert-danger" role="alert">' . validation_errors() .'</div>';
             }
-
-            echo $this->messageci->display();
-
             ?>
 
             <?php echo form_open(); ?>

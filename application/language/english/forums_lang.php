@@ -80,6 +80,7 @@ $lang['lnk_language_packs'] = 'Language Packs';
 $lang['lnk_achievements'] = 'Achievements';
 $lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 $lang['lnk_permissions'] = 'Permissions';
+$lang['lnk_reports'] = 'Reports';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -112,6 +113,7 @@ $lang['tle_achievements'] = 'Achievements';
 $lang['tle_achievement_triggers'] = 'Achievement Triggers';
 $lang['tle_edit_discussion'] = 'Edit Discussion';
 $lang['tle_permissions'] = 'Permissions';
+$lang['tle_reports'] = 'Reports';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -241,6 +243,7 @@ $lang['crumb_report'] = 'Report User';
 $lang['crumb_achievements'] = 'Achievements';
 $lang['crumb_achievement_triggers'] = 'Achievement Triggers';
 $lang['crumb_permissions'] = 'Permissions';
+$lang['crumb_reports'] = 'Reports';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';

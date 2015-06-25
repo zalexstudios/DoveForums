@@ -7,7 +7,7 @@ class Comments extends Front_Controller {
         'edit_comment' => array(
             //0
             array(
-                'field' => 'comment',
+                'field' => 'message',
                 'rules' => 'required',
                 'label' => 'lang:rules_comment',
             ),
@@ -26,8 +26,8 @@ class Comments extends Front_Controller {
         'edit_comment' => array(
             //0
             array(
-                'id' => 'comment',
-                'name' => 'comment',
+                'id' => 'message',
+                'name' => 'message',
                 'class' => 'form-control',
                 'type' => 'text',
             ),
@@ -72,16 +72,16 @@ class Comments extends Front_Controller {
             $this->crumbs->add(lang('crumb_edit_comment'));
 
             // Get the comment from the database.
-            $comment = $this->forums->get_comment_by_id($comment_id);
+            $comment = $this->comments->get_by('id', $comment_id);
 
             $data['page'] = array(
                 // Form Data.
                 'form_open' => form_open('comments/edit_comment/'.$comment_id),
                 'form_close' => form_close(),
                 // Fields.
-                'comment_field' => form_textarea( $this->form_fields['edit_comment'][0], set_value( $this->form_fields['edit_comment'][0]['name'], $comment->body ) ),
+                'message_field' => form_textarea( $this->form_fields['edit_comment'][0], set_value( $this->form_fields['edit_comment'][0]['name'], $comment->message ) ),
                 // Errors
-                'comment_error' => form_error($this->form_fields['edit_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'message_error' => form_error($this->form_fields['edit_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons
                 'btn_update_comment' => form_submit('submit', lang('btn_update_comment'), 'class="btn btn-primary btn-sm"'),
                 // Hidden.
@@ -95,25 +95,29 @@ class Comments extends Front_Controller {
         }
         else
         {
+            // Get the comment.
+            $comment = $this->comments->get_by('id', $this->input->post('comment_id'));
+
             // Gather the data.
             $data = array(
-                'body' => $this->input->post('comment'),
+                'message' => $this->input->post('message'),
+                'edited' => now(),
+                'edited_by' => $this->session->userdata('username'),
             );
 
-            if ($this->forums->update_comment($this->input->post('comment_id'), $data) === TRUE)
+            $comment_id = $this->comments->update($this->input->post('comment_id'), $data);
+
+            if ($comment_id)
             {
-                // Create a message.
+                // Create success message.
                 $this->messageci->set( lang('success_update_comment'), 'success');
-
-                // Redirect.
-                redirect( site_url(), 'refresh' );
             } else {
-                // Create a message.
+                // Create error message.
                 $this->messageci->set( lang('error_update_comment'), 'error');
-
-                // Redirect.
-                redirect( site_url(), 'refresh');
             }
+
+            // Redirect.
+            redirect( site_url('discussions/view/'.$comment->discussion_id.'/#'.$comment_id), 'refresh');
         }
     }
 
@@ -121,14 +125,15 @@ class Comments extends Front_Controller {
      * Delete Comment
      *
      * @param       integer     $comment_id
+     * @param       integer     $discussion_id
      * @return      bool
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function delete_comment( $comment_id = NULL )
+    public function delete_comment( $comment_id = NULL, $discussion_id = NULL )
     {
         // Check if the user has permission.
-        if(!$this->permission->has_permission('edit_comments'))
+        if(!$this->permission->has_permission('delete_comments'))
         {
             // Create a message.
             $this->messageci->set( lang('error_permission_required'), 'error');
@@ -147,21 +152,21 @@ class Comments extends Front_Controller {
             redirect( site_url(), 'refresh' );
         }
 
-        if($this->forums->delete_comment($comment_id))
+        // Perform the delete.
+        $delete = $this->comments->delete($comment_id);
+
+        if($delete)
         {
             // Create a message.
             $this->messageci->set( lang('success_delete_comment'), 'success');
 
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
-
         } else {
             // Create a message.
             $this->messageci->set( lang('error_delete_comment'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
         }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
     }
 
     public function report_comment($comment_id = NULL)
@@ -204,11 +209,11 @@ class Comments extends Front_Controller {
             // Build the reason dropdown.
             $reason = array(
                 '' => lang('dd_default_reason'),
-                '1' => lang('dd_break_rules'),
-                '2' => lang('dd_inappropriate_content'),
-                '3' => lang('dd_spam_content'),
-                '4' => lang('dd_wrong_forum'),
-                '5' => lang('dd_other'),
+                'Breaks Forum Rules' => lang('dd_break_rules'),
+                'Inappropriate Content' => lang('dd_inappropriate_content'),
+                'Spam Content' => lang('dd_spam_content'),
+                'Wrong Forum' => lang('dd_wrong_forum'),
+                'Other' => lang('dd_other'),
             );
 
             $data['page'] = array(
@@ -232,25 +237,31 @@ class Comments extends Front_Controller {
         }
         else
         {
+            // Get the comment.
+            $comment = $this->comments->get_by('id', $this->input->post('comment_id'));
+
             // Gather the data.
             $data = array(
-                'reason' => $this->input->post('reason'),
+                'comment_id' => $comment->id,
+                'discussion_id' => $comment->discussion_id,
+                'reported_by' => $this->session->userdata('user_id'),
+                'created' => now(),
+                'message' => $this->input->post('reason'),
             );
 
-            if ($this->forums->report_comment($this->input->post('comment_id'), $data) === TRUE)
+            $report = $this->reports->insert($data);
+
+            if ($report)
             {
                 // Create a message.
                 $this->messageci->set( lang('success_report_comment'),  'success');
-
-                // Redirect.
-                redirect( site_url(), 'refresh' );
             } else {
                 // Create a message.
                 $this->messageci->set( lang('error_report_comment'),  'error');
-
-                // Redirect.
-                redirect( site_url(), 'refresh');
             }
+
+            // Redirect.
+            redirect( site_url('discussions/view/'.$comment->discussion_id.'/#'.$comment->id), 'refresh' );
         }
     }
 }

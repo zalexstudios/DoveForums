@@ -94,7 +94,7 @@ class Install_M extends CI_Model {
               `message` mediumtext COMMENT 'The contents of the comment.',
               `hide_smilies` tinyint(1) DEFAULT '0' COMMENT 'Shoult smilies be hidden in this post?',
               `posted` int(10) DEFAULT '0' COMMENT 'A Unix timestamp representing the time the comment was created.',
-              `editied` int(10) DEFAULT NULL COMMENT 'A Unix timestamp representing the time the comment was edited.',
+              `edited` int(10) DEFAULT NULL COMMENT 'A Unix timestamp representing the time the comment was edited.',
               `edited_by` varchar(200) DEFAULT NULL COMMENT 'The Username of the user who last edited the post, NULL if it hasn`t been edited.',
               `deleted` int(10) DEFAULT '0' COMMENT 'Has the comment been deleted?',
               PRIMARY KEY (`id`)
@@ -327,6 +327,26 @@ class Install_M extends CI_Model {
               `achievement_id` int(11) NOT NULL,
               `user_id` int(11) NOT NULL,
               `date_received` datetime NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Create the reports table.
+        $sql = "
+            CREATE TABLE `reports` (
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key used to identify the report. It has no other meaning.',
+              `comment_id` int(10) DEFAULT '0' COMMENT 'The ID of the reported comment.',
+              `discussion_id` int(10) DEFAULT '0' COMMENT 'The ID of the discussion in which the reported comment is contained.',
+              `reported_by` int(10) DEFAULT '0' COMMENT 'The ID of the user who created the report.',
+              `created` int(10) DEFAULT '0' COMMENT 'A Unix timestamp representing the time this report was created.',
+              `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'The report message entered by the user.',
+              `zapped` int(10) DEFAULT NULL COMMENT 'A Unix timestamp representing the time this report was zappes (marked as read).',
+              `zapped_by` int(10) DEFAULT NULL COMMENT 'The ID of the user who zapped this report.',
+              PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         ";
 
@@ -644,9 +664,6 @@ class Install_M extends CI_Model {
         {
             $this->_delete_files($installation_item);
         }
-
-        // Rename the MY_Model file.
-        rename(APPPATH . 'core/MY_Model_Temp.php', APPPATH . 'core/MY_Model.php');
 
         return TRUE;
     }

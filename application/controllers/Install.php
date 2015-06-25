@@ -9,14 +9,11 @@ class Install extends CI_Controller {
     {
         parent::__construct();
 
-        // Load the install model.
-        $this->load->model('install_m', 'install');
-
         // Load some helpers.
         $this->load->helper(array('form', 'cookie', 'url'));
 
         // Load some libraries.
-        $this->load->library(array('form_validation', 'session', 'messageci'));
+        $this->load->library(array('form_validation'));
 
         // Load the default config.
         $this->config->load('forums');
@@ -27,6 +24,9 @@ class Install extends CI_Controller {
 
     public function index()
     {
+        // Load the install model.
+        $this->load->model('install_m', 'install');
+
         // Set some validation rules.
         $this->form_validation->set_rules('db_hostname', 'Hostname', 'trim|required');
         $this->form_validation->set_rules('db_username', 'Username', 'trim|required');
@@ -55,10 +55,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_database_config($find, $replace) !== true)
                 {
                     // Create a message.
-                    $this->messageci->set( 'The hostname on your database config file cannot be replaced.', 'error');
+                    $data['error'] = 'The hostname on your database config file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install'));
+                    $this->load->view('install/error', $data);
                 }
 
                 // Replace the username in the database.php config file.
@@ -68,10 +68,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_database_config($find, $replace) !== true)
                 {
                     // Create a message.
-                    $this->messageci->set( 'The username on your database config file cannot be replaced.', 'error');
+                    $data['error'] = 'The username on your database config file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install'));
+                    $this->load->view('install/error', $data);
                 }
 
                 // Replace the password in the database.php config file.
@@ -81,10 +81,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_database_config($find, $replace) !== true)
                 {
                     // Create a message.
-                    $this->messageci->set( 'The password on your database config file cannot be replaced.', 'error');
+                    $data['error'] = 'The password on your database config file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install'));
+                    $this->load->view('install/error', $data);;
                 }
 
                 // Replace the database in the database.php config file.
@@ -94,10 +94,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_database_config($find, $replace) !== true)
                 {
                     // Create a message.
-                    $this->messageci->set( 'The database on your database config file cannot be replaced.', 'error');
+                    $data['error'] = 'The database on your database config file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install'));
+                    $this->load->view('install/error', $data);;
                 }
 
                 // Everything ok, proceed to the next step.
@@ -106,16 +106,19 @@ class Install extends CI_Controller {
             else
             {
                 // Create a message.
-                $this->messageci->set('There was a problem connecting to the database, please try again.');
+                $data['error'] = 'There was a problem connecting to the database, please try again.';
 
                 // Redirect.
-                redirect( site_url('install/') );
+                $this->load->view('install/error', $data);
             }
         }
     }
 
     public function create_tables()
     {
+        // Load the install model.
+        $this->load->model('install_m', 'install');
+
         // Set some validation rules.
         $this->form_validation->set_rules('first_iteration', 'First Iteration', 'trim|required|alpha_dash|max_length[64]');
 
@@ -135,10 +138,10 @@ class Install extends CI_Controller {
             else
             {
                 // Create a message.
-                $this->messageci->set('There was a problem generating the database tables, please try again.');
+                $data['error'] = 'There was a problem generating the database tables, please try again.';
 
                 // Redirect.
-                redirect( site_url('install/create_tables') );
+                $this->load->view('install/error', $data);
             }
         }
     }
@@ -152,14 +155,19 @@ class Install extends CI_Controller {
             setcookie('db_name', '', time() - 3600);
         }
 
+        if(file_exists(APPPATH. 'core/MY_Model_Temp.php'))
+        {
+            rename(APPPATH . 'core/MY_Model_Temp.php', APPPATH . 'core/MY_Model.php');
+        }
+
         // Load the database.
         $this->load->database();
 
         // Load the forums model.
-        $this->load->model('forums_m', 'forums');
+        $this->load->model('language_m', 'language');
 
         // Get the language packs installed.
-        $language = $this->forums->get_languages();
+        $language = $this->language->get_all();
 
         if(!empty($language))
         {
@@ -201,6 +209,9 @@ class Install extends CI_Controller {
             // Load the settings library.
             $this->load->library('settings');
 
+            // Load the install model.
+            $this->load->model('install_m', 'install');
+
             // Gather the data.
             $base_url = $this->input->post('base_url');
             $site_title = addslashes($this->input->post('site_title'));
@@ -218,10 +229,10 @@ class Install extends CI_Controller {
             if ($this->ion_auth->register($username, $password, $email, $additional_data, $group) === FALSE )
             {
                 // Create a message.
-                $this->messageci->set('There was a problem creating the admin user, please try again!.');
+                $data['error'] = 'There was a problem creating the admin user, please try again!.';
 
                 // Redirect
-                redirect( site_url('install/site_settings') );
+                $this->load->view('install/error', $data);
             }
             else
             {
@@ -247,10 +258,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_main_config($find, $replace) !== TRUE)
                 {
                     // Create a message.
-                    $this->messageci->set('The session driver in your main config.php file cannot be replaced.', 'error');
+                    $data['error'] = 'The session driver in your main config.php file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install/site_settings') );
+                    $this->load->view('install/error', $data);;
                 }
 
                 // Change session path.
@@ -260,10 +271,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_main_config($find, $replace) !== TRUE)
                 {
                     // Create a message.
-                    $this->messageci->set('The session path in your main config.php file cannot be replaced.', 'error');
+                    $data['error'] = 'The session path in your main config.php file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install/site_settings') );
+                    $this->load->view('install/error', $data);
                 }
 
                 // Replace base_url.
@@ -273,10 +284,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_main_config($find, $replace) !== TRUE)
                 {
                     // Create a message.
-                    $this->messageci->set('The base url in the your main config.php file cannot be replaced.', 'error');
+                    $data['error'] = 'The base url in the your main config.php file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install/site_settings') );
+                    $this->load->view('install/error', $data);
                 }
 
                 // Replace the encryption key.
@@ -286,10 +297,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_main_config($find, $replace) !== TRUE)
                 {
                     // Create a message.
-                    $this->messageci->set('The encryption key in the your main config.php file cannot be replaced.', 'error');
+                    $data['error'] = 'The encryption key in the your main config.php file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install/site_settings') );
+                    $this->load->view('install/error', $data);;
                 }
 
                 // Replace the default route.
@@ -299,10 +310,10 @@ class Install extends CI_Controller {
                 if ($this->install->edit_routes_config($find, $replace) !== TRUE)
                 {
                     // Create a message.
-                    $this->messageci->set('The default route in your routes.php file cannot be replaced.', 'error');
+                    $data['error'] = 'The default route in your routes.php file cannot be replaced.';
 
                     // Redirect.
-                    redirect( site_url('install/site_settings') );
+                    $this->load->view('install/error', $data);;
                 }
 
                 // Everything ok, go to the final step.
@@ -321,6 +332,9 @@ class Install extends CI_Controller {
 
     public function delete_files()
     {
+        // Load the install model.
+        $this->load->model('install_m', 'install');
+        
         if ($this->install->delete_files())
         {
             redirect( site_url() );

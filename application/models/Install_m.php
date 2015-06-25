@@ -665,9 +665,6 @@ class Install_M extends CI_Model {
             $this->_delete_files($installation_item);
         }
 
-        // Rename the MY_Model file.
-        rename(APPPATH . 'core/MY_Model_Temp.php', APPPATH . 'core/MY_Model.php');
-
         return TRUE;
     }
 

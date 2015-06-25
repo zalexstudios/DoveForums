@@ -196,6 +196,7 @@ class Discussions extends Front_Controller {
                         'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
                         'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
                         'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
+                        'edited' => (!empty($row->edited) ? '<p class="text-muted">Edited '.unix_to_human($row->edited).' by '.$row->edited_by.'</p>' : ''),
                     );
                 }
 

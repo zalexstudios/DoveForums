@@ -6,16 +6,13 @@
 
     <div class="panel-heading">
 
-        <h3 class="panel-title"><?=lang('tle_discussions');?></h3>
+        <h3 class="panel-title"><?=lang('tle_new_reports');?></h3>
 
     </div>
 
     <div class="panel-body">
 
-        <div class="media">
 
-
-        </div>
 
     </div>
 

@@ -33,7 +33,7 @@ class Discussion_m extends MY_Model {
      *
      * Counts all the discussion in the database.
      *
-     * @param       integer     $user_id
+     * @param       bool     $user_id
      * @return      int
      * @author      Chris Baines
      * @since       0.0.1

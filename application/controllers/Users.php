@@ -78,14 +78,6 @@ class Users extends Front_Controller {
                 'label' => 'lang:rules_email',
             ),
         ),
-        'report_user' => array(
-            //0
-            array(
-                'field' => 'reason',
-                'rules' => 'required',
-                'label' => 'lang:rules_reason',
-            ),
-        ),
     );
 
     private $form_fields = array(
@@ -800,7 +792,7 @@ class Users extends Front_Controller {
             $this->crumbs->add( lang('crumb_settings') );
 
             // Get all the languages.
-            $languages = $this->forums->get_languages();
+            $languages = $this->language->get_all();
 
             // Build the languages dropdown.
             if(!empty($languages))
@@ -943,14 +935,13 @@ class Users extends Front_Controller {
             'last_name' => $user->last_name,
             'points' => $user->points,
             'avatar' => img( element('avatar', $data ) ),
-            'total_discussions' => $this->forums->count_user_discussions($user->id),
-            'total_comments' => $this->forums->count_user_comments($user->id),
+            'total_discussions' => $this->discussions->count_by('poster', $user->username),
+            'total_comments' => $this->comments->count_by('poster_id', $user->id),
             // Achievements.
             'achievements' => element( 'achievements', $data ),
             'has_achievements' =>  (!empty($achievements)) ? 1 : 0,
             // Buttons.
             'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
-            'btn_report_user' => anchor( site_url('users/report_user/'.$user->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_user'))),
             'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
             'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
             // Other
@@ -958,116 +949,6 @@ class Users extends Front_Controller {
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
-    }
-
-    /**
-     * Report User
-     *
-     * Allows a user to report another user.
-     *
-     * @param       integer     $user_id
-     * @author      Chris Baines
-     * @since       0.2.0
-     */
-    public function report_user($user_id)
-    {
-        // Check if the user has permission.
-        if(!$this->permission->has_permission('report_users'))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_permission_required'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
-        }
-
-        // Check a discussion ID was supplied.
-        if ( empty($user_id) || $user_id === NULL )
-        {
-            // Create a message.
-            $this->messageci->set ( lang('error_invalid_id'), 'error' );
-
-            // Redirect.
-            redirect( site_url(), 'refresh' );
-        }
-
-        // Check to make sure the user is not reporting them self.
-        if ($this->session->userdata('user_id') === $user_id )
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_report_self'), 'error' );
-
-            // Redirect
-            redirect( site_url(), 'refresh');
-        }
-
-        // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['report_user']);
-
-        // See if the form has been run.
-        if($this->form_validation->run() === FALSE) {
-
-            // Define the page title.
-            $data['title'] = lang('tle_report_user');
-
-            // Define the page template.
-            $data['template'] = 'pages/users/report';
-
-            // Build the page breadcrumbs.
-            $this->crumbs->add( lang('crumb_users') );
-            $this->crumbs->add( lang('crumb_report') );
-
-            // Build the reason dropdown.
-            $reason = array(
-                '' => lang('dd_default_reason'),
-                '1' => lang('dd_break_rules'),
-                '2' => lang('dd_inappropriate_content'),
-                '3' => lang('dd_spam_content'),
-                '4' => lang('dd_wrong_forum'),
-                '5' => lang('dd_other'),
-            );
-
-            $data['page'] = array(
-                // Form Data.
-                'form_open' => form_open('users/report_user/' . $user_id),
-                'form_close' => form_close(),
-                // Fields.
-                'report_field' => form_dropdown('reason', $reason, '0', 'class="form-control"'),
-                // Errors
-                'report_error' => form_error('reason', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
-                // Hidden
-                'user_id_hidden_field' => form_hidden('user_id', $user_id),
-                // Buttons
-                'btn_report_user' => form_submit('submit', lang('btn_report_user'), 'class="btn btn-primary btn-sm"'),
-                // Other.
-                'breadcrumbs' => $this->crumbs->output(),
-                'logged_in_user' => $this->session->userdata('username'),
-            );
-
-            $this->render(element('page', $data), element('title', $data), element('template', $data));
-        }
-        else
-        {
-            // Gather the data.
-            $data = array(
-                'reason' => $this->input->post('reason'),
-            );
-
-            if ($this->forums->report_user($this->input->post('user_id'), $data) === TRUE)
-            {
-                // Create a message.
-                $this->messageci->set( lang('success_report_user'),  'success');
-
-                // Redirect.
-                redirect( site_url(), 'refresh' );
-            } else {
-                // Create a message.
-                $this->messageci->set( lang('error_report_user'),  'error');
-
-                // Redirect.
-                redirect( site_url(), 'refresh');
-            }
-        }
     }
 
     function _get_csrf_nonce()

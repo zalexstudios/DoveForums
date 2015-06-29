@@ -118,6 +118,7 @@ $lang['tle_permissions'] = 'Permissions';
 $lang['tle_reports'] = 'Reports';
 $lang['tle_appearance'] = 'Appearance';
 $lang['tle_themes'] = 'Themes';
+$lang['tle_theme_details'] = 'Theme Details';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -249,6 +250,7 @@ $lang['crumb_achievement_triggers'] = 'Achievement Triggers';
 $lang['crumb_permissions'] = 'Permissions';
 $lang['crumb_reports'] = 'Reports';
 $lang['crumb_themes'] = 'Themes';
+$lang['crumb_theme_details'] = 'Theme Details';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -361,7 +363,8 @@ $lang['tbl_achievement'] = 'Achievement';
 $lang['tbl_permission'] = 'Permission';
 $lang['tbl_key'] = 'Permission Key';
 $lang['tbl_category'] = 'Category';
-$lang['status'] = 'Status';
+$lang['tbl_status'] = 'Status';
+$lang['tbl_author'] = 'Author';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

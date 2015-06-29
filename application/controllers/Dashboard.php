@@ -1965,4 +1965,40 @@ class Dashboard extends Admin_Controller {
         redirect( $this->agent->referrer(), 'refresh');
     }
 
+    public function theme_details($theme_id)
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_theme_details');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/theme_details';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_themes'), 'dashboard/themes');
+        $this->crumbs->add(lang('crumb_theme_details'));
+
+        // Get the theme.
+        $theme = $this->themes->get_by('id', $theme_id);
+
+        // Build the image.
+        $img = array(
+            'src' => base_url('themes/default/img/thumbs/'.$theme->thumb.''),
+            'class' => 'img-responsive img-thumbnail',
+        );
+
+        // Define the page data.
+        $data['page'] = array(
+            // Theme Details.
+            'theme_name' => ucfirst($theme->name),
+            'theme_description' => $theme->description,
+            'theme_author' => $theme->author,
+            'theme_image' => img($img),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
 }

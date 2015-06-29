@@ -1890,8 +1890,10 @@ class Dashboard extends Admin_Controller {
 
         // Set the table headings.
         $this->table->set_heading(
+            '',
             lang('tbl_name'),
             lang('tbl_description'),
+            lang('tbl_author'),
             lang('tbl_status'),
             lang('tbl_action')
         );
@@ -1903,9 +1905,19 @@ class Dashboard extends Admin_Controller {
         {
             foreach($themes as $row)
             {
+                // Build the thumbnail image.
+                $img = array(
+                    'src' => base_url('themes/default/img/thumbs/'.$row->thumb.''),
+                    'class' => 'img-thumbnail img-responsive',
+                    'width' => '100px',
+                    'height' => '100px',
+                );
+
                 $this->table->add_row(
+                    anchor( site_url('dashboard/theme_details/'.$row->id), img($img)),
                     $row->name,
                     $row->description,
+                    $row->author,
                     ($row->status == 1 ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>'),
                     ''.($row->status == 0 ? anchor( site_url('dashboard/activate_theme/'.$row->id), '<i class="fa fa-check"></i>', array('class' => 'btn btn-success btn-xs')) : '').'&nbsp;'.
                     anchor( site_url('dashboard/edit_theme/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
@@ -1938,9 +1950,10 @@ class Dashboard extends Admin_Controller {
         $theme = $this->themes->get_by('id', $theme_id);
 
         // Update the settings table.
-        $update = $this->settings->edit_setting('theme', $theme->name);
+        $this->settings->edit_setting('theme', $theme->name);
+        $this->settings->edit_setting('admin_theme', $theme->name);
 
-        if($activate && $update)
+        if($activate)
         {
             // Create a success message.
             $this->messageci->set( sprintf(lang('success_activate_theme'), $theme->name), 'success');

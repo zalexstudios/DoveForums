@@ -144,9 +144,10 @@ class Front_Controller extends MY_Controller{
         // Define the template regions.
         $data['templates'] = array(
             'doctype' => doctype('html5'),
+            'theme' => ($this->theme->name !== 'default' ? '<link href="'.$this->theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
                 array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
-                array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
+                array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />'),
             ),
             'meta' => array(
                 array( 'meta' => meta('keywords', $this->config->item('site_keywords')) ),
@@ -159,17 +160,17 @@ class Front_Controller extends MY_Controller{
             // Page Title.
             'title' => ''.$this->site_name.' - '.$page_title.'',
             // Navigation.
-            'navigation' => $this->parser->parse( ''.$this->theme->name.'/sections/navigation', element( 'navigation', $data ), TRUE ),
+            'navigation' => $this->parser->parse( 'default/sections/navigation', element( 'navigation', $data ), TRUE ),
             // Sidebar.
-            'sidebar' => $this->parser->parse( ''.$this->theme->name.'/sections/sidebar', element( 'sidebar', $data ), TRUE ),
+            'sidebar' => $this->parser->parse( 'default/sections/sidebar', element( 'sidebar', $data ), TRUE ),
             // Content.
-            'content' => $this->parser->parse( ''.$this->theme->name.'/'.$page_template.'', $page_data, TRUE ),
+            'content' => $this->parser->parse( 'default/'.$page_template.'', $page_data, TRUE ),
             // Footer.
-            'footer' => $this->parser->parse( ''.$this->theme->name.'/sections/footer', element( 'footer', $data ), TRUE ),
+            'footer' => $this->parser->parse( 'default/sections/footer', element( 'footer', $data ), TRUE ),
         );
 
         // Send all the data to the layout file.
-        $this->parser->parse( ''.$this->theme->name.'/layout', element( 'templates', $data ) );
+        $this->parser->parse( 'default/layout', element( 'templates', $data ) );
     }
 }
 
@@ -183,7 +184,7 @@ class Admin_Controller extends Front_Controller {
     {
         parent::__construct();
 
-        $this->admin_theme = $this->themes->get_by('name', $this->config->item('admin_theme'));
+        $this->admin_theme      = $this->themes->get_by('name', $this->config->item('admin_theme'));
         $this->site_name        = $this->config->item('site_name');
         $this->tables           = $this->config->item('tables');
 
@@ -253,6 +254,7 @@ class Admin_Controller extends Front_Controller {
         // Define the template regions.
         $data['templates'] = array(
             'doctype' => doctype('html5'),
+            'theme' => ($this->admin_theme->name !== 'default' ? '<link href="'.$this->admin_theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
                 array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
                 array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
@@ -267,16 +269,16 @@ class Admin_Controller extends Front_Controller {
             // Page Title.
             'title' => '' . $this->site_name . ' - ' . $page_title . '',
             // Navigation.
-            'navigation' => $this->parser->parse('' . $this->admin_theme->name . '/sections/admin_navigation', element('navigation', $data), TRUE),
+            'navigation' => $this->parser->parse('default/sections/admin_navigation', element('navigation', $data), TRUE),
             // Sidebar.
-            'sidebar' => $this->parser->parse('' . $this->admin_theme->name . '/sections/admin_sidebar', element('sidebar', $data), TRUE),
+            'sidebar' => $this->parser->parse('default/sections/admin_sidebar', element('sidebar', $data), TRUE),
             // Content.
-            'content' => $this->parser->parse('' . $this->admin_theme->name . '/' . $page_template . '', $page_data, TRUE),
+            'content' => $this->parser->parse('default/' . $page_template . '', $page_data, TRUE),
             // Footer.
-            'footer' => $this->parser->parse('' . $this->admin_theme->name . '/sections/footer', element('footer', $data), TRUE),
+            'footer' => $this->parser->parse('default/sections/footer', element('footer', $data), TRUE),
         );
 
         // Send all the data to the layout file.
-        $this->parser->parse('' . $this->admin_theme->name . '/layout', element('templates', $data));
+        $this->parser->parse('default/layout', element('templates', $data));
     }
 }

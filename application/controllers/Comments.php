@@ -83,7 +83,7 @@ class Comments extends Front_Controller {
                 // Errors
                 'message_error' => form_error($this->form_fields['edit_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons
-                'btn_update_comment' => form_submit('submit', lang('btn_update_comment'), 'class="btn btn-primary btn-sm"'),
+                'btn_update_comment' => form_submit('submit', lang('btn_update_comment'), 'class="btn btn-primary btn-xs"'),
                 // Hidden.
                 'comment_id_hidden_field' => form_hidden('comment_id', $comment_id),
                 // Other.
@@ -227,7 +227,7 @@ class Comments extends Front_Controller {
                 // Hidden
                 'comment_id_hidden_field' => form_hidden('comment_id', $comment_id),
                 // Buttons
-                'btn_report_comment' => form_submit('submit', lang('btn_report_comment'), 'class="btn btn-primary btn-sm"'),
+                'btn_report_comment' => form_submit('submit', lang('btn_report_comment'), 'class="btn btn-primary btn-xs"'),
                 // Other.
                 'breadcrumbs' => $this->crumbs->output(),
                 'logged_in_user' => $this->session->userdata('username'),

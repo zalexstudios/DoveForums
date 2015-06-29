@@ -418,6 +418,7 @@ class Dashboard extends Admin_Controller {
 
         // Set the table headings.
         $this->table->set_heading(
+            '',
             lang('tbl_username'),
             lang('tbl_first_name'),
             lang('tbl_last_name'),
@@ -434,11 +435,18 @@ class Dashboard extends Admin_Controller {
             // Loop though all the users and add them to a table.
             foreach($users as $row)
             {
+                // Build the users avatar.
+                $data['avatar'] = array(
+                    'src' => $this->gravatar->get_gravatar($row->email, $this->config->item('gravatar_rating'), '40', $this->config->item('gravatar_default_image') ),
+                    'class' => 'img-thumbnail img-responsive',
+                );
+
                 $this->table->add_row(
+                    img(element('avatar', $data)),
                     $row->username,
                     $row->first_name,
                     $row->last_name,
-                    ($row->active == 1) ? anchor( site_url('dashboard/deactivate_user/'.$row->id), lang('txt_active') ) : anchor( site_url('dashboard/activate_user/'.$row->id), lang('txt_inactive') ),
+                    ($row->active == 1) ? anchor( site_url('dashboard/deactivate_user/'.$row->id), '<span class="label label-success">'.lang('txt_active').'</span>' ) : anchor( site_url('dashboard/activate_user/'.$row->id), '<span class="label label-danger">'.lang('txt_inactive').'</span>' ),
                     ''.anchor( site_url('dashboard/edit_user/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     ''.anchor( site_url('dashboard/view_user/'.$row->id), lang('btn_view'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
                     anchor( site_url('dashboard/delete_user/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))

@@ -15,7 +15,9 @@
     <div class="panel-body">
 
         <p><strong>Name:</strong> {theme_name}</p>
+        <hr class="dashed">
         <p><strong>Description:</strong> {theme_description}</p>
+        <hr class="dashed">
         <p><strong>Author:</strong> {theme_author}</p>
 
     </div>

@@ -213,11 +213,11 @@ class Discussions extends Front_Controller {
                         'avatar' => img( element('avatar', $data) ),
                         'points' => $user->points,
                         'posted' => unix_to_human($row->posted),
-                        'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
-                        'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
-                        'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
-                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
-                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
+                        'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
+                        'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
+                        'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
+                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
+                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
                         'edited' => (!empty($row->edited) ? '<p class="text-muted">Edited '.unix_to_human($row->edited).' by '.$row->edited_by.'</p>' : ''),
                     );
                 }
@@ -228,9 +228,12 @@ class Discussions extends Front_Controller {
 
             }
 
+            // Get the category.
+            $category = $this->categories->get_by('id', $discussion->category_id);
+
             // Build the page breadcrumbs.
-            //$this->crumbs->add ($discussion->category_name);
-            //$this->crumbs->add ($discussion->discussion_name);
+            $this->crumbs->add ($category->name);
+            $this->crumbs->add ($discussion->subject);
 
             // Build the page data.
             $data['page'] = array(
@@ -242,11 +245,11 @@ class Discussions extends Front_Controller {
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
-                'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
-                'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-                'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
+                'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-xs"'),
+                'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
+                'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-xs' ) ),
                 // Discussion Data.
-                'discussion_name' => $discussion->subject,
+                'discussion_name' => ($discussion->sticky == 1 ? '<i class="fa fa-thumb-tack"></i> '.$discussion->subject : $discussion->subject),
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
                 'has_comments' => (!empty($comments)) ? 1 : 0,
@@ -322,36 +325,27 @@ class Discussions extends Front_Controller {
 
                         // Create achievement
                         $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
-
-                        // Redirect.
-                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                     else
                     {
                         // Create a message.
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
-
-                        // Redirect.
-                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh'  );
                     }
                 }
                 else
                 {
                     // Create a message.
                     $this->messageci->set( lang('success_creating_comment'), 'success' );
-
-                    // Redirect.
-                    redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh'  );
                 }
             }
             else
             {
                 // Create a message.
                 $this->messageci->set( lang('error_creating_comment'), 'error' );
-
-                // Redirect.
-                redirect( site_url('discussions/view/'.$this->_discussion_id), 'refresh' );
             }
+
+            // Redirect.
+            redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
         }
     }
 
@@ -420,7 +414,7 @@ class Discussions extends Front_Controller {
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_reply'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
-                'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
+                'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-xs"'),
                 // Other.
                 'discussion_name' => $discussion->subject,
                 'logged_in_user' => $this->session->userdata('username'),
@@ -496,36 +490,27 @@ class Discussions extends Front_Controller {
 
                         // Create achievement
                         $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
-
-                        // Redirect.
-                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                     else
                     {
                         // Create a message.
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
-
-                        // Redirect.
-                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                 }
                 else
                 {
                     // Create a message.
                     $this->messageci->set( lang('success_creating_comment'), 'success' );
-
-                    // Redirect.
-                    redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                 }
             }
             else
             {
                 // Create a message.
                 $this->messageci->set( lang('error_creating_comment'), 'error' );
-
-                // Redirect.
-                redirect( site_url('discussions/view/'.$this->_discussion_id), 'refresh' );
             }
+
+            // Redirect.
+            redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
 
         }
     }
@@ -592,7 +577,7 @@ class Discussions extends Front_Controller {
                 'message_error' => form_error($this->form_fields['new_discussion'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
                 // Buttons
-                'btn_create_discussion' => form_submit('submit', lang('btn_create_discussion'), 'class="btn btn-primary btn-sm"'),
+                'btn_create_discussion' => form_submit('submit', lang('btn_create_discussion'), 'class="btn btn-primary btn-xs"'),
                 // Other.
                 'breadcrumbs' => $this->crumbs->output(),
                 'logged_in_user' => $this->session->userdata('username'),
@@ -768,7 +753,7 @@ class Discussions extends Front_Controller {
                 // Hidden
                 'discussion_id_hidden_field' => form_hidden('discussion_id', $discussion_id),
                 // Buttons
-                'btn_report_discussion' => form_submit('submit', lang('btn_report_discussion'), 'class="btn btn-primary btn-sm"'),
+                'btn_report_discussion' => form_submit('submit', lang('btn_report_discussion'), 'class="btn btn-primary btn-xs"'),
                 // Other.
                 'breadcrumbs' => $this->crumbs->output(),
                 'logged_in_user' => $this->session->userdata('username'),
@@ -877,7 +862,7 @@ class Discussions extends Front_Controller {
                 'body_error' => form_error($this->form_fields['edit_discussion'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
                 // Buttons
-                'btn_update_discussion' => form_submit('submit', lang('btn_update_discussion'), 'class="btn btn-primary btn-sm"'),
+                'btn_update_discussion' => form_submit('submit', lang('btn_update_discussion'), 'class="btn btn-primary btn-xs"'),
                 // Hidden.
                 'discussion_id_hidden_field' => form_hidden('discussion_id', $discussion_id),
                 // Other.

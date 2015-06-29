@@ -133,8 +133,8 @@ $lang['txt_all_categories'] = 'All Categories';
 $lang['txt_username'] = 'Username:';
 $lang['txt_your_message'] = 'Your Message:';
 $lang['txt_report_reason'] = 'Report Reason';
-$lang['txt_active'] = '<span class="text-success">Active</span>';
-$lang['txt_inactive'] = '<span class="text-danger">Inactive</span>';
+$lang['txt_active'] = 'Active';
+$lang['txt_inactive'] = 'Inactive';
 $lang['txt_site'] = 'Site';
 $lang['txt_gravatar'] = 'Gravatar';
 $lang['txt_reading'] = 'Reading';
@@ -152,6 +152,7 @@ $lang['txt_last_visit'] = 'Last Visit:';
 $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
 $lang['txt_personal'] = 'Personal';
+$lang['txt_sticky'] = 'Sticky';
 
 // Labels
 $lang['lbl_username'] = 'Username:';

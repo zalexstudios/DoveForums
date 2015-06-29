@@ -12,7 +12,7 @@ class Forums extends Front_Controller
         $data['template'] = 'pages/home/home';
 
         // Get the discussions from the database.
-        $discussions = $this->discussions->get_all();
+        $discussions = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_all();
 
         // Loop through the discussions.
         if( !empty($discussions) )
@@ -23,7 +23,7 @@ class Forums extends Front_Controller
                 $cat = $this->categories->get_by('id', $row->category_id);
 
                 $data['discussions'][] = array(
-                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
+                    'subject' => ($row->sticky == 1 ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-thumb-tack"></i> '.$row->subject) : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'replies' => $row->replies,
                     'views' => $row->views,
                     'last_comment' => unix_to_human($row->last_comment),
@@ -44,7 +44,7 @@ class Forums extends Front_Controller
         // Define the page data.
         $data['page'] = array(
             // Buttons
-            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,

@@ -373,7 +373,7 @@ class Install_M extends CI_Model {
 
         // Add default themes.
         $sql = "
-            INSERT INTO `groups` (`id`, `name`, `description`, `status`)
+            INSERT INTO `themes` (`id`, `name`, `description`, `status`)
             VALUES
                 (1,'default','Default Theme', 1),
                 (2,'flatty','Flat and Modern.', 0),

@@ -355,6 +355,35 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create the themes table.
+        $sql = "
+            CREATE TABLE `themes` (
+              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `name` varchar(250) DEFAULT NULL,
+              `description` mediumtext,
+              `status` tinyint(1) DEFAULT '0',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add default themes.
+        $sql = "
+            INSERT INTO `groups` (`id`, `name`, `description`, `status`)
+            VALUES
+                (1,'default','Default Theme', 1),
+                (2,'flatty','Flat and Modern.', 0),
+	    ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default groups.
         $sql = "
             INSERT INTO `groups` (`id`, `name`, `description`)

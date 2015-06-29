@@ -1049,6 +1049,11 @@ class Dashboard extends Admin_Controller {
                     );
                 }
             }
+            else
+            {
+                $category_options[NULL] = lang('dd_category_default');
+                $category_options = '';
+            }
 
             // Define the page data.
             $data['page'] = array(
@@ -1862,6 +1867,89 @@ class Dashboard extends Admin_Controller {
         );
 
         $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function themes()
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_themes');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/themes';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_themes'));
+
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            lang('tbl_name'),
+            lang('tbl_description'),
+            lang('tbl_status'),
+            lang('tbl_action')
+        );
+
+        // Get all the themes.
+        $themes = $this->themes->get_all();
+
+        if (!empty($themes))
+        {
+            foreach($themes as $row)
+            {
+                $this->table->add_row(
+                    $row->name,
+                    $row->description,
+                    ($row->status == 1 ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>'),
+                    ''.($row->status == 0 ? anchor( site_url('dashboard/activate_theme/'.$row->id), '<i class="fa fa-check"></i>', array('class' => 'btn btn-success btn-xs')) : '').'&nbsp;'.
+                    anchor( site_url('dashboard/edit_theme/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.
+                    anchor( site_url('dashboard/delete_theme/'.$row->id), lang('btn_delete'), array('class' => 'btn btn-danger btn-xs'))
+                );
+            }
+        }
+
+        // Define the page data.
+        $data['page'] = array(
+            // Table.
+            'tbl_themes' => $this->table->generate(),
+            // Buttons.
+            'btn_add_theme' => anchor( site_url('dashboard/add_theme'), lang('btn_add_theme'), array('class' => 'btn btn-success btn-sm')),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function activate_theme($theme_id)
+    {
+        // Deactivate all themes.
+        $this->themes->update_all(array('status' => 0));
+
+        $activate = $this->themes->update($theme_id, array('status' => 1));
+
+        // Get the theme.
+        $theme = $this->themes->get_by('id', $theme_id);
+
+        // Update the settings table.
+        $update = $this->settings->edit_setting('theme', $theme->name);
+
+        if($activate && $update)
+        {
+            // Create a success message.
+            $this->messageci->set( sprintf(lang('success_activate_theme'), $theme->name), 'success');
+        } else {
+            // Create a error message.
+            $this->messageci->set( sprintf(lang('error_activate_theme'), $theme->name), 'error');
+        }
+
+        redirect( $this->agent->referrer(), 'refresh');
     }
 
 }

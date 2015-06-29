@@ -17,6 +17,8 @@
     <li class="list-group-item list-group-item-info"><i class="fa fa-trophy"></i> <?=lang('tle_achievements');?></li>
     <li class="list-group-item">{achievements}</li>
     <li class="list-group-item">{achievement_triggers}</li>
+    <li class="list-group-item list-group-item-info"><i class="fa fa-tachometer"></i> <?=lang('tle_appearance');?></li>
+    <li class="list-group-item">{themes}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-cog"></i> <?=lang('tle_settings');?></li>
     <li class="list-group-item">{all_settings}</li>
     <li class="list-group-item">{language_packs}</li>

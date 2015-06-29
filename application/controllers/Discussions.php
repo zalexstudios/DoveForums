@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Discussions extends Front_Controller {
 
+    // Discussion ID storage.
+    private $_discussion_id;
+
+    // Comment ID storage.
+    private $_comment_id;
+
+    // Category ID storage.
+    private $_category_id;
+
+    // Validation rules array.
     private $validation_rules = array(
         'new_comment' => array(
             //0
@@ -70,6 +80,7 @@ class Discussions extends Front_Controller {
         ),
     );
 
+    // Form Fields array.
     private $form_fields = array(
         'new_comment' => array(
             //0
@@ -138,7 +149,13 @@ class Discussions extends Front_Controller {
      */
     public function view($discussion_id)
     {
-        /** Check if the user has permission.
+        // Clear the discussion ID variable.
+        $this->_discussion_id = '';
+
+        // Set the current discussion ID variable.
+        $this->set_discussion_id($discussion_id);
+
+        //Check if the user has permission.
         if(!$this->permission->has_permission('view_discussions'))
         {
             // Create a message.
@@ -147,7 +164,6 @@ class Discussions extends Front_Controller {
             // Redirect.
             redirect( $this->agent->referrer(), 'refresh');
         }
-         **/
 
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
@@ -156,13 +172,19 @@ class Discussions extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Get the discussion info.
-            $discussion = $this->discussions->get_by('id', $discussion_id);
+            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
 
             // Update the discussion view count.
-            $this->discussions->update($discussion_id, array('views' => ++$discussion->views));
+            $this->discussions->update($this->_discussion_id, array('views' => ++$discussion->views));
 
             // Get the comments.
-            $comments = $this->comments->get_many_by('discussion_id', $discussion_id);
+            $comments = $this->comments->get_many_by('discussion_id', $this->_discussion_id);
+
+            // Clear the category ID variable.
+            $this->_category_id = '';
+
+            // Set the category ID variable.
+            $this->_category_id = $discussion->category_id;
 
             // Define the page title.
             $data['title'] = ucwords($discussion->subject);
@@ -185,7 +207,7 @@ class Discussions extends Front_Controller {
 
                     $data['comments'][$row->id] = array(
                         'comment_id' => $row->id,
-                        'comment_id_link' => anchor( site_url('discussions/view/'.$discussion_id.'/#'.$row->id), '#'.$row->id.''),
+                        'comment_id_link' => anchor( site_url('discussions/view/'.$this->_discussion_id.'/#'.$row->id), '#'.$row->id.''),
                         'poster' => anchor( site_url('users/profile/'.$row->poster_id.''), ucwords($row->poster)),
                         'message' => $row->message,
                         'avatar' => img( element('avatar', $data) ),
@@ -213,19 +235,16 @@ class Discussions extends Front_Controller {
             // Build the page data.
             $data['page'] = array(
                 // Form Data.
-                'form_open' => form_open( site_url('discussions/view/'.$discussion_id.'/#quick_reply') ),
+                'form_open' => form_open( site_url('discussions/view/'.$this->_discussion_id.'/#quick_reply') ),
                 'form_close' => form_close(),
                 // Fields.
                 'message_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('message') ) ),
-                // Hidden Fields.
-                'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->id),
-                'category_id_field_hidden' => form_hidden('category_id', $discussion->category_id),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
                 'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-sm"'),
                 'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
-                'btn_reply' => anchor( site_url( 'discussions/reply/'.$discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
+                'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-sm' ) ),
                 // Discussion Data.
                 'discussion_name' => $discussion->subject,
                 // Comment Data.
@@ -241,7 +260,7 @@ class Discussions extends Front_Controller {
 
             // Build the comment data.
             $data = array(
-                'discussion_id' => $this->input->post('discussion_id'),
+                'discussion_id' => $this->_discussion_id,
                 'poster' => $this->session->userdata('username'),
                 'poster_id' => $this->session->userdata('user_id'),
                 'poster_ip' => $this->input->ip_address(),
@@ -249,28 +268,31 @@ class Discussions extends Front_Controller {
                 'posted' => now(),
             );
 
-            // Insert the comment.
-            $comment_id = $this->comments->insert($data);
+            // Clear the comment ID variable.
+            $this->_comment_id = '';
+
+            // Insert the comment & store the ID.
+            $this->_comment_id = $this->comments->insert($data);
 
             // Get the discussion from the data.
-            $discussion = $this->discussions->get_by('id', $this->input->post('discussion_id'));
+            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
 
             $discussion_replies = $discussion->replies;
 
             // Build the data for the discussion update.
             $data = array(
                 'last_comment' => now(),
-                'last_comment_id' => $comment_id,
+                'last_comment_id' => $this->_comment_id,
                 'last_poster' => $this->session->userdata('username'),
                 'last_poster_id' => $this->session->userdata('user_id'),
                 'replies' => ++$discussion_replies,
             );
 
             // Update the discussion.
-            $discussion_id = $this->discussions->update($this->input->post('discussion_id'), $data);
+            $discussion_update = $this->discussions->update($this->_discussion_id, $data);
 
             // Get the category from the database.
-            $category = $this->categories->get_by('id', $this->input->post('category_id'));
+            $category = $this->categories->get_by('id', $discussion->category_id);
 
             // Adjust the comment count.
             $comment_count = $category->comment_count;
@@ -281,9 +303,9 @@ class Discussions extends Front_Controller {
             );
 
             // Update the category.
-            $update = $this->categories->update($this->input->post('category_id'), $data);
+            $category_update = $this->categories->update($this->_category_id, $data);
 
-            if(!empty($comment_id) && !empty($update) && !empty($discussion_id))
+            if(!empty($this->_comment_id) && !empty($category_update) && !empty($discussion_update))
             {
                 if($this->permission->has_permission('unlock_achievements'))
                 {
@@ -302,7 +324,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
 
                         // Redirect.
-                        redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh' );
+                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                     else
                     {
@@ -310,7 +332,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                         // Redirect.
-                        redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh'  );
+                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh'  );
                     }
                 }
                 else
@@ -319,7 +341,7 @@ class Discussions extends Front_Controller {
                     $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                     // Redirect.
-                    redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh'  );
+                    redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh'  );
                 }
             }
             else
@@ -328,7 +350,7 @@ class Discussions extends Front_Controller {
                 $this->messageci->set( lang('error_creating_comment'), 'error' );
 
                 // Redirect.
-                redirect( site_url('discussions/view/'.$discussion_id), 'refresh' );
+                redirect( site_url('discussions/view/'.$this->_discussion_id), 'refresh' );
             }
         }
     }
@@ -338,12 +360,18 @@ class Discussions extends Front_Controller {
      *
      * Create a full reply to the discussion.
      *
-     * @param       string      $discussion_id
+     * @param       integer     $discussion_id
      * @author      Chris Baines
      * @since       0.0.1
      */
     public function reply($discussion_id)
     {
+        // Clear the discussion ID variable.
+        $this->_discussion_id = '';
+
+        // Set the current discussion ID variable.
+        $this->set_discussion_id($discussion_id);
+
         // Check if the user has permission.
         if(!$this->permission->has_permission('create_comments'))
         {
@@ -377,21 +405,18 @@ class Discussions extends Front_Controller {
             $data['template'] = 'pages/discussions/reply';
 
             // Get the discussion info.
-            $discussion = $this->discussions->get_by('id', $discussion_id);
+            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
 
             // Build the page breadcrumbs.
-            $this->crumbs->add($discussion->subject, 'discussions/view/'.$discussion_id);
+            $this->crumbs->add($discussion->subject, 'discussions/view/'.$this->_discussion_id);
             $this->crumbs->add('Post Reply');
 
             $data['page'] = array(
                 // Form Data.
-                'form_open' => form_open('discussions/reply/'.$discussion_id),
+                'form_open' => form_open('discussions/reply/'.$this->_discussion_id),
                 'form_close' => form_close(),
                 // Fields.
                 'message_field' => form_textarea( $this->form_fields['new_reply'][0], set_value( $this->form_fields['new_reply'][0]['name'], $this->input->post('message') ) ),
-                // Hidden Fields.
-                'discussion_id_field_hidden' => form_hidden('discussion_id', $discussion->id),
-                'category_id_field_hidden' => form_hidden('category_id', $discussion->category_id),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_reply'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -412,14 +437,18 @@ class Discussions extends Front_Controller {
                 'poster_id' => $this->session->userdata('user_id'),
                 'poster_ip' => $this->input->ip_address(),
                 'message' => $this->input->post('message'),
+                'discussion_id' => $this->_discussion_id,
                 'posted' => now(),
             );
 
-            // Add Comment.
-            $comment_id = $this->comments->insert($data);
+            // Clear the comment ID variable.
+            $this->_comment_id = '';
+
+            // Set the comment ID variable.
+            $this->_comment_id = $this->comments->insert($data);
 
             // Get the discussion from the database.
-            $discussion = $this->discussions->get_by('id', $this->input->post('discussion_id'));
+            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
 
             // Replies count.
             $discussion_replies = $discussion->replies;
@@ -427,17 +456,17 @@ class Discussions extends Front_Controller {
             // Build the data for the discussion update.
             $data = array(
                 'last_comment' => now(),
-                'last_comment_id' => $comment_id,
+                'last_comment_id' => $this->_comment_id,
                 'last_poster' => $this->session->userdata('username'),
                 'last_poster_id' => $this->session->userdata('user_id'),
                 'replies' => ++$discussion_replies,
             );
 
             // Update the discussion.
-            $discussion = $this->discussions->update($this->input->post('discussion_id'), $data);
+            $discussion_update = $this->discussions->update($this->_discussion_id, $data);
 
             // Get the category from the database.
-            $category = $this->categories->get_by('id', $this->input->post('category_id'));
+            $category = $this->categories->get_by('id', $discussion->category_id);
 
             // Comment count.
             $comment_count = $category->comment_count;
@@ -450,7 +479,7 @@ class Discussions extends Front_Controller {
             // Update the category.
             $category = $this->categories->update($category->id, $data);
 
-            if(!empty($comment_id) && !empty($discussion) && !empty($category))
+            if(!empty($this->_comment_id) && !empty($discussion_update) && !empty($category))
             {
                 if($this->permission->has_permission('unlock_achievements'))
                 {
@@ -469,7 +498,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
 
                         // Redirect.
-                        redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh' );
+                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                     else
                     {
@@ -477,7 +506,7 @@ class Discussions extends Front_Controller {
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                         // Redirect.
-                        redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh' );
+                        redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                     }
                 }
                 else
@@ -486,7 +515,7 @@ class Discussions extends Front_Controller {
                     $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                     // Redirect.
-                    redirect( site_url('discussions/view/'.$discussion_id.'/#'.$comment_id), 'refresh' );
+                    redirect( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'refresh' );
                 }
             }
             else
@@ -495,7 +524,7 @@ class Discussions extends Front_Controller {
                 $this->messageci->set( lang('error_creating_comment'), 'error' );
 
                 // Redirect.
-                redirect( site_url('discussions/view/'.$discussion_id), 'refresh' );
+                redirect( site_url('discussions/view/'.$this->_discussion_id), 'refresh' );
             }
 
         }
@@ -931,6 +960,16 @@ class Discussions extends Front_Controller {
             // Redirect.
             redirect( site_url(), 'refresh');
         }
+    }
+
+    private function set_discussion_id($discussion_id)
+    {
+        $this->_discussion_id = $discussion_id;
+    }
+
+    private function get_discussion_id()
+    {
+        return $this->_discussion_id;
     }
 
 }

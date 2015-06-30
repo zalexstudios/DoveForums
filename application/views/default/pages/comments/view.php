@@ -4,7 +4,7 @@
 
 <div class="well well-sm">
 
-    <strong>{discussion_name}</strong>
+    <strong>{is_sticky}{is_closed}{discussion_name}</strong>
 
 </div>
 
@@ -13,11 +13,15 @@
     <!-- Check the user is logged in -->
     <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
 
-    <div class="btn-group pull-right">
+        <?php if (empty($is_closed)) { ?>
 
-        {btn_reply}
+        <div class="btn-group pull-right">
 
-    </div>
+            {btn_reply}
+
+        </div>
+
+        <?php } ?>
 
     <div class="btn-group pull-right">
 
@@ -124,11 +128,15 @@
     <!-- Check the user is logged in -->
     <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
 
-        <div class="btn-group pull-right">
+        <?php if (empty($is_closed)) { ?>
 
-            {btn_reply}
+            <div class="btn-group pull-right">
 
-        </div>
+                {btn_reply}
+
+            </div>
+
+        <?php } ?>
 
         <div class="btn-group pull-right">
 
@@ -142,6 +150,8 @@
 
 <!-- Check if the user is logged in -->
 <?php if($this->ion_auth->logged_in() === TRUE) { ?>
+
+    <?php if (empty($is_closed)) { ?>
 
     <div class="panel panel-warning" id="quick_reply">
 
@@ -177,5 +187,7 @@
         </div>
 
     </div>
+
+    <?php } ?>
 
 <?php } ?>

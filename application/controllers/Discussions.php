@@ -172,7 +172,7 @@ class Discussions extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Get the discussion info.
-            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+            $discussion = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_by('id', $this->_discussion_id);
 
             // Update the discussion view count.
             $this->discussions->update($this->_discussion_id, array('views' => ++$discussion->views));
@@ -216,8 +216,8 @@ class Discussions extends Front_Controller {
                         'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
                         'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
                         'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
-                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
-                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
+                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
+                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
                         'edited' => (!empty($row->edited) ? '<p class="text-muted">Edited '.unix_to_human($row->edited).' by '.$row->edited_by.'</p>' : ''),
                     );
                 }
@@ -249,12 +249,14 @@ class Discussions extends Front_Controller {
                 'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
                 'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-xs' ) ),
                 // Discussion Data.
-                'discussion_name' => ($discussion->sticky == 1 ? '<i class="fa fa-thumb-tack"></i> '.$discussion->subject : $discussion->subject),
+                'discussion_name' => $discussion->subject,
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
                 'has_comments' => (!empty($comments)) ? 1 : 0,
                 'breadcrumbs' => $this->crumbs->output(),
                 'login_link' => anchor( site_url('users/login'), lang('lnk_login')),
+                'is_sticky' => ($discussion->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
+                'is_closed' => ($discussion->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );

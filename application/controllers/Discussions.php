@@ -247,6 +247,8 @@ class Discussions extends Front_Controller {
                 'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-xs"'),
                 'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
                 'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-xs' ) ),
+                'lnk_sticky' => ($discussion->sticky == 0 ? anchor( site_url('discussions/sticky/'.$this->_discussion_id), lang('lnk_sticky')) : anchor( site_url('discussions/unstick/'.$this->_discussion_id), lang('lnk_unstick'))),
+                'lnk_close' => ($discussion->closed == 0 ? anchor( site_url('discussions/close/'.$this->_discussion_id), lang('lnk_close')) : anchor( site_url('discussions/open/'.$this->_discussion_id), lang('lnk_open'))),
                 // Discussion Data.
                 'discussion_name' => $discussion->subject,
                 // Comment Data.
@@ -914,38 +916,137 @@ class Discussions extends Front_Controller {
         // Check if the user has permission.
         if(!$this->permission->has_permission('delete_discussions'))
         {
-            // Create a message.
+            // Create error message.
             $this->messageci->set( lang('error_permission_required'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
         }
 
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {
-            // Create a message.
+            // Create error message.
             $this->messageci->set ( lang('error_invalid_id'), 'error' );
-
-            // Redirect.
-            redirect( site_url(), 'refresh' );
         }
 
         if($this->forums->delete_discussion($discussion_id))
         {
-            // Create a message.
+            // Create success message.
             $this->messageci->set( lang('success_delete_discussion'), 'success');
-
-            // Redirect.
-            redirect( site_url(), 'refresh');
-
-        } else {
-            // Create a message.
-            $this->messageci->set( lang('error_delete_discussion'), 'error');
-
-            // Redirect.
-            redirect( site_url(), 'refresh');
         }
+        else {
+            // Create error message.
+            $this->messageci->set( lang('error_delete_discussion'), 'error');
+        }
+
+        // Redirect.
+        redirect( site_url(), 'refresh');
+    }
+
+    public function sticky($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($discussion_id, array('sticky' => 1));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_sticky_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_sticky_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function unstick($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($this->_discussion_id, array('sticky' => 0));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_unstick_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_unstick_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function open($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($this->_discussion_id, array('closed' => 0));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_open_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_open_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function close($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($discussion_id, array('closed' => 1));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_close_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_close_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
     }
 
     private function set_discussion_id($discussion_id)

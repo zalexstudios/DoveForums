@@ -10,6 +10,22 @@
 
 <div class="btn-toolbar pagination-toolbar" role="toolbar">
 
+    <?php if($this->ion_auth->is_admin()) { ?>
+
+    <div class="btn-group pull-right">
+
+        <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fa-fw"></i> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>{lnk_sticky}</li>
+            <li>{lnk_close}</li>
+        </ul>
+
+    </div>
+
+    <?php } ?>
+
     <!-- Check the user is logged in -->
     <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
 

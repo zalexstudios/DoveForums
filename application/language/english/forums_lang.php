@@ -83,6 +83,10 @@ $lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 $lang['lnk_permissions'] = 'Permissions';
 $lang['lnk_reports'] = 'Reports';
 $lang['lnk_themes'] = 'Themes';
+$lang['lnk_sticky'] = '<i class="fa fa-thumb-tack"></i> Sticky';
+$lang['lnk_close'] = '<i class="fa fa-lock"></i> Close';
+$lang['lnk_unstick'] = '<i class="fa fa-thumb-tack"></i> Unstick';
+$lang['lnk_open'] = '<i class="fa fa-unlock"></i> Open';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -281,6 +285,10 @@ $lang['success_create_achievement'] = 'The achievement has been created.';
 $lang['success_delete_achievement'] = 'The achievement has been removed.';
 $lang['success_create_achievement_trigger'] = 'The achievement trigger has been created.';
 $lang['success_activate_theme'] = 'The theme <strong>`%s`</strong> has been activated.';
+$lang['success_sticky_discussion'] = 'The discussion <strong>`%s`</strong> is now sticky.';
+$lang['success_close_discussion'] = 'The discussion <strong>`%s`</strong> is now closed to posting.';
+$lang['success_open_discussion'] = 'The discussion <strong>`%s`</strong> has been opened for posting.';
+$lang['success_unstick_discussion'] = 'The discussion <strong>`%s`</strong> is no longer sticky.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -318,6 +326,9 @@ $lang['error_create_achievement'] = 'There was a problem creating the achievemen
 $lang['error_delete_achievement'] = 'There was a problem removing the achievement.';
 $lang['error_create_achievement_trigger'] = 'There was a problem creating the achievement trigger.';
 $lang['error_activate_theme'] = 'There was a problem activating the theme <strong>`%s`</strong>';
+$lang['error_sticky_discussion'] = 'There was a problem making the discussion <strong>`%s`</strong> sticky.';
+$lang['error_close_discussion'] = 'There was a problem closing the discussion <strong>`%s`</strong>.';
+$lang['error_unstick_discussion'] = 'There was a problem unsticking the discussion <strong>`%s`</strong>.';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';

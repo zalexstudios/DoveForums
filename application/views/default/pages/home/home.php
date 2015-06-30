@@ -55,7 +55,7 @@
 
                     <div class="media-body">
 
-                        <h4 class="media-heading"><strong><?= lang('txt_no_discussions'); ?></strong></h4>
+                        <p><strong><?= lang('txt_no_discussions'); ?></strong></p>
 
                     </div>
 

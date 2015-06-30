@@ -57,21 +57,7 @@
 
                 <div class="media-body">
 
-                    <div class="row">
-
-                        <div class="col-md-6">
-
-                            <p class="text-muted">{posted}</p>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <p class="pull-right"><strong>{comment_id_link}</strong></p>
-
-                        </div>
-
-                    </div>
+                    <p class="text-muted"><small>{posted}</small></p>
 
                     <hr />
 

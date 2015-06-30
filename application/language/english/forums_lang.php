@@ -153,6 +153,7 @@ $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
 $lang['txt_personal'] = 'Personal';
 $lang['txt_sticky'] = 'Sticky';
+$lang['txt_edited'] = 'Edited';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -370,3 +371,7 @@ $lang['tbl_author'] = 'Author';
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';
 $lang['tip_send_user_pm'] = 'Send this user a private message.';
+$lang['tip_report_comment'] = 'Report this comment to a moderator.';
+$lang['tip_thumbs_up'] = 'Give this user a Thumbs Up.';
+$lang['tip_edit_comment'] = 'Edit Comment.';
+$lang['tip_delete_comment'] = 'Delete Comment.';

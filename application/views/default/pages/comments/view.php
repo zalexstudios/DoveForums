@@ -166,8 +166,6 @@
 
                 <div class="form-group">
 
-                    {discussion_id_field_hidden}
-                    {category_id_field_hidden}
                     {btn_post_comment}
 
                 </div>

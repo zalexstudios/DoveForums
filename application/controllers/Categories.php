@@ -21,7 +21,7 @@ class Categories extends Front_Controller {
         $data['template'] = 'pages/categories/view';
 
         // Get all the discussions from the database.
-        $discussions = $this->discussions->get_all();
+        $discussions = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_all();
 
         // Check if we have a valid array.
         if( !empty( $discussions ) )
@@ -33,12 +33,12 @@ class Categories extends Front_Controller {
                 $cat = $this->categories->get_by('id', $row->category_id);
 
                 $data['discussions'][] = array(
-                        'subject' => anchor( site_url('discussions/view/'.$row->id.''), $row->subject),
-                        'views' => $row->views,
-                        'replies' => $row->replies,
-                        'last_comment' => unix_to_human($row->last_comment),
-                        'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id.''), $row->last_poster),
-                        'category' => anchor( site_url('categories/'.$cat->id), $cat->name),
+                    'subject' => ($row->sticky == 1 ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-thumb-tack"></i> '.$row->subject) : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
+                    'views' => $row->views,
+                    'replies' => $row->replies,
+                    'last_comment' => unix_to_human($row->last_comment),
+                    'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id.''), $row->last_poster),
+                    'category' => anchor( site_url('categories/'.$cat->id), $cat->name),
                 );
             }
 
@@ -55,7 +55,7 @@ class Categories extends Front_Controller {
         // Define the page data.
         $data['page'] = array(
             // Buttons
-            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,
@@ -78,7 +78,7 @@ class Categories extends Front_Controller {
         $data['template'] = 'pages/categories/view';
 
         // Get the discussions for this category.
-        $discussions = $this->discussions->get_many_by('category_id', $cat->id);
+        $discussions = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_many_by('category_id', $cat->id);
 
         // Loop through the discussions.
         if ( !empty($discussions) )
@@ -86,12 +86,12 @@ class Categories extends Front_Controller {
             foreach($discussions as $row)
             {
                 $data['discussions'][] = array(
-                        'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
-                        'replies' => $row->replies,
-                        'views' => $row->views,
-                        'last_comment' => unix_to_human($row->last_comment),
-                        'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
-                        'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
+                    'subject' => ($row->sticky == 1 ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-thumb-tack"></i> '.$row->subject) : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
+                    'replies' => $row->replies,
+                    'views' => $row->views,
+                    'last_comment' => unix_to_human($row->last_comment),
+                    'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
+                    'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
                 );
             }
 
@@ -107,7 +107,7 @@ class Categories extends Front_Controller {
         // Define the page data.
         $data['page'] = array(
             // Buttons
-            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-sm' )),
+            'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,

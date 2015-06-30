@@ -57,6 +57,7 @@ $lang['btn_report_user'] = 'Report User';
 $lang['btn_add_achievement'] = 'Add Achievement';
 $lang['btn_add_achievement_trigger'] = 'Add Achievement Trigger';
 $lang['btn_add_permission'] = 'Add Permission';
+$lang['btn_add_theme'] = 'Add Theme';
 
 //Links
 $lang['lnk_discussions'] = 'Discussions';
@@ -81,6 +82,7 @@ $lang['lnk_achievements'] = 'Achievements';
 $lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 $lang['lnk_permissions'] = 'Permissions';
 $lang['lnk_reports'] = 'Reports';
+$lang['lnk_themes'] = 'Themes';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -114,6 +116,9 @@ $lang['tle_achievement_triggers'] = 'Achievement Triggers';
 $lang['tle_edit_discussion'] = 'Edit Discussion';
 $lang['tle_permissions'] = 'Permissions';
 $lang['tle_reports'] = 'Reports';
+$lang['tle_appearance'] = 'Appearance';
+$lang['tle_themes'] = 'Themes';
+$lang['tle_theme_details'] = 'Theme Details';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -128,8 +133,8 @@ $lang['txt_all_categories'] = 'All Categories';
 $lang['txt_username'] = 'Username:';
 $lang['txt_your_message'] = 'Your Message:';
 $lang['txt_report_reason'] = 'Report Reason';
-$lang['txt_active'] = '<span class="text-success">Active</span>';
-$lang['txt_inactive'] = '<span class="text-danger">Inactive</span>';
+$lang['txt_active'] = 'Active';
+$lang['txt_inactive'] = 'Inactive';
 $lang['txt_site'] = 'Site';
 $lang['txt_gravatar'] = 'Gravatar';
 $lang['txt_reading'] = 'Reading';
@@ -147,6 +152,7 @@ $lang['txt_last_visit'] = 'Last Visit:';
 $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
 $lang['txt_personal'] = 'Personal';
+$lang['txt_sticky'] = 'Sticky';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -244,6 +250,8 @@ $lang['crumb_achievements'] = 'Achievements';
 $lang['crumb_achievement_triggers'] = 'Achievement Triggers';
 $lang['crumb_permissions'] = 'Permissions';
 $lang['crumb_reports'] = 'Reports';
+$lang['crumb_themes'] = 'Themes';
+$lang['crumb_theme_details'] = 'Theme Details';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';
@@ -271,6 +279,7 @@ $lang['success_report_user'] = 'The user has been reported to a moderator.';
 $lang['success_create_achievement'] = 'The achievement has been created.';
 $lang['success_delete_achievement'] = 'The achievement has been removed.';
 $lang['success_create_achievement_trigger'] = 'The achievement trigger has been created.';
+$lang['success_activate_theme'] = 'The theme <strong>`%s`</strong> has been activated.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -307,6 +316,7 @@ $lang['error_permission_required'] = 'You do not have permission to do that!.';
 $lang['error_create_achievement'] = 'There was a problem creating the achievement.';
 $lang['error_delete_achievement'] = 'There was a problem removing the achievement.';
 $lang['error_create_achievement_trigger'] = 'There was a problem creating the achievement trigger.';
+$lang['error_activate_theme'] = 'There was a problem activating the theme <strong>`%s`</strong>';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
@@ -354,6 +364,8 @@ $lang['tbl_achievement'] = 'Achievement';
 $lang['tbl_permission'] = 'Permission';
 $lang['tbl_key'] = 'Permission Key';
 $lang['tbl_category'] = 'Category';
+$lang['tbl_status'] = 'Status';
+$lang['tbl_author'] = 'Author';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

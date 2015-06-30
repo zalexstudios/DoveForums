@@ -355,6 +355,54 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create the themes table.
+        $sql = "
+            CREATE TABLE `themes` (
+              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `name` varchar(250) DEFAULT NULL,
+              `description` mediumtext,
+              `url` varchar(255) DEFAULT NULL,
+              `author` varchar(255) DEFAULT NULL,
+              `author_url` varchar(255) DEFAULT NULL,
+              `thumb` varchar(250) DEFAULT NULL,
+              `status` tinyint(1) DEFAULT '0',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
+        // Add default themes.
+        $sql = "
+            INSERT INTO `themes` (`id`, `name`, `description`, `url`, `author`, `author_url`, `thumb`, `status`)
+            VALUES
+                (1,'default','Default theme.',NULL,'Bootstrap','http://getbootstrap.com','default.png',0),
+                (2,'cerulean','A calm blue sky.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css','Bootswatch','https://bootswatch.com','cerulean.png',0),
+                (3,'cosmo','An ode to Metro.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css','Bootswatch','https://bootswatch.com','cosmo.png',0),
+                (4,'cyborg','Jet black and electric blue.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cyborg/bootstrap.min.css','Bootswatch','https://bootswatch.com','cyborg.png',0),
+                (5,'darkly','Flatly in night mode.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/darkly/bootstrap.min.css','Bootswatch','https://bootswatch.com','darkly.png',0),
+                (6,'flatly','Flat and modern.	','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css','Bootswatch','https://bootswatch.com','flatly.png',0),
+                (7,'journal','Crisp like a new sheet of paper.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/journal/bootstrap.min.css','Bootswatch','https://bootswatch.com','journal.png',0),
+                (8,'lumen','Light and shadow.	','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/lumen/bootstrap.min.css','Bootswatch','https://bootswatch.com','lumen.png',0),
+                (9,'paper','Material is the metaphor.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/paper/bootstrap.min.css','Bootswatch','https://bootswatch.com','paper.png',0),
+                (10,'readable','Optimized for legibility.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/readable/bootstrap.min.css','Bootswatch','https://bootswatch.com','readable.png',0),
+                (11,'sandstone','A touch of warmth.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css','Bootswatch','https://bootswatch.com','sandstone.png',0),
+                (12,'simplex','Mini and minimalist.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css','Bootswatch','https://bootswatch.com','simplex.png',0),
+                (13,'slate','Shades of gunmetal gray.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/slate/bootstrap.min.css','Bootswatch','https://bootswatch.com','slate.png',0),
+                (14,'spacelab','Silvery and sleek.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css','Bootswatch','https://bootswatch.com','spacelab.png',0),
+                (15,'superhero','The brave and the blue.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/superhero/bootstrap.min.css','Bootswatch','https://bootswatch.com','superhero.png',0),
+                (16,'united','Ubunty orange and unique font.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/united/bootstrap.min.css','Bootswatch','https://bootswatch.com','united.png',0),
+                (17,'yeti','A friendly foundation.','https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css','Bootswatch','https://bootswatch.com','yeti.png',1);
+	    ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default groups.
         $sql = "
             INSERT INTO `groups` (`id`, `name`, `description`)
@@ -650,44 +698,6 @@ class Install_M extends CI_Model {
         }
 
         return TRUE;
-    }
-
-    public function delete_files()
-    {
-        $installation_items = array(
-            APPPATH . 'controllers/Install.php',
-            APPPATH . 'views/install',
-            APPPATH . 'models/Install_m.php',
-        );
-
-        foreach ($installation_items as $installation_item)
-        {
-            $this->_delete_files($installation_item);
-        }
-
-        return TRUE;
-    }
-
-    private function _delete_files($target)
-    {
-        if (is_dir($target))
-        {
-            $files = glob($target . '*', GLOB_MARK);
-
-            foreach($files as $file)
-            {
-                $this->_delete_files($file);
-            }
-
-            if(file_exists($target) && is_dir($target))
-            {
-                rmdir($target);
-            }
-        }
-        elseif (is_file($target))
-        {
-            unlink( $target );
-        }
     }
 
 }

@@ -30,7 +30,7 @@
 
             <div class="col-md-12">
 
-                <p class="text-center">{btn_send_pm}&nbsp;{btn_report_user}</p>
+                <p class="text-center">{btn_send_pm}</p>
 
             </div>
 

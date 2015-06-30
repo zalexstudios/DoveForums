@@ -2,6 +2,6 @@
 
 <footer>
 
-    <p>{copy_text}</p>
+    <p class="text-center text-muted"><small>{copy_text}</small></p>
 
 </footer>

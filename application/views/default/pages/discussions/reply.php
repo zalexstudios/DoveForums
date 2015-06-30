@@ -73,8 +73,6 @@
             <div class="col-md-12">
 
                 {btn_post_comment}
-                {discussion_id_field_hidden}
-                {category_id_field_hidden}
 
             </div>
 

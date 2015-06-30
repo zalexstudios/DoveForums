@@ -332,16 +332,51 @@ class Install extends CI_Controller {
 
     public function delete_files()
     {
-        // Load the install model.
-        $this->load->model('install_m', 'install');
-        
-        if ($this->install->delete_files())
+        if ($this->delete_install_files())
         {
-            redirect( site_url() );
+            redirect( site_url(), 'refresh');
         }
         else
         {
             echo 'Unable to delete installation files, please do it manually.';
+        }
+    }
+
+    public function delete_install_files()
+    {
+        $installation_items = array(
+            APPPATH . 'controllers/Install.php',
+            APPPATH . 'views/install',
+            APPPATH . 'models/Install_m.php',
+        );
+
+        foreach ($installation_items as $installation_item)
+        {
+            $this->_delete_files($installation_item);
+        }
+
+        return TRUE;
+    }
+
+    private function _delete_files($target)
+    {
+        if (is_dir($target))
+        {
+            $files = glob($target . '*', GLOB_MARK);
+
+            foreach($files as $file)
+            {
+                $this->_delete_files($file);
+            }
+
+            if(file_exists($target) && is_dir($target))
+            {
+                rmdir($target);
+            }
+        }
+        elseif (is_file($target))
+        {
+            unlink( $target );
         }
     }
 

@@ -27,6 +27,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('user_m', 'users');
         $this->load->model('language_m', 'language');
         $this->load->model('report_m', 'reports');
+        $this->load->model('theme_m', 'themes');
 
         // Load libraries.
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
@@ -74,7 +75,7 @@ class Front_Controller extends MY_Controller{
     {
         parent::__construct();
 
-        $this->theme = $this->config->item('theme');
+        $this->theme = $this->themes->get_by('name', $this->config->item('theme'));
         $this->site_name = $this->config->item('site_name');
         $this->tables = $this->config->item('tables');
     }
@@ -143,37 +144,33 @@ class Front_Controller extends MY_Controller{
         // Define the template regions.
         $data['templates'] = array(
             'doctype' => doctype('html5'),
+            'theme' => ($this->theme->name !== 'default' ? '<link href="'.$this->theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
-                array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">' ),
-                array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">' ),
-                array( 'link' => '<link href="'.base_url('templates/'.$this->theme.'/assets/css/custom.css').'", rel="stylesheet">' ),
-                array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">' ),
-                array( 'link' => '<link href="'.base_url('templates//'.$this->theme.'/assets/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
+                array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
+                array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />'),
             ),
             'meta' => array(
                 array( 'meta' => meta('keywords', $this->config->item('site_keywords')) ),
                 array( 'meta' => meta('description', $this->config->item('site_description')) ),
             ),
             'js' => array(
-                array( 'script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>' ),
-                array( 'script' => '<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>' ),
-                array( 'script' => '<script src="'.base_url('templates/'.$this->theme.'/assets/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js').'" type="text/javascript"></script>' ),
-                array( 'script' => '<script src="'.base_url('templates/'.$this->theme.'/assets/js/forums.js').'"></script>' ),
+                array( 'script' => '<script src="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js').'" type="text/javascript"></script>' ),
+                array( 'script' => '<script src="'.base_url('themes/default/js/forums.js').'"></script>' ),
             ),
             // Page Title.
             'title' => ''.$this->site_name.' - '.$page_title.'',
             // Navigation.
-            'navigation' => $this->parser->parse( 'templates/'.$this->theme.'/regions/navigation', element( 'navigation', $data ), TRUE ),
+            'navigation' => $this->parser->parse( 'default/sections/navigation', element( 'navigation', $data ), TRUE ),
             // Sidebar.
-            'sidebar' => $this->parser->parse( 'templates/'.$this->theme.'/regions/sidebar', element( 'sidebar', $data ), TRUE ),
+            'sidebar' => $this->parser->parse( 'default/sections/sidebar', element( 'sidebar', $data ), TRUE ),
             // Content.
-            'content' => $this->parser->parse( 'templates/'.$this->theme.'/'.$page_template.'', $page_data, TRUE ),
+            'content' => $this->parser->parse( 'default/'.$page_template.'', $page_data, TRUE ),
             // Footer.
-            'footer' => $this->parser->parse( 'templates/'.$this->theme.'/regions/footer', element( 'footer', $data ), TRUE ),
+            'footer' => $this->parser->parse( 'default/sections/footer', element( 'footer', $data ), TRUE ),
         );
 
         // Send all the data to the layout file.
-        $this->parser->parse( 'templates/'.$this->theme.'/layout', element( 'templates', $data ) );
+        $this->parser->parse( 'default/layout', element( 'templates', $data ) );
     }
 }
 
@@ -187,7 +184,7 @@ class Admin_Controller extends Front_Controller {
     {
         parent::__construct();
 
-        $this->admin_theme      = $this->config->item('admin_theme');
+        $this->admin_theme      = $this->themes->get_by('name', $this->config->item('admin_theme'));
         $this->site_name        = $this->config->item('site_name');
         $this->tables           = $this->config->item('tables');
 
@@ -214,10 +211,8 @@ class Admin_Controller extends Front_Controller {
      */
     public function render( $page_data=array(), $page_title, $page_template )
     {
-
         // See if any reports exist.
         $reports = $this->reports->count_by('zapped', NULL);
-
 
         // Build the template data array.
         $data = array(
@@ -248,6 +243,7 @@ class Admin_Controller extends Front_Controller {
                 'achievements' => anchor( site_url('dashboard/achievements'), lang('lnk_achievements')),
                 'achievement_triggers' => anchor( site_url('dashboard/achievement_triggers'), lang('lnk_achievement_triggers')),
                 'permissions' => anchor( site_url('dashboard/permissions'), lang('lnk_permissions')),
+                'themes' => anchor( site_url('dashboard/themes'), lang('lnk_themes')),
             ),
             // Footer.
             'footer' => array(
@@ -258,34 +254,31 @@ class Admin_Controller extends Front_Controller {
         // Define the template regions.
         $data['templates'] = array(
             'doctype' => doctype('html5'),
+            'theme' => ($this->admin_theme->name !== 'default' ? '<link href="'.$this->admin_theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
-                array('link' => '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">'),
-                array('link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">'),
-                array('link' => '<link href="' . base_url('templates/' . $this->admin_theme . '/assets/css/custom.css') . '", rel="stylesheet">'),
-                array( 'link' => '<link href="'.base_url('templates//'.$this->admin_theme.'/assets/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
+                array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
+                array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />')
             ),
             'meta' => array(
                 array('meta' => meta('keywords', $this->config->item('keywords'))),
             ),
             'js' => array(
-                array('script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>'),
-                array('script' => '<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>'),
-                array( 'script' => '<script src="'.base_url('templates/'.$this->admin_theme.'/assets/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js').'" type="text/javascript"></script>' ),
-                array('script' => '<script src="' . base_url('templates/' . $this->admin_theme . '/assets/js/forums.js') . '"></script>'),
+                array( 'script' => '<script src="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js').'" type="text/javascript"></script>' ),
+                array( 'script' => '<script src="'.base_url('themes/default/js/forums.js').'"></script>' ),
             ),
             // Page Title.
             'title' => '' . $this->site_name . ' - ' . $page_title . '',
             // Navigation.
-            'navigation' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/admin_navigation', element('navigation', $data), TRUE),
+            'navigation' => $this->parser->parse('default/sections/admin_navigation', element('navigation', $data), TRUE),
             // Sidebar.
-            'sidebar' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/admin_sidebar', element('sidebar', $data), TRUE),
+            'sidebar' => $this->parser->parse('default/sections/admin_sidebar', element('sidebar', $data), TRUE),
             // Content.
-            'content' => $this->parser->parse('templates/' . $this->admin_theme . '/' . $page_template . '', $page_data, TRUE),
+            'content' => $this->parser->parse('default/' . $page_template . '', $page_data, TRUE),
             // Footer.
-            'footer' => $this->parser->parse('templates/' . $this->admin_theme . '/regions/footer', element('footer', $data), TRUE),
+            'footer' => $this->parser->parse('default/sections/footer', element('footer', $data), TRUE),
         );
 
         // Send all the data to the layout file.
-        $this->parser->parse('templates/' . $this->admin_theme . '/layout', element('templates', $data));
+        $this->parser->parse('default/layout', element('templates', $data));
     }
 }

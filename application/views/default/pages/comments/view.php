@@ -4,20 +4,40 @@
 
 <div class="well well-sm">
 
-    <strong>{discussion_name}</strong>
+    <strong>{is_sticky}{is_closed}{discussion_name}</strong>
 
 </div>
 
 <div class="btn-toolbar pagination-toolbar" role="toolbar">
 
-    <!-- Check the user is logged in -->
-    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+    <?php if($this->ion_auth->is_admin()) { ?>
 
     <div class="btn-group pull-right">
 
-        {btn_reply}
+        <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fa-fw"></i> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>{lnk_sticky}</li>
+            <li>{lnk_close}</li>
+        </ul>
 
     </div>
+
+    <?php } ?>
+
+    <!-- Check the user is logged in -->
+    <?php if ($this->ion_auth->logged_in() === TRUE) { ?>
+
+        <?php if (empty($is_closed)) { ?>
+
+        <div class="btn-group pull-right">
+
+            {btn_reply}
+
+        </div>
+
+        <?php } ?>
 
     <div class="btn-group pull-right">
 
@@ -53,21 +73,7 @@
 
                 <div class="media-body">
 
-                    <div class="row">
-
-                        <div class="col-md-6">
-
-                            <p class="text-muted">{posted}</p>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <p class="pull-right"><strong>{comment_id_link}</strong></p>
-
-                        </div>
-
-                    </div>
+                    <p class="text-muted"><small>{posted}</small></p>
 
                     <hr />
 
@@ -124,11 +130,15 @@
     <!-- Check the user is logged in -->
     <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
 
-        <div class="btn-group pull-right">
+        <?php if (empty($is_closed)) { ?>
 
-            {btn_reply}
+            <div class="btn-group pull-right">
 
-        </div>
+                {btn_reply}
+
+            </div>
+
+        <?php } ?>
 
         <div class="btn-group pull-right">
 
@@ -142,6 +152,8 @@
 
 <!-- Check if the user is logged in -->
 <?php if($this->ion_auth->logged_in() === TRUE) { ?>
+
+    <?php if (empty($is_closed)) { ?>
 
     <div class="panel panel-warning" id="quick_reply">
 
@@ -159,7 +171,12 @@
 
                 <div class="form-group <?php if(form_error('message')){echo 'has-error';} ?>">
 
-                    {message_field}
+                    <textarea name="message" id="message" class="ckeditor">
+
+                        {message}
+
+                    </textarea>
+
                     {message_error}
 
                 </div>
@@ -177,5 +194,7 @@
         </div>
 
     </div>
+
+    <?php } ?>
 
 <?php } ?>

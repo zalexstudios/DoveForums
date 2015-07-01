@@ -28,8 +28,7 @@ class Comments extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'class' => 'form-control',
-                'type' => 'text',
+                'class' => 'ckeditor',
             ),
         ),
     );
@@ -79,7 +78,7 @@ class Comments extends Front_Controller {
                 'form_open' => form_open('comments/edit_comment/'.$comment_id),
                 'form_close' => form_close(),
                 // Fields.
-                'message_field' => form_textarea( $this->form_fields['edit_comment'][0], set_value( $this->form_fields['edit_comment'][0]['name'], $comment->message ) ),
+                'message' => $comment->message,
                 // Errors
                 'message_error' => form_error($this->form_fields['edit_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons

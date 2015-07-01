@@ -22,8 +22,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $lang['btn_new_discussion'] = '<i class="fa fa-check"></i> Start a new Discussion';
 $lang['btn_reply_discussion'] = '<i class="fa fa-quote-left"></i> Reply to this Discussion';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
-$lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i> PM';
-$lang['btn_report'] = '<i class="fa fa-bullhorn"></i> Report';
+$lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i>';
+$lang['btn_report'] = '<i class="fa fa-bullhorn fa-fw"></i>';
 $lang['btn_post_comment'] = 'Post Reply';
 $lang['btn_register'] = 'Register';
 $lang['btn_edit_discussion'] = '<i class="fa fa-pencil"></i> Edit';
@@ -31,8 +31,8 @@ $lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Delete';
 $lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Edit';
 $lang['btn_delete_comment'] = '<i class="fa fa-trash-o"></i> Delete';
 $lang['btn_add_user'] = 'Add User';
-$lang['btn_edit'] = '<i class="fa fa-pencil"></i>';
-$lang['btn_delete'] = '<i class="fa fa-trash-o"></i>';
+$lang['btn_edit'] = '<i class="fa fa-pencil fa-fw"></i>';
+$lang['btn_delete'] = '<i class="fa fa-trash-o fa-fw"></i>';
 $lang['btn_password'] = '<i class="fa fa-key"></i>';
 $lang['btn_update_user'] = 'Update User';
 $lang['btn_create_discussion'] = 'Create Discussion';
@@ -51,8 +51,8 @@ $lang['btn_add_group'] = 'Add Group';
 $lang['btn_edit_group'] = 'Edit Group';
 $lang['btn_update_settings'] = 'Update Settings';
 $lang['btn_add_language'] = 'Add Language';
-$lang['btn_pm'] = '<i class="fa fa-envelope-o"></i> PM';
-$lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
+$lang['btn_pm'] = '<i class="fa fa-envelope-o fa-fw"></i>';
+$lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up fa-fw"></i>';
 $lang['btn_report_user'] = 'Report User';
 $lang['btn_add_achievement'] = 'Add Achievement';
 $lang['btn_add_achievement_trigger'] = 'Add Achievement Trigger';
@@ -83,6 +83,10 @@ $lang['lnk_achievement_triggers'] = 'Achievement Triggers';
 $lang['lnk_permissions'] = 'Permissions';
 $lang['lnk_reports'] = 'Reports';
 $lang['lnk_themes'] = 'Themes';
+$lang['lnk_sticky'] = '<i class="fa fa-thumb-tack"></i> Sticky';
+$lang['lnk_close'] = '<i class="fa fa-lock"></i> Close';
+$lang['lnk_unstick'] = '<i class="fa fa-thumb-tack"></i> Unstick';
+$lang['lnk_open'] = '<i class="fa fa-unlock"></i> Open';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -153,6 +157,7 @@ $lang['txt_total_discussions'] = 'Total Discussions:';
 $lang['txt_total_comments'] = 'Total Comments:';
 $lang['txt_personal'] = 'Personal';
 $lang['txt_sticky'] = 'Sticky';
+$lang['txt_edited'] = 'Edited';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -280,6 +285,10 @@ $lang['success_create_achievement'] = 'The achievement has been created.';
 $lang['success_delete_achievement'] = 'The achievement has been removed.';
 $lang['success_create_achievement_trigger'] = 'The achievement trigger has been created.';
 $lang['success_activate_theme'] = 'The theme <strong>`%s`</strong> has been activated.';
+$lang['success_sticky_discussion'] = 'The discussion <strong>`%s`</strong> is now sticky.';
+$lang['success_close_discussion'] = 'The discussion <strong>`%s`</strong> is now closed to posting.';
+$lang['success_open_discussion'] = 'The discussion <strong>`%s`</strong> has been opened for posting.';
+$lang['success_unstick_discussion'] = 'The discussion <strong>`%s`</strong> is no longer sticky.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -317,6 +326,9 @@ $lang['error_create_achievement'] = 'There was a problem creating the achievemen
 $lang['error_delete_achievement'] = 'There was a problem removing the achievement.';
 $lang['error_create_achievement_trigger'] = 'There was a problem creating the achievement trigger.';
 $lang['error_activate_theme'] = 'There was a problem activating the theme <strong>`%s`</strong>';
+$lang['error_sticky_discussion'] = 'There was a problem making the discussion <strong>`%s`</strong> sticky.';
+$lang['error_close_discussion'] = 'There was a problem closing the discussion <strong>`%s`</strong>.';
+$lang['error_unstick_discussion'] = 'There was a problem unsticking the discussion <strong>`%s`</strong>.';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
@@ -370,3 +382,7 @@ $lang['tbl_author'] = 'Author';
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';
 $lang['tip_send_user_pm'] = 'Send this user a private message.';
+$lang['tip_report_comment'] = 'Report this comment to a moderator.';
+$lang['tip_thumbs_up'] = 'Give this user a Thumbs Up.';
+$lang['tip_edit_comment'] = 'Edit Comment.';
+$lang['tip_delete_comment'] = 'Delete Comment.';

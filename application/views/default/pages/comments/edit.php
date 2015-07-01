@@ -44,7 +44,9 @@
 
                 <div class="form-group <?php if(form_error('message')){echo 'has-error';} ?>">
 
-                    {message_field}
+                    <textarea name="message" id="message" class="ckeditor">
+                        {message}
+                    </textarea>
                     {message_error}
 
                 </div>

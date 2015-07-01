@@ -87,9 +87,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'new_reply' => array(
@@ -97,9 +95,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'new_discussion' => array(
@@ -114,9 +110,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'edit_discussion' => array(
@@ -131,9 +125,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'body',
                 'name' => 'body',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
     );
@@ -172,7 +164,7 @@ class Discussions extends Front_Controller {
         if( $this->form_validation->run() === FALSE )
         {
             // Get the discussion info.
-            $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+            $discussion = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_by('id', $this->_discussion_id);
 
             // Update the discussion view count.
             $this->discussions->update($this->_discussion_id, array('views' => ++$discussion->views));
@@ -207,18 +199,17 @@ class Discussions extends Front_Controller {
 
                     $data['comments'][$row->id] = array(
                         'comment_id' => $row->id,
-                        'comment_id_link' => anchor( site_url('discussions/view/'.$this->_discussion_id.'/#'.$row->id), '#'.$row->id.''),
                         'poster' => anchor( site_url('users/profile/'.$row->poster_id.''), ucwords($row->poster)),
                         'message' => $row->message,
                         'avatar' => img( element('avatar', $data) ),
                         'points' => $user->points,
                         'posted' => unix_to_human($row->posted),
-                        'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Report this comment to a moderator.')),
-                        'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Send this user a personal message.')),
-                        'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Give this user a Thumbs Up.' )),
-                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Edit this Comment') ) : NULL,
-                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete_comment'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Delete this Comment') ) : NULL,
-                        'edited' => (!empty($row->edited) ? '<p class="text-muted">Edited '.unix_to_human($row->edited).' by '.$row->edited_by.'</p>' : ''),
+                        'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_comment'))),
+                        'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
+                        'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up') )),
+                        'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_edit_comment')) ) : NULL,
+                        'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_delete_comment')) ) : NULL,
+                        'edited' => (!empty($row->edited) ? '<hr /><p class="text-muted"><small>'.lang('txt_edited').'&nbsp;'.unix_to_human($row->edited).'&nbsp;'.lang('txt_by').'&nbsp;'.$row->edited_by.'</small></p>' : ''),
                     );
                 }
 
@@ -241,20 +232,24 @@ class Discussions extends Front_Controller {
                 'form_open' => form_open( site_url('discussions/view/'.$this->_discussion_id.'/#quick_reply') ),
                 'form_close' => form_close(),
                 // Fields.
-                'message_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
                 'btn_post_comment' => form_submit('submit', lang('btn_post_comment'), 'class="btn btn-primary btn-xs"'),
                 'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
                 'btn_reply' => anchor( site_url( 'discussions/reply/'.$this->_discussion_id), lang('btn_reply_discussion'), array( 'class' => 'btn btn-primary btn-xs' ) ),
+                'lnk_sticky' => ($discussion->sticky == 0 ? anchor( site_url('discussions/sticky/'.$this->_discussion_id), lang('lnk_sticky')) : anchor( site_url('discussions/unstick/'.$this->_discussion_id), lang('lnk_unstick'))),
+                'lnk_close' => ($discussion->closed == 0 ? anchor( site_url('discussions/close/'.$this->_discussion_id), lang('lnk_close')) : anchor( site_url('discussions/open/'.$this->_discussion_id), lang('lnk_open'))),
                 // Discussion Data.
-                'discussion_name' => ($discussion->sticky == 1 ? '<i class="fa fa-thumb-tack"></i> '.$discussion->subject : $discussion->subject),
+                'discussion_name' => $discussion->subject,
                 // Comment Data.
                 'comments' => element( 'comments', $data ),
                 'has_comments' => (!empty($comments)) ? 1 : 0,
                 'breadcrumbs' => $this->crumbs->output(),
                 'login_link' => anchor( site_url('users/login'), lang('lnk_login')),
+                'is_sticky' => ($discussion->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
+                'is_closed' => ($discussion->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
             );
 
             $this->render( element('page', $data), element('title', $data), element('template', $data) );
@@ -410,7 +405,7 @@ class Discussions extends Front_Controller {
                 'form_open' => form_open('discussions/reply/'.$this->_discussion_id),
                 'form_close' => form_close(),
                 // Fields.
-                'message_field' => form_textarea( $this->form_fields['new_reply'][0], set_value( $this->form_fields['new_reply'][0]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_reply'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -570,7 +565,7 @@ class Discussions extends Front_Controller {
                 'form_close' => form_close(),
                 // Fields.
                 'subject_field' => form_input( $this->form_fields['new_discussion'][0], set_value( $this->form_fields['new_discussion'][0]['name'], $this->input->post('subject') ) ),
-                'message_field' => form_textarea( $this->form_fields['new_discussion'][1], set_value( $this->form_fields['new_discussion'][1]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 'category_field' => form_dropdown('category', $category_options, '0', 'class="form-control"'),
                 // Errors
                 'subject_error' => form_error($this->form_fields['new_discussion'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
@@ -786,120 +781,6 @@ class Discussions extends Front_Controller {
     }
 
     /**
-     * Edit Discussion
-     *
-     * Allows the user to edit the discussion via the supplied
-     * discussion ID.
-     *
-     * @param       integer      $discussion_id
-     * @author      Chris Baines
-     * @since       0.0.1
-     */
-    public function edit_discussion ( $discussion_id = NULL )
-    {
-        // Check if the user has permission.
-        if(!$this->permission->has_permission('edit_discussions'))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_permission_required'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
-        }
-
-        // Check a discussion ID was supplied.
-        if ( empty($discussion_id) || $discussion_id === NULL )
-        {
-            // Create a message.
-            $this->messageci->set ( lang('error_invalid_id'), 'error' );
-
-            // Redirect.
-            redirect( site_url(), 'refresh' );
-        }
-
-        // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['edit_discussion']);
-
-        // See if the form has been run.
-        if($this->form_validation->run() === FALSE)
-        {
-            // Define the page title.
-            $data['title'] = lang('tle_edit_discussion');
-
-            // Define the page template.
-            $data['template'] = 'pages/discussions/edit';
-
-            // Build the page breadcrumbs.
-            $this->crumbs->add( lang('crumb_edit_discussion') );
-
-            // Get the discussion from the database.
-            $discussion = $this->forums->get_discussion_by_id($discussion_id);
-
-            // Get all the categories.
-            $categories = $this->forums->get_categories_dropdown();
-
-            // Build the category dropdown.
-            if(!empty($categories))
-            {
-                $category_options[NULL] = lang('dd_category_default');
-
-                foreach($categories as $row)
-                {
-                    $category_options[$row->category_id] = $row->name;
-                }
-            }
-
-            $data['page'] = array(
-                // Form Data.
-                'form_open' => form_open('discussions/edit_discussion/'.$discussion_id),
-                'form_close' => form_close(),
-                // Fields.
-                'name_field' => form_input( $this->form_fields['edit_discussion'][0], set_value( $this->form_fields['edit_discussion'][0]['name'], $discussion->discussion_name ) ),
-                'body_field' => form_textarea( $this->form_fields['edit_discussion'][1], set_value( $this->form_fields['edit_discussion'][1]['name'], $discussion->body ) ),
-                'category_field' => form_dropdown('category', $category_options, $discussion->category_id, 'class="form-control"'),
-                // Errors
-                'name_error' => form_error($this->form_fields['edit_discussion'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'body_error' => form_error($this->form_fields['edit_discussion'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
-                // Buttons
-                'btn_update_discussion' => form_submit('submit', lang('btn_update_discussion'), 'class="btn btn-primary btn-xs"'),
-                // Hidden.
-                'discussion_id_hidden_field' => form_hidden('discussion_id', $discussion_id),
-                // Other.
-                'breadcrumbs' => $this->crumbs->output(),
-                'logged_in_user' => $this->session->userdata('username'),
-            );
-
-            $this->render( element('page', $data), element('title', $data), element('template', $data) );
-        }
-        else
-        {
-            // Gather the data.
-            $data = array(
-                'name' => $this->input->post('name'),
-                'body' => $this->input->post('body'),
-                'category' => $this->input->post('category'),
-            );
-
-            if ($this->forums->update_discussion($this->input->post('discussion_id'), $data) === TRUE)
-            {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('success_update_discussion'), $this->input->post('name')), 'success');
-
-                // Redirect.
-                redirect( site_url('forums'), 'refresh' );
-            } else {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('error_update_discussion'), $this->input->post('name')), 'error');
-
-                // Redirect.
-                redirect( site_url('forums'), 'refresh');
-            }
-        }
-
-    }
-
-    /**
      * Delete Discussion
      *
      * Deletes the discussion via the supplied discussion ID.
@@ -913,38 +794,137 @@ class Discussions extends Front_Controller {
         // Check if the user has permission.
         if(!$this->permission->has_permission('delete_discussions'))
         {
-            // Create a message.
+            // Create error message.
             $this->messageci->set( lang('error_permission_required'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
         }
 
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {
-            // Create a message.
+            // Create error message.
             $this->messageci->set ( lang('error_invalid_id'), 'error' );
-
-            // Redirect.
-            redirect( site_url(), 'refresh' );
         }
 
         if($this->forums->delete_discussion($discussion_id))
         {
-            // Create a message.
+            // Create success message.
             $this->messageci->set( lang('success_delete_discussion'), 'success');
-
-            // Redirect.
-            redirect( site_url(), 'refresh');
-
-        } else {
-            // Create a message.
-            $this->messageci->set( lang('error_delete_discussion'), 'error');
-
-            // Redirect.
-            redirect( site_url(), 'refresh');
         }
+        else {
+            // Create error message.
+            $this->messageci->set( lang('error_delete_discussion'), 'error');
+        }
+
+        // Redirect.
+        redirect( site_url(), 'refresh');
+    }
+
+    public function sticky($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($discussion_id, array('sticky' => 1));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_sticky_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_sticky_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function unstick($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($this->_discussion_id, array('sticky' => 0));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_unstick_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_unstick_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function open($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($this->_discussion_id, array('closed' => 0));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_open_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_open_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function close($discussion_id)
+    {
+        // Clear the discussion id.
+        $this->_discussion_id = '';
+
+        // Set the discussion id.
+        $this->_discussion_id = $discussion_id;
+
+        // Get the discussion.
+        $discussion = $this->discussions->get_by('id', $this->_discussion_id);
+
+        // Update the discussion.
+        $update = $this->discussions->update($discussion_id, array('closed' => 1));
+
+        if($update)
+        {
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_close_discussion'), $discussion->subject), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( sprintf(lang('error_close_discussion'), $discussion->subject), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
     }
 
     private function set_discussion_id($discussion_id)

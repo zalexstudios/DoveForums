@@ -147,14 +147,13 @@ class Front_Controller extends MY_Controller{
             'theme' => ($this->theme->name !== 'default' ? '<link href="'.$this->theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
                 array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
-                array( 'link' => '<link href="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css').'" rel="stylesheet" type="text/css" />'),
             ),
             'meta' => array(
                 array( 'meta' => meta('keywords', $this->config->item('site_keywords')) ),
                 array( 'meta' => meta('description', $this->config->item('site_description')) ),
             ),
             'js' => array(
-                array( 'script' => '<script src="'.base_url('themes/default/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js').'" type="text/javascript"></script>' ),
+                array( 'script' => '<script src="'.base_url('themes/default/js/plugins/ckeditor.js').'" type="text/javascript"></script>' ),
                 array( 'script' => '<script src="'.base_url('themes/default/js/forums.js').'"></script>' ),
             ),
             // Page Title.

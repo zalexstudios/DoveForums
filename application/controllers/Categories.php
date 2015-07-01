@@ -33,12 +33,14 @@ class Categories extends Front_Controller {
                 $cat = $this->categories->get_by('id', $row->category_id);
 
                 $data['discussions'][] = array(
-                    'subject' => ($row->sticky == 1 ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-thumb-tack"></i> '.$row->subject) : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
+                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
                     'views' => $row->views,
                     'replies' => $row->replies,
                     'last_comment' => unix_to_human($row->last_comment),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id.''), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->id), $cat->name),
+                    'is_sticky' => ($row->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
+                    'is_closed' => ($row->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
                 );
             }
 
@@ -86,12 +88,14 @@ class Categories extends Front_Controller {
             foreach($discussions as $row)
             {
                 $data['discussions'][] = array(
-                    'subject' => ($row->sticky == 1 ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-thumb-tack"></i> '.$row->subject) : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
+                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
                     'replies' => $row->replies,
                     'views' => $row->views,
                     'last_comment' => unix_to_human($row->last_comment),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
+                    'is_sticky' => ($row->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
+                    'is_closed' => ($row->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
                 );
             }
 

@@ -39,7 +39,7 @@
 
                     <div class="media-body">
 
-                        <h5 class="media-heading"><strong>{subject}</strong></h5>
+                        <h5 class="media-heading">{is_sticky}{is_closed}<strong>{subject}</strong></h5>
 
                         <p class="small">{views} <?= lang('txt_views'); ?>&nbsp;&nbsp;&nbsp;&nbsp;{replies} <?= lang('txt_comments') ?>&nbsp;&nbsp;&nbsp;&nbsp;<?= lang('txt_most_recent_by'); ?> {last_poster}&nbsp;&nbsp;&nbsp;&nbsp;{last_comment}&nbsp;&nbsp;&nbsp;&nbsp;{category}</p>
 
@@ -55,7 +55,7 @@
 
                     <div class="media-body">
 
-                        <h4 class="media-heading"><strong><?= lang('txt_no_discussions'); ?></strong></h4>
+                        <p><strong><?= lang('txt_no_discussions'); ?></strong></p>
 
                     </div>
 

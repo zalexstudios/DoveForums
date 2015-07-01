@@ -1404,7 +1404,7 @@ class Dashboard extends Admin_Controller {
             foreach($languages as $row)
             {
                 $this->table->add_row(
-                    img('templates/assets/img/flags/'.$row->icon),
+                    img('themes/default/img/flags/'.$row->icon),
                     $row->language,
                     $row->code,
                     ''.anchor( site_url('dashboard/edit_language/'.$row->id), lang('btn_edit'), array('class' => 'btn btn-default btn-xs')).'&nbsp;'.

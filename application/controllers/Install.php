@@ -239,8 +239,8 @@ class Install extends CI_Controller {
                 // Update the settings in the database.
                 $this->settings->add_setting('site_name', addslashes($this->input->post('site_title')), 'site', 'yes');
                 $this->settings->add_setting('site_email', $this->input->post('admin_email'), 'site', 'yes');
-                $this->settings->add_setting('theme', 'default', 'site', 'yes');
-                $this->settings->add_setting('admin_theme', 'default', 'site', 'yes');
+                $this->settings->add_setting('theme', 'yeti', 'site', 'yes');
+                $this->settings->add_setting('admin_theme', 'yeti', 'site', 'yes');
                 $this->settings->add_setting('gravatar_rating', 'x', 'gravatar', 'yes');
                 $this->settings->add_setting('gravatar_default_image', 'mm', 'gravatar', 'yes');
                 $this->settings->add_setting('gravatar_size', 50, 'gravatar', 'yes');

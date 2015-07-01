@@ -87,9 +87,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'new_reply' => array(
@@ -97,9 +95,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'new_discussion' => array(
@@ -114,9 +110,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'message',
                 'name' => 'message',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
         'edit_discussion' => array(
@@ -131,9 +125,7 @@ class Discussions extends Front_Controller {
             array(
                 'id' => 'body',
                 'name' => 'body',
-                'type' => 'textarea',
-                'class' => 'textarea',
-                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                'class' => 'ckeditor',
             ),
         ),
     );
@@ -240,7 +232,7 @@ class Discussions extends Front_Controller {
                 'form_open' => form_open( site_url('discussions/view/'.$this->_discussion_id.'/#quick_reply') ),
                 'form_close' => form_close(),
                 // Fields.
-                'message_field' => form_textarea( $this->form_fields['new_comment'][0], set_value( $this->form_fields['new_comment'][0]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_comment'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -413,7 +405,7 @@ class Discussions extends Front_Controller {
                 'form_open' => form_open('discussions/reply/'.$this->_discussion_id),
                 'form_close' => form_close(),
                 // Fields.
-                'message_field' => form_textarea( $this->form_fields['new_reply'][0], set_value( $this->form_fields['new_reply'][0]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 // Errors.
                 'message_error' => form_error($this->form_fields['new_reply'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
@@ -573,7 +565,7 @@ class Discussions extends Front_Controller {
                 'form_close' => form_close(),
                 // Fields.
                 'subject_field' => form_input( $this->form_fields['new_discussion'][0], set_value( $this->form_fields['new_discussion'][0]['name'], $this->input->post('subject') ) ),
-                'message_field' => form_textarea( $this->form_fields['new_discussion'][1], set_value( $this->form_fields['new_discussion'][1]['name'], $this->input->post('message') ) ),
+                'message' => $this->input->post('message'),
                 'category_field' => form_dropdown('category', $category_options, '0', 'class="form-control"'),
                 // Errors
                 'subject_error' => form_error($this->form_fields['new_discussion'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
@@ -786,120 +778,6 @@ class Discussions extends Front_Controller {
                 redirect( site_url(), 'refresh');
             }
         }
-    }
-
-    /**
-     * Edit Discussion
-     *
-     * Allows the user to edit the discussion via the supplied
-     * discussion ID.
-     *
-     * @param       integer      $discussion_id
-     * @author      Chris Baines
-     * @since       0.0.1
-     */
-    public function edit_discussion ( $discussion_id = NULL )
-    {
-        // Check if the user has permission.
-        if(!$this->permission->has_permission('edit_discussions'))
-        {
-            // Create a message.
-            $this->messageci->set( lang('error_permission_required'), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh');
-        }
-
-        // Check a discussion ID was supplied.
-        if ( empty($discussion_id) || $discussion_id === NULL )
-        {
-            // Create a message.
-            $this->messageci->set ( lang('error_invalid_id'), 'error' );
-
-            // Redirect.
-            redirect( site_url(), 'refresh' );
-        }
-
-        // Set the form validation rules.
-        $this->form_validation->set_rules($this->validation_rules['edit_discussion']);
-
-        // See if the form has been run.
-        if($this->form_validation->run() === FALSE)
-        {
-            // Define the page title.
-            $data['title'] = lang('tle_edit_discussion');
-
-            // Define the page template.
-            $data['template'] = 'pages/discussions/edit';
-
-            // Build the page breadcrumbs.
-            $this->crumbs->add( lang('crumb_edit_discussion') );
-
-            // Get the discussion from the database.
-            $discussion = $this->forums->get_discussion_by_id($discussion_id);
-
-            // Get all the categories.
-            $categories = $this->forums->get_categories_dropdown();
-
-            // Build the category dropdown.
-            if(!empty($categories))
-            {
-                $category_options[NULL] = lang('dd_category_default');
-
-                foreach($categories as $row)
-                {
-                    $category_options[$row->category_id] = $row->name;
-                }
-            }
-
-            $data['page'] = array(
-                // Form Data.
-                'form_open' => form_open('discussions/edit_discussion/'.$discussion_id),
-                'form_close' => form_close(),
-                // Fields.
-                'name_field' => form_input( $this->form_fields['edit_discussion'][0], set_value( $this->form_fields['edit_discussion'][0]['name'], $discussion->discussion_name ) ),
-                'body_field' => form_textarea( $this->form_fields['edit_discussion'][1], set_value( $this->form_fields['edit_discussion'][1]['name'], $discussion->body ) ),
-                'category_field' => form_dropdown('category', $category_options, $discussion->category_id, 'class="form-control"'),
-                // Errors
-                'name_error' => form_error($this->form_fields['edit_discussion'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'body_error' => form_error($this->form_fields['edit_discussion'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'category_error' => form_error('category', '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>', '</p>'),
-                // Buttons
-                'btn_update_discussion' => form_submit('submit', lang('btn_update_discussion'), 'class="btn btn-primary btn-xs"'),
-                // Hidden.
-                'discussion_id_hidden_field' => form_hidden('discussion_id', $discussion_id),
-                // Other.
-                'breadcrumbs' => $this->crumbs->output(),
-                'logged_in_user' => $this->session->userdata('username'),
-            );
-
-            $this->render( element('page', $data), element('title', $data), element('template', $data) );
-        }
-        else
-        {
-            // Gather the data.
-            $data = array(
-                'name' => $this->input->post('name'),
-                'body' => $this->input->post('body'),
-                'category' => $this->input->post('category'),
-            );
-
-            if ($this->forums->update_discussion($this->input->post('discussion_id'), $data) === TRUE)
-            {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('success_update_discussion'), $this->input->post('name')), 'success');
-
-                // Redirect.
-                redirect( site_url('forums'), 'refresh' );
-            } else {
-                // Create a message.
-                $this->messageci->set( sprintf(lang('error_update_discussion'), $this->input->post('name')), 'error');
-
-                // Redirect.
-                redirect( site_url('forums'), 'refresh');
-            }
-        }
-
     }
 
     /**

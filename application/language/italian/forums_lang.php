@@ -31,8 +31,8 @@ $lang['btn_delete_discussion'] = '<i class="fa fa-trash-o"></i> Elimina';
 $lang['btn_edit_comment'] = '<i class="fa fa-pencil"></i> Modifica';
 $lang['btn_delete_comment'] = '<i class="fa fa-trash-o"></i> Elimina';
 $lang['btn_add_user'] = 'Aggiungi User';
-$lang['btn_edit'] = '<i class="fa fa-pencil"></i>';
-$lang['btn_delete'] = '<i class="fa fa-trash-o"></i>';
+$lang['btn_edit'] = '<i class="fa fa-pencil fa-fw"></i>';
+$lang['btn_delete'] = '<i class="fa fa-trash-o fa-fw"></i>';
 $lang['btn_password'] = '<i class="fa fa-key"></i>';
 $lang['btn_update_user'] = 'Aggiorna User';
 $lang['btn_create_discussion'] = 'Crea Discussione';
@@ -56,6 +56,8 @@ $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_report_user'] = 'Segnala User';
 $lang['btn_add_achievement'] = 'Aggiungi Achievement';
 $lang['btn_add_achievement_trigger'] = 'Aggiungi Attivatore Achievement';
+$lang['btn_add_permission'] = 'Aggiungi Permessi';
+$lang['btn_add_theme'] = 'Aggiungi Tema';
 
 //Links
 $lang['lnk_discussions'] = 'Discussioni';
@@ -78,6 +80,13 @@ $lang['lnk_discussions'] = 'Discussioni';
 $lang['lnk_language_packs'] = 'Pacchi Lingua';
 $lang['lnk_achievements'] = 'Achievements';
 $lang['lnk_achievement_triggers'] = 'Attivatore Achievement';
+$lang['lnk_permissions'] = 'Permessi';
+$lang['lnk_reports'] = 'Segnalazioni';
+$lang['lnk_themes'] = 'Temi';
+$lang['lnk_sticky'] = '<i class="fa fa-thumb-tack"></i> Sticky';
+$lang['lnk_close'] = '<i class="fa fa-lock"></i> Chiudi';
+$lang['lnk_unstick'] = '<i class="fa fa-thumb-tack"></i> Unstick';
+$lang['lnk_open'] = '<i class="fa fa-unlock"></i> Apri';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Discussioni Recenti';
@@ -108,6 +117,12 @@ $lang['tle_profile'] = 'Profilo di %s';
 $lang['tle_report_user'] = 'Segnala User';
 $lang['tle_achievements'] = 'Achievements';
 $lang['tle_achievement_triggers'] = 'Attivatore Achievement';
+$lang['tle_edit_discussion'] = 'Modifica Discussione';
+$lang['tle_permissions'] = 'Permessi';
+$lang['tle_reports'] = 'Segnalazioni';
+$lang['tle_appearance'] = 'Aspetto';
+$lang['tle_themes'] = 'Temi';
+$lang['tle_theme_details'] = 'Dettaglio Tema';
 
 // Static Text
 $lang['txt_no_discussions'] = 'Nessuna Discussione';
@@ -141,6 +156,8 @@ $lang['txt_last_visit'] = 'Ultima Visita:';
 $lang['txt_total_discussions'] = 'Discussioni Totali:';
 $lang['txt_total_comments'] = 'Commenti Totali:';
 $lang['txt_personal'] = 'Personale';
+$lang['txt_sticky'] = 'Sticky';
+$lang['txt_edited'] = 'Modificato';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -236,6 +253,10 @@ $lang['crumb_profile'] = 'Profilo di %s';
 $lang['crumb_report'] = 'Segnala User';
 $lang['crumb_achievements'] = 'Achievements';
 $lang['crumb_achievement_triggers'] = 'Attivatore Achievement';
+$lang['crumb_permissions'] = 'Permessi';
+$lang['crumb_reports'] = 'Segnalazioni';
+$lang['crumb_themes'] = 'Temi';
+$lang['crumb_theme_details'] = 'Dettaglio Temi';
 
 // Success Messages.
 $lang['success_login'] = 'Login effettuato con successo.';
@@ -263,6 +284,11 @@ $lang['success_report_user'] = 'L\'user e\' stato segnalato ad un moderatore.';
 $lang['success_create_achievement'] = 'L\'achievement e\' stato creato.';
 $lang['success_delete_achievement'] = 'L\'achievement e\' stato rimosso.';
 $lang['success_create_achievement_trigger'] = 'L\'attivatore achievement e\' stato creato.';
+$lang['success_activate_theme'] = 'Il tema <strong>`%s`</strong> e\' stato attivato';
+$lang['success_sticky_discussion'] = 'La discussione <strong>`%s`</strong> e\' ora sticky.';
+$lang['success_close_discussion'] = 'La discussione <strong>`%s`</strong> e\' ora chiusa.';
+$lang['success_open_discussion'] = 'La discussione <strong>`%s`</strong> e\' ora riaperta.';
+$lang['success_unstick_discussion'] = 'La discussione <strong>`%s`</strong> non e\' piu\' sticky.';
 
 // Error Messages
 $lang['error_slug'] = 'Nessuno slug fornito, per favore riprova!';
@@ -299,6 +325,10 @@ $lang['error_permission_required'] = 'Non hai i permessi per completare questa a
 $lang['error_create_achievement'] = 'C\'e\' stato un problema nella creazione dell\'achievement.';
 $lang['error_delete_achievement'] = 'C\'e\' stato un problema nella rimozione dell\'achievement.';
 $lang['error_create_achievement_trigger'] = 'C\'e\' stato un problema nella creazione dell\'attivatore achievement.';
+$lang['error_activate_theme'] = 'C\'e\' stato un problema nell\' attivazione del tema <strong>`%s`</strong>';
+$lang['error_sticky_discussion'] = 'C\'e\' stato un problema nel rendere la discussione <strong>`%s`</strong> sticky.';
+$lang['error_close_discussion'] = 'C\'e\' stato un problema nel chiudere la discussione <strong>`%s`</strong>.';
+$lang['error_unstick_discussion'] = 'C\'e\' un problema nel rendere unsticky la discussione <strong>`%s`</strong>.';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Sbloccato</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
@@ -343,7 +373,16 @@ $lang['tbl_icon'] = 'Icona';
 $lang['tbl_points'] = 'Punti';
 $lang['tbl_condition'] = 'Condizione';
 $lang['tbl_achievement'] = 'Achievement';
+$lang['tbl_permission'] = 'Permission';
+$lang['tbl_key'] = 'Chiave Permessi';
+$lang['tbl_category'] = 'Categoria';
+$lang['tbl_status'] = 'Stato';
+$lang['tbl_author'] = 'Autore';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Segnala quest\'user ad un moderatore.';
 $lang['tip_send_user_pm'] = 'Invia a quest\' user un messaggio privato.';
+$lang['tip_report_comment'] = 'Segnala questo commento ad un moderatore.';
+$lang['tip_thumbs_up'] = 'Dai un \'like\' a questo utente.';
+$lang['tip_edit_comment'] = 'Modifica Commento.';
+$lang['tip_delete_comment'] = 'Cancella Commento.';

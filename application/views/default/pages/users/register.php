@@ -90,6 +90,18 @@
 
             <div class="col-md-12">
 
+                {recaptcha_field}
+
+            </div>
+
+        </div>
+
+        <hr class="dashed">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
                 <div class="form-group">
 
                     {register_button}

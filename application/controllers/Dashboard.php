@@ -670,23 +670,20 @@ class Dashboard extends Admin_Controller {
         if ($this->ion_auth->delete_user($user_id) === TRUE)
         {
             // Delete any discussions created by the user.
-            $this->forums->delete_discussions($user_id);
+            $this->comments->delete_by(array('poster' => $user->username));
 
             // Delete any comments created by the user.
-            $this->forums->delete_comments($user_id);
+            $this->discussions->delete_by(array('poster' => $user->username));
 
             // Create a message.
             $this->messageci->set( sprintf( lang('success_delete_user'), $user->username), 'success');
-
-            // Redirect.
-            redirect( $this->agent->referrer(), 'refresh' );
         } else {
             // Create a message.
             $this->messageci->set( sprintf( lang('error_delete_user'), $user->username), 'error');
-
-            // Redirect.
-            redirect( $this->agent->referrer() );
         }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh' );
     }
 
     /**

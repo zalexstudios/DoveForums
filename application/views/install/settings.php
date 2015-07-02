@@ -76,11 +76,19 @@
 
                     </div>
 
-                    <div class="form-group <?php if(form_error('last_name')){echo 'has-error';} ?>">
+                    <div class="form-group <?php if(form_error('recaptcha_site_key')){echo 'has-error';} ?>">
 
-                        <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your last name.">
-                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Example: Doe</small></p>
+                        <label for="recaptcha_site_key">Recaptcha Site Key</label>
+                        <input type="text" class="form-control" id="recaptcha_site_key" name="recaptcha_site_key" placeholder="Enter your recaptcha site key.">
+                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Enter a recaptcha site key, you can create one <a href="https://www.google.com/recaptcha/admin" target="_blank">Here</a></small></p>
+
+                    </div>
+
+                    <div class="form-group <?php if(form_error('recaptcha_lang')){echo 'has-error';} ?>">
+
+                        <label for="recaptcha_lang">Recaptcha Language</label>
+                        <input type="text" class="form-control" id="recaptcha_lang" name="recaptcha_lang" placeholder="Enter your recaptcha language.">
+                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Enter a recaptcha language, you can check them <a href="https://developers.google.com/recaptcha/docs/language" target="_blank">Here</a></small></p>
 
                     </div>
 
@@ -117,6 +125,22 @@
                         <label for="site_language">Site Language</label>
                         <?php echo $site_language; ?>
                         <p class="help-block"><small><i class="fa fa-question-circle"></i> Select the sites default language.</small></p>
+
+                    </div>
+
+                    <div class="form-group <?php if(form_error('last_name')){echo 'has-error';} ?>">
+
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your last name.">
+                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Example: Doe</small></p>
+
+                    </div>
+
+                    <div class="form-group <?php if(form_error('recaptcha_secret_key')){echo 'has-error';} ?>">
+
+                        <label for="recaptcha_secret_key">Recaptcha Secret Key</label>
+                        <input type="text" class="form-control" id="recaptcha_secret_key" name="recaptcha_secret_key" placeholder="Enter your recaptcha secret key..">
+                        <p class="help-block"><small><i class="fa fa-question-circle"></i> Enter a recaptcha secret key, you can create one <a href="https://www.google.com/recaptcha/admin" target="_blank">Here</a></small></p>
 
                     </div>
 

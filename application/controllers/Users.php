@@ -49,6 +49,12 @@ class Users extends Front_Controller {
                 'rules' => 'required|valid_email',
                 'label' => 'lang:rules_confirm_email',
             ),
+            //5
+            array(
+                'field' => 'g-recaptcha-response',
+                'rules' => 'required',
+                'label' => 'lang:rules_captcha',
+            ),
         ),
         'change_password' => array(
             //0
@@ -255,6 +261,7 @@ class Users extends Front_Controller {
                 'confirm_password_field' => form_input( $this->form_fields['register'][2], set_value( $this->form_fields['register'][2]['name'], $this->input->post('confirm_password') ) ),
                 'email_field' => form_input( $this->form_fields['register'][3], set_value( $this->form_fields['register'][3]['name'], $this->input->post('email') ) ),
                 'confirm_email_field' => form_input( $this->form_fields['register'][4], set_value( $this->form_fields['register'][4]['name'], $this->input->post('confirm_email') ) ),
+                'recaptcha_field' => $this->recaptcha->render(),
                 // Labels.
                 'username_label' => form_label( lang('lbl_username'), $this->form_fields['register'][0]['id']),
                 'password_label' => form_label( lang('lbl_password'), $this->form_fields['register'][1]['id']),
@@ -276,29 +283,37 @@ class Users extends Front_Controller {
         }
         else
         {
-            // The form has been submitted, sanitize the data.
-            $username = strip_tags( $this->security->xss_clean( $this->input->post('username') ) );
-            $password = strip_tags( $this->security->xss_clean( $this->input->post('password') ) );
-            $email = strip_tags( $this->security->xss_clean( $this->input->post('email') ) );
+            // Catch the user's answer
+            $captcha_answer = $this->input->post('g-recaptcha-response');
 
-            // Perform the registration.
-            $register = $this->ion_auth->register($username, $password, $email);
+            // Verify user's answer
+            $response = $this->recaptcha->verifyResponse($captcha_answer);
 
-            if($register)
+            if($response['success'])
             {
-                // Create a message.
-                $this->messageci->set( $this->ion_auth->messages(), 'success' );
+                // The form has been submitted, sanitize the data.
+                $username = strip_tags( $this->security->xss_clean( $this->input->post('username') ) );
+                $password = strip_tags( $this->security->xss_clean( $this->input->post('password') ) );
+                $email = strip_tags( $this->security->xss_clean( $this->input->post('email') ) );
 
-                // Redirect.
-                redirect( site_url('forums') );
-            } else {
+                // Perform the registration.
+                $register = $this->ion_auth->register($username, $password, $email);
 
-                // Create a message.
-                $this->messageci->set( $this->ion_auth->errors(), 'error' );
-
-                // Redirect.
-                redirect( site_url('forums') );
+                if($register)
+                {
+                    // Create success message.
+                    $this->messageci->set( $this->ion_auth->messages(), 'success' );
+                } else {
+                    // Create error message.
+                    $this->messageci->set( $this->ion_auth->errors(), 'error' );
+                }
+            } else
+            {
+                $this->messageci->set( lang('error_captcha'), 'error' );
             }
+
+            // Redirect.
+            redirect( site_url('users/login') );
         }
     }
 

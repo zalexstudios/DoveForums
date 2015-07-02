@@ -30,7 +30,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('theme_m', 'themes');
 
         // Load libraries.
-        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings'));
+        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha'));
 
         // See if a user is logged in, if so set their language preference.
         if ($this->ion_auth->logged_in() === TRUE)

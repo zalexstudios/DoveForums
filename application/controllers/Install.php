@@ -193,6 +193,9 @@ class Install extends CI_Controller {
         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('site_language', 'Site Language', 'required');
+        $this->form_validation->set_rules('recaptcha_site_key', 'Recaptcha Site Key', 'required');
+        $this->form_validation->set_rules('recaptcha_secret_key', 'Recaptcha Secret Key', 'required');
+        $this->form_validation->set_rules('recaptcha_lang', 'Recaptcha Language', 'required');
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -250,6 +253,9 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('site_keywords', 'key, words, here', 'site', 'yes');
                 $this->settings->add_setting('site_description', 'Enter a site description here.', 'site', 'yes');
                 $this->settings->add_setting('site_language', $this->input->post('site_language'), 'site', 'yes');
+                $this->settings->add_setting('recaptcha_site_key', $this->input->post('recaptcha_site_key'), 'site', 'yes');
+                $this->settings->add_setting('recaptcha_secret_key', $this->input->post('recaptcha_secret_key'), 'site', 'yes');
+                $this->settings->add_setting('recaptcha_lang', $this->input->post('recaptcha_lang'), 'site', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

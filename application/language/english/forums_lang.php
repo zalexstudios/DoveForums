@@ -329,6 +329,7 @@ $lang['error_activate_theme'] = 'There was a problem activating the theme <stron
 $lang['error_sticky_discussion'] = 'There was a problem making the discussion <strong>`%s`</strong> sticky.';
 $lang['error_close_discussion'] = 'There was a problem closing the discussion <strong>`%s`</strong>.';
 $lang['error_unstick_discussion'] = 'There was a problem unsticking the discussion <strong>`%s`</strong>.';
+$lang['error_captcha'] = 'There was a problem with the Recaptcha, please try again!';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
@@ -355,6 +356,7 @@ $lang['rules_site_email'] = 'Site Email';
 $lang['rules_site_keywords'] = 'Site Keywords';
 $lang['rules_site_description'] = 'Site Description';
 $lang['rules_points'] = 'Points';
+$lang['rules_captcha'] = 'Captcha';
 
 // Table Headers
 $lang['tbl_username'] = 'Username';

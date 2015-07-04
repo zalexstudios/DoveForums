@@ -385,6 +385,7 @@ class Install_M extends CI_Model {
               `recipient_username` varchar(250) DEFAULT NULL,
               `giver_user_id` int(10) NOT NULL DEFAULT '0',
               `giver_username` varchar(250) DEFAULT NULL,
+              `given` int(10) DEFAULT NULL,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";

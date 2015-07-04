@@ -514,6 +514,7 @@ class Users extends Front_Controller {
             'recipient_username' => $recipient->username,
             'giver_user_id' => $giver->id,
             'giver_username' => $giver->username,
+            'given' => now(),
         );
 
         $insert = $this->thumbs->insert($data);

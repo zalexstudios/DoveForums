@@ -29,6 +29,15 @@ class Categories extends Front_Controller {
             // Loop through the results.
             foreach( $discussions as $row )
             {
+                // Get the user who created the discussion.
+                $user = $this->users->get_by('username', $row->poster);
+
+                // Build the users avatar.
+                $data['avatar'] = array(
+                    'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                    'title' => sprintf(lang('txt_profile'), $user->username),
+                );
+
                 // Get the category from the database.
                 $cat = $this->categories->get_by('id', $row->category_id);
 
@@ -39,8 +48,9 @@ class Categories extends Front_Controller {
                     'last_comment' => unix_to_human($row->last_comment),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id.''), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->id), $cat->name),
-                    'is_sticky' => ($row->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
-                    'is_closed' => ($row->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
+                    'avatar' => anchor( site_url('users/profile/'.$user->id), img( element('avatar', $data) )),
+                    'sticky' => ($row->sticky == 1 ? '<span class="label label-success"><i class="fa fa-thumb-tack"></i></span>&nbsp;' : ''),
+                    'closed' => ($row->closed == 1 ? '<span class="label label-danger"><i class="fa fa-lock"></i></span>&nbsp;' : ''),
                 );
             }
 
@@ -87,6 +97,15 @@ class Categories extends Front_Controller {
         {
             foreach($discussions as $row)
             {
+                // Get the user who created the discussion.
+                $user = $this->users->get_by('username', $row->poster);
+
+                // Build the users avatar.
+                $data['avatar'] = array(
+                    'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                    'title' => sprintf(lang('txt_profile'), $user->username),
+                );
+
                 $data['discussions'][] = array(
                     'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
                     'replies' => $row->replies,
@@ -94,8 +113,9 @@ class Categories extends Front_Controller {
                     'last_comment' => unix_to_human($row->last_comment),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
-                    'is_sticky' => ($row->sticky == 1 ? '<i class="fa fa-thumb-tack"></i>&nbsp;' : ''),
-                    'is_closed' => ($row->closed == 1 ? '<i class="fa fa-lock"></i>&nbsp;' : ''),
+                    'avatar' => anchor( site_url('users/profile/'.$user->id), img( element('avatar', $data) )),
+                    'sticky' => ($row->sticky == 1 ? '<span class="label label-success"><i class="fa fa-thumb-tack"></i></span>&nbsp;' : ''),
+                    'closed' => ($row->closed == 1 ? '<span class="label label-danger"><i class="fa fa-lock"></i></span>&nbsp;' : ''),
                 );
             }
 

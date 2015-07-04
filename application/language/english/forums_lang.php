@@ -158,6 +158,7 @@ $lang['txt_total_comments'] = 'Total Comments:';
 $lang['txt_personal'] = 'Personal';
 $lang['txt_sticky'] = 'Sticky';
 $lang['txt_edited'] = 'Edited';
+$lang['txt_profile'] = '%s`s Profile';
 
 // Labels
 $lang['lbl_username'] = 'Username:';

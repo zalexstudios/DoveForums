@@ -87,6 +87,9 @@
 
         </div>
 
+        <!-- Check the user is logged in -->
+        <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
+
         <div class="panel-footer">
 
             <div class="btn-toolbar">
@@ -98,9 +101,6 @@
 
                 </div>
 
-                <!-- Check the user is logged in -->
-                <?php if ($this->ion_auth->logged_in() === TRUE ) { ?>
-
                 <div class="btn-group pull-right">
 
                     {btn_delete_comment}
@@ -109,11 +109,11 @@
 
                 </div>
 
-                <?php } ?>
-
             </div>
 
         </div>
+
+        <?php } ?>
 
     </div>
 

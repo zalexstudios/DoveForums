@@ -171,3 +171,23 @@
 </div>
 
 <?php } ?>
+
+<?php if($tbl_thumbs) { ?>
+
+<div class="panel panel-success">
+
+    <div class="panel-heading">
+
+        <h3 class="panel-title">Received Thumbs</h3>
+
+    </div>
+
+    <div class="panel-body">
+
+        {tbl_thumbs}
+
+    </div>
+
+</div>
+
+<?php } ?>

@@ -385,6 +385,10 @@ $lang['tbl_key'] = 'Permission Key';
 $lang['tbl_category'] = 'Category';
 $lang['tbl_status'] = 'Status';
 $lang['tbl_author'] = 'Author';
+$lang['tbl_in_discussion'] = 'In Discussion';
+$lang['tbl_given_by'] = 'Given By';
+$lang['tbl_date'] = 'Date';
+$lang['tbl_for_comment'] = 'For Comment';
 
 // Tool Tips
 $lang['tip_report_user'] = 'Report this user to a moderator.';

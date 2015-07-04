@@ -982,6 +982,50 @@ class Users extends Front_Controller {
             }
         }
 
+        // Get the users thumbs.
+        $thumbs = $this->thumbs->get_many_by('recipient_user_id', $user_id);
+
+        if(!empty($thumbs))
+        {
+            // Set the table template.
+            $data['tmpl'] = array (
+                'table_open' => '<table class="table table-hover">',
+            );
+
+            $this->table->set_template(element('tmpl', $data));
+
+            // Set the table headings.
+            $this->table->set_heading(
+                '',
+                lang('tbl_in_discussion'),
+                lang('tbl_given_by'),
+                lang('tbl_date'),
+                lang('tbl_for_comment')
+            );
+
+            foreach($thumbs as $thumb)
+            {
+                // Get the discussion.
+                $discussion = $this->discussions->get_by('id', $thumb->discussion_id);
+
+                // Get the givers user details.
+                $user = $this->ion_auth->user($thumb->giver_user_id)->row();
+
+                // Build the givers avatar.
+                $data['avatar'] = array(
+                    'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), 20, $this->config->item('gravatar_default_image') ),
+                );
+
+                $this->table->add_row(
+                    img(element('avatar', $data)),
+                    anchor( site_url('discussions/view/'.$thumb->discussion_id), $discussion->subject),
+                    anchor( site_url('users/profile/'.$thumb->giver_user_id), ucwords($thumb->giver_username)),
+                    unix_to_human($thumb->given),
+                    anchor( site_url('discussions/view/'.$thumb->discussion_id.'/#'.$thumb->comment_id), 'View')
+                );
+            }
+        }
+
         // Get the user from the database.
         if(!$user_id)
         {
@@ -1019,6 +1063,7 @@ class Users extends Front_Controller {
             'total_comments' => $this->comments->count_by('poster_id', $user->id),
             // Achievements.
             'achievements' => element( 'achievements', $data ),
+            'tbl_thumbs' => $this->table->generate(),
             'has_achievements' =>  (!empty($achievements)) ? 1 : 0,
             // Buttons.
             'btn_send_pm' => anchor( site_url('messages/send/'.$user->id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-sm', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),

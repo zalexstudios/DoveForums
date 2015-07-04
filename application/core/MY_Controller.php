@@ -64,6 +64,20 @@ class MY_Controller extends CI_Controller{
         // Override ion_auth default language loading.
         $this->lang->load('ion_auth', $language);
     }
+
+    public function replace_links($str, $nofollow)
+    {
+        if(strpos($str, "rel")){
+            $pattern = "/rel=([\"'])([^\\1]+?)\\1/";
+            $replace = "rel=\\1\\2 $nofollow\\1";
+        }
+        else{
+            $pattern = "/<a /";
+            $replace = "<a rel=\"$nofollow\" ";
+        }
+
+        return preg_replace($pattern, $replace, $str);
+    }
 }
 
 class Front_Controller extends MY_Controller{

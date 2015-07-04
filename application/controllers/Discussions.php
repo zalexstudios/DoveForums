@@ -266,7 +266,7 @@ class Discussions extends Front_Controller {
                 'poster' => $this->session->userdata('username'),
                 'poster_id' => $this->session->userdata('user_id'),
                 'poster_ip' => $this->input->ip_address(),
-                'message' => $this->input->post('message'),
+                'message' => $this->replace_links($this->input->post('message'), 'nofollow'),
                 'posted' => now(),
             );
 
@@ -429,7 +429,7 @@ class Discussions extends Front_Controller {
                 'poster' => $this->session->userdata('username'),
                 'poster_id' => $this->session->userdata('user_id'),
                 'poster_ip' => $this->input->ip_address(),
-                'message' => $this->input->post('message'),
+                'message' => $this->replace_links($this->input->post('message'), 'nofollow'),
                 'discussion_id' => $this->_discussion_id,
                 'posted' => now(),
             );
@@ -605,7 +605,7 @@ class Discussions extends Front_Controller {
                 'poster' => $this->session->userdata('username'),
                 'poster_id' => $this->session->userdata('user_id'),
                 'poster_ip' => $this->input->ip_address(),
-                'message' => $this->input->post('message'),
+                'message' => $this->replace_links($this->input->post('message'), 'nofollow'),
                 'posted' => now(),
             );
 

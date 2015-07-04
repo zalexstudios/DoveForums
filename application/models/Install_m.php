@@ -375,6 +375,25 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create the thumbs table.
+        $sql = "
+            CREATE TABLE IF NOT EXISTS `thumbs` (
+              `id` int(10) NOT NULL AUTO_INCREMENT,
+              `discussion_id` int(10) NOT NULL DEFAULT '0',
+              `comment_id` int(10) NOT NULL DEFAULT '0',
+              `recipient_user_id` int(10) NOT NULL DEFAULT '0',
+              `recipient_username` varchar(250) DEFAULT NULL,
+              `giver_user_id` int(10) NOT NULL DEFAULT '0',
+              `giver_username` varchar(250) DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default themes.
         $sql = "
             INSERT INTO `themes` (`id`, `name`, `description`, `url`, `author`, `author_url`, `thumb`, `status`)

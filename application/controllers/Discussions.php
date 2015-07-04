@@ -197,6 +197,9 @@ class Discussions extends Front_Controller {
                         'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
                     );
 
+                    // Check the giver has not already given a thumbs up to this user for this comment.
+                    $check = $this->thumbs->get_by(array('discussion_id' => $discussion_id, 'comment_id' => $row->id, 'recipient_user_id' => $row->poster_id, 'giver_user_id' => $this->session->userdata('user_id')));
+
                     $data['comments'][$row->id] = array(
                         'comment_id' => $row->id,
                         'poster' => anchor( site_url('users/profile/'.$row->poster_id.''), ucwords($row->poster)),
@@ -206,7 +209,7 @@ class Discussions extends Front_Controller {
                         'posted' => unix_to_human($row->posted),
                         'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_comment'))),
                         'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
-                        'btn_thumbs_up' => anchor( site_url('users/thumbs_up/'.$row->poster_id.''), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up') )),
+                        'btn_thumbs_up' => (!$check ? anchor( site_url('users/thumbs_up/'.$row->poster_id.'/'.$row->discussion_id.'/'.$row->id), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up') )) : anchor('#', lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up'), 'disabled' => 'disabled' ))),
                         'btn_edit_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/edit_comment/'.$row->id.''), lang('btn_edit'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_edit_comment')) ) : NULL,
                         'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_delete_comment')) ) : NULL,
                         'edited' => (!empty($row->edited) ? '<hr /><p class="text-muted"><small>'.lang('txt_edited').'&nbsp;'.unix_to_human($row->edited).'&nbsp;'.lang('txt_by').'&nbsp;'.$row->edited_by.'</small></p>' : ''),

@@ -28,6 +28,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('language_m', 'language');
         $this->load->model('report_m', 'reports');
         $this->load->model('theme_m', 'themes');
+        $this->load->model('thumb_m', 'thumbs');
 
         // Load libraries.
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha'));

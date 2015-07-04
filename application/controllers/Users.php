@@ -468,12 +468,76 @@ class Users extends Front_Controller {
      * Awards the user a point for been helpful.
      *
      * @param       integer     $user_id
+     * @param       integer     $discussion_id
+     * @param       integer     $comment_id
      * @author      Chris Baines
      * @since       0.0.1
      */
-    public function thumbs_up ($user_id)
+    public function thumbs_up ($user_id, $discussion_id, $comment_id)
     {
-        /* TODO */
+        // Get the recipient.
+        $recipient = $this->ion_auth->user($user_id)->row();
+
+        // Get the giver.
+        $giver = $this->ion_auth->user($this->session->userdata('user_id'))->row();
+
+        // Check that the user is not giving themselves a thumbs up.
+        if($recipient->id == $giver->id)
+        {
+            // Create a error message.
+            $this->messageci->set( lang('error_thumb_self'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
+        // Check the giver has not already given a thumbs up to this user for this comment.
+        $check = $this->thumbs->get_by(array('discussion_id' => $discussion_id, 'comment_id' => $comment_id, 'recipient_user_id' => $recipient->id, 'giver_user_id' => $giver->id));
+
+        if($check)
+        {
+            // Create a error message.
+            $this->messageci->set( lang('error_already_thumbed'), 'error');
+
+            // Redirect.
+            redirect( $this->agent->referrer(), 'refresh');
+        }
+
+        // Get the recipients points.
+        $points = $recipient->points;
+
+        // Build the data.
+        $data = array(
+            'discussion_id' => $discussion_id,
+            'comment_id' => $comment_id,
+            'recipient_user_id' => $recipient->id,
+            'recipient_username' => $recipient->username,
+            'giver_user_id' => $giver->id,
+            'giver_username' => $giver->username,
+        );
+
+        $insert = $this->thumbs->insert($data);
+
+        if($insert)
+        {
+            // Give the user points.
+            $data = array(
+                'points' => $points+5,
+            );
+
+            $this->users->update($recipient->id, $data);
+
+            // Create success message.
+            $this->messageci->set( sprintf(lang('success_thumb_up'), $recipient->username), 'success');
+        }
+        else
+        {
+            // Create a error message.
+            $this->messageci->set( sprintf(lang('error_thumb_up'), $recipient->username), 'error');
+        }
+
+        // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
     }
 
     /**

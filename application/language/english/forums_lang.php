@@ -290,6 +290,7 @@ $lang['success_sticky_discussion'] = 'The discussion <strong>`%s`</strong> is no
 $lang['success_close_discussion'] = 'The discussion <strong>`%s`</strong> is now closed to posting.';
 $lang['success_open_discussion'] = 'The discussion <strong>`%s`</strong> has been opened for posting.';
 $lang['success_unstick_discussion'] = 'The discussion <strong>`%s`</strong> is no longer sticky.';
+$lang['success_thumb_up'] = 'The user <strong>%s</strong> has been given a thumbs up.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -331,6 +332,9 @@ $lang['error_sticky_discussion'] = 'There was a problem making the discussion <s
 $lang['error_close_discussion'] = 'There was a problem closing the discussion <strong>`%s`</strong>.';
 $lang['error_unstick_discussion'] = 'There was a problem unsticking the discussion <strong>`%s`</strong>.';
 $lang['error_captcha'] = 'There was a problem with the Recaptcha, please try again!';
+$lang['error_thumb_up'] = 'There was a problem giving the user <strong>%s</strong> a thumbs up.';
+$lang['error_thumb_self'] = 'You can not give yourself a thumbs up!.';
+$lang['error_already_thumbed'] = 'You have already given this user a thumbs up for this comment!.';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';

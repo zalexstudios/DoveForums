@@ -47,7 +47,7 @@ class Forums extends Front_Controller
 
 
                 $data['discussions'][] = array(
-                    'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
+                    'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-lightbulb-o"></i>&nbsp;<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'replies' => $row->replies,
                     'views' => $row->views,
                     'last_comment' => unix_to_human($row->last_comment),

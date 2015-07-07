@@ -157,6 +157,9 @@ class Discussions extends Front_Controller {
             redirect( $this->agent->referrer(), 'refresh');
         }
 
+        // Mark the discussion as read.
+        $this->unread->mark_read($discussion_id);
+
         // Set the form validation rules.
         $this->form_validation->set_rules($this->validation_rules['new_comment']);
 
@@ -706,6 +709,7 @@ class Discussions extends Front_Controller {
             // Redirect.
             redirect( $this->agent->referrer(), 'refresh');
         }
+
         // Check a discussion ID was supplied.
         if ( empty($discussion_id) || $discussion_id === NULL )
         {
@@ -928,6 +932,22 @@ class Discussions extends Front_Controller {
         }
 
         // Redirect.
+        redirect( $this->agent->referrer(), 'refresh');
+    }
+
+    public function mark_all()
+    {
+        $mark = $this->unread->mark_all();
+
+        if($mark)
+        {
+            // Create success message.
+            $this->messageci->set( lang('success_mark_all'), 'success');
+        } else {
+            // Create error message.
+            $this->messageci->set( lang('error_mark_all'), 'error');
+        }
+
         redirect( $this->agent->referrer(), 'refresh');
     }
 

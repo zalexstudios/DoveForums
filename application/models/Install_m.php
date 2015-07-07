@@ -395,6 +395,19 @@ class Install_M extends CI_Model {
             return FALSE;
         }
 
+        // Create unread table.
+        $sql = "
+            CREATE TABLE `unread` (
+              `discussion_id` int(10) DEFAULT NULL,
+              `user_id` int(10) DEFAULT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ";
+
+        if(!$this->db->query($sql))
+        {
+            return FALSE;
+        }
+
         // Add default themes.
         $sql = "
             INSERT INTO `themes` (`id`, `name`, `description`, `url`, `author`, `author_url`, `thumb`, `status`)

@@ -29,6 +29,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('report_m', 'reports');
         $this->load->model('theme_m', 'themes');
         $this->load->model('thumb_m', 'thumbs');
+        $this->load->model('unread_m', 'unread');
 
         // Load libraries.
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha'));
@@ -85,6 +86,7 @@ class Front_Controller extends MY_Controller{
     private $theme;
     private $site_name;
     public $tables = array();
+    public $_unread = array();
 
     public function __construct()
     {
@@ -93,6 +95,17 @@ class Front_Controller extends MY_Controller{
         $this->theme = $this->themes->get_by('name', $this->config->item('theme'));
         $this->site_name = $this->config->item('site_name');
         $this->tables = $this->config->item('tables');
+
+        if($this->ion_auth->logged_in() == TRUE)
+        {
+            $unread = $this->unread->get_unread();
+
+            if(!empty($unread))
+            {
+                $this->_unread = $unread;
+            }
+        }
+
     }
 
     /**

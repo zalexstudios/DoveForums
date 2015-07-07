@@ -87,6 +87,7 @@ $lang['lnk_sticky'] = '<i class="fa fa-thumb-tack"></i> Sticky';
 $lang['lnk_close'] = '<i class="fa fa-lock"></i> Close';
 $lang['lnk_unstick'] = '<i class="fa fa-thumb-tack"></i> Unstick';
 $lang['lnk_open'] = '<i class="fa fa-unlock"></i> Open';
+$lang['lnk_mark_all'] = '<i class="fa fa-check"></i> Mark All As Read';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -291,6 +292,7 @@ $lang['success_close_discussion'] = 'The discussion <strong>`%s`</strong> is now
 $lang['success_open_discussion'] = 'The discussion <strong>`%s`</strong> has been opened for posting.';
 $lang['success_unstick_discussion'] = 'The discussion <strong>`%s`</strong> is no longer sticky.';
 $lang['success_thumb_up'] = 'The user <strong>%s</strong> has been given a thumbs up.';
+$lang['success_mark_all'] = 'All discussions marked as read';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -335,6 +337,7 @@ $lang['error_captcha'] = 'There was a problem with the Recaptcha, please try aga
 $lang['error_thumb_up'] = 'There was a problem giving the user <strong>%s</strong> a thumbs up.';
 $lang['error_thumb_self'] = 'You can not give yourself a thumbs up!.';
 $lang['error_already_thumbed'] = 'You have already given this user a thumbs up for this comment!.';
+$lang['error_mark_all'] = 'There was a problem marking all discussions as read!.';
 
 // Achievements.
 $lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';

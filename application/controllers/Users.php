@@ -387,6 +387,29 @@ class Users extends Front_Controller {
                 // Update the users visit count.
                 $user = $this->ion_auth->user()->row();
 
+                // Get all new discussion since the users last login.
+                $last_login = $this->session->userdata('old_last_login');
+
+                if(!empty($last_login))
+                {
+                    $discussions = $this->discussions->get_many_by('last_comment > '.$last_login.'');
+                } else {
+                    $discussions = $this->discussions->get_many_by('last_comment > '.(time() - 30 * 24 * 3600).'');
+                }
+
+                if(!empty($discussions))
+                {
+                    foreach($discussions as $row)
+                    {
+                        $data['unread'][] = array(
+                            'discussion_id' => $row->id,
+                            'user_id' => $user->id,
+                        );
+                    }
+
+                    $this->unread->insert_many(element('unread', $data));
+                }
+
                 $this->users->update($user->id, array('visit_count' => ++$user->visit_count));
 
                 // Create a message.
@@ -416,6 +439,9 @@ class Users extends Front_Controller {
     public function logout()
     {
         $this->ion_auth->logout();
+
+        // Mark all the discussions as read.
+        $this->discussions->mark_all();
 
         // Create a message.
         $this->messageci->set( $this->ion_auth->messages(), 'success' );

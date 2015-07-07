@@ -38,11 +38,25 @@ class Categories extends Front_Controller {
                     'title' => sprintf(lang('txt_profile'), $user->username),
                 );
 
+                if(!empty($this->_unread))
+                {
+                    if(in_array($row->id, $this->_unread))
+                    {
+                        $unread = true;
+                    }
+                    else
+                    {
+                        $unread = false;
+                    }
+                } else {
+                    $unread = false;
+                }
+
                 // Get the category from the database.
                 $cat = $this->categories->get_by('id', $row->category_id);
 
                 $data['discussions'][] = array(
-                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
+                    'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'views' => $row->views,
                     'replies' => $row->replies,
                     'last_comment' => unix_to_human($row->last_comment),
@@ -68,6 +82,8 @@ class Categories extends Front_Controller {
         $data['page'] = array(
             // Buttons
             'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
+            // Links
+            'lnk_mark_all' => anchor( site_url('discussions/mark_all'), lang('lnk_mark_all')),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,
@@ -106,8 +122,22 @@ class Categories extends Front_Controller {
                     'title' => sprintf(lang('txt_profile'), $user->username),
                 );
 
+                if(!empty($this->_unread))
+                {
+                    if(in_array($row->id, $this->_unread))
+                    {
+                        $unread = true;
+                    }
+                    else
+                    {
+                        $unread = false;
+                    }
+                } else {
+                    $unread = false;
+                }
+
                 $data['discussions'][] = array(
-                    'subject' => anchor( site_url('discussions/view/'.$row->id), $row->subject),
+                    'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'replies' => $row->replies,
                     'views' => $row->views,
                     'last_comment' => unix_to_human($row->last_comment),
@@ -132,6 +162,8 @@ class Categories extends Front_Controller {
         $data['page'] = array(
             // Buttons
             'btn_new_discussion' => anchor( site_url('discussions/new_discussion'), lang('btn_new_discussion'), array( 'class' => 'btn btn-default btn-xs' )),
+            // Links
+            'lnk_mark_all' => anchor( site_url('discussions/mark_all'), lang('lnk_mark_all')),
 			// Other
             'discussions' => element('discussions', $data),
             'has_discussions' => (!empty($discussions)) ? 1 : 0,

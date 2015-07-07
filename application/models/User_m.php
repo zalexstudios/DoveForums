@@ -21,4 +21,9 @@ class User_m extends MY_Model {
 
     public $_table = 'users';
     public $primary_key = 'id';
+
+    public function update_last_activity($user_id)
+    {
+        return $this->update_by(array('id' => $user_id), array('last_activity' => now()));
+    }
 }

@@ -194,6 +194,7 @@ class Install_M extends CI_Model {
               `report_date` datetime NOT NULL,
               `report_user_id` int(11) NOT NULL,
               `points` int(11) DEFAULT 0,
+              `last_activity` int(10) DEFAULT NULL,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";
@@ -453,9 +454,9 @@ class Install_M extends CI_Model {
 
         // Add default guest user.
         $sql = "
-            INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`, `language`, `reported`, `report_reason`, `report_date`, `report_user_id`, `points`)
+            INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `visit_count`, `comments`, `discussions`, `language`, `reported`, `report_reason`, `report_date`, `report_user_id`, `points`, `last_activity`)
             VALUES
-                (1,'::0','Guest','',NULL,'',NULL,NULL,NULL,NULL,1433427728,NULL,0,'Guest','User',NULL,NULL,1,NULL,NULL,'english',0,'','0000-00-00 00:00:00',0, 0);
+                (1,'::0','Guest','',NULL,'',NULL,NULL,NULL,NULL,1433427728,NULL,0,'Guest','User',NULL,NULL,1,NULL,NULL,'english',0,'','0000-00-00 00:00:00',0, 0, NULL);
 	    ";
 
         if(!$this->db->query($sql))

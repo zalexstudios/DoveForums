@@ -217,6 +217,7 @@ class Discussions extends Front_Controller {
                         'btn_delete_comment' => ($row->poster_id == $this->session->userdata('user_id') || $this->ion_auth->is_admin()) ? anchor( site_url( 'comments/delete_comment/'.$row->id.''), lang('btn_delete'), array( 'class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_delete_comment')) ) : NULL,
                         'edited' => (!empty($row->edited) ? '<hr /><p class="text-muted"><small>'.lang('txt_edited').'&nbsp;'.unix_to_human($row->edited).'&nbsp;'.lang('txt_by').'&nbsp;'.$row->edited_by.'</small></p>' : ''),
                         'given' => ($check ? '<span class="small text-muted">Thumbed at '.unix_to_human($check->given).'</span>' : ''),
+                        'online' => ($this->users->user_online($user->id) == TRUE ? '<i class="fa fa-circle online" title="'.lang('txt_online').'"></i>' : '<i class="fa fa-circle offline" title="'.lang('txt_offline').'"></i>'),
                     );
                 }
 

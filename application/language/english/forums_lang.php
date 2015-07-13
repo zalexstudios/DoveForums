@@ -160,6 +160,8 @@ $lang['txt_personal'] = 'Personal';
 $lang['txt_sticky'] = 'Sticky';
 $lang['txt_edited'] = 'Edited';
 $lang['txt_profile'] = '%s`s Profile';
+$lang['txt_online'] = 'Online';
+$lang['txt_offline'] = 'Offline';
 
 // Labels
 $lang['lbl_username'] = 'Username:';

@@ -14,18 +14,36 @@ class Forums extends Front_Controller
         // Get the discussions from the database.
         $discussions = $this->discussions->order_by(array('sticky' => 'DESC', 'posted' => 'DESC'))->get_all();
 
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            '',
+            'Discussion',
+            'Users',
+            'Replies',
+            'Views',
+            'Activity'
+        );
+
         // Loop through the discussions.
         if( !empty($discussions) )
         {
             foreach($discussions as $row)
             {
                 // Get the user who created the discussion.
-                $user = $this->users->get_by('username', $row->poster);
+                $poster = $this->users->get_by('username', $row->poster);
+                $last_poster = $this->users->get_by('username', $row->last_poster);
 
-                // Build the users avatar.
+                // Build the posters avatar.
                 $data['avatar'] = array(
-                    'src' => $this->gravatar->get_gravatar($user->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
-                    'title' => sprintf(lang('txt_profile'), $user->username),
+                    'src' => $this->gravatar->get_gravatar($poster->email, $this->config->item('gravatar_rating'), $this->config->item('gravatar_size'), $this->config->item('gravatar_default_image') ),
+                    'title' => ''.$poster->username.' - Discussion Creator',
                 );
 
                 // Get the category associated with the discussion.
@@ -45,7 +63,6 @@ class Forums extends Front_Controller
                     $unread = false;
                 }
 
-
                 $data['discussions'][] = array(
                     'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-lightbulb-o"></i>&nbsp;<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'replies' => $row->replies,
@@ -53,7 +70,8 @@ class Forums extends Front_Controller
                     'last_comment' => unix_to_human($row->last_comment),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
-                    'avatar' => anchor( site_url('users/profile/'.$user->id), img( element('avatar', $data) )),
+                    'avatar' => anchor( site_url('users/profile/'.$poster->id), img( element('avatar', $data) )),
+                    'avatar_last_poster' => anchor( site_url('users/profile/'.$last_poster->id), img( element('avatar_last_poster', $data))),
                     'sticky' => ($row->sticky == 1 ? '<span class="label label-success"><i class="fa fa-thumb-tack"></i></span>&nbsp;' : ''),
                     'closed' => ($row->closed == 1 ? '<span class="label label-danger"><i class="fa fa-lock"></i></span>&nbsp;' : ''),
                     'unread' => (in_array($row->id, $this->_unread) ? 'unread' : ''),

@@ -23,3 +23,11 @@ hr {
 .dashed {
     border-style: dashed;
 }
+
+.online {
+    color: limegreen;
+}
+
+.offline {
+    color: red;
+}

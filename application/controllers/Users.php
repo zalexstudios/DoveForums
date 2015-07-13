@@ -1011,23 +1011,24 @@ class Users extends Front_Controller {
         // Get the users thumbs.
         $thumbs = $this->thumbs->get_many_by('recipient_user_id', $user_id);
 
+        // Set the table template.
+        $data['tmpl'] = array (
+            'table_open' => '<table class="table table-hover">',
+        );
+
+        $this->table->set_template(element('tmpl', $data));
+
+        // Set the table headings.
+        $this->table->set_heading(
+            '',
+            lang('tbl_in_discussion'),
+            lang('tbl_given_by'),
+            lang('tbl_date'),
+            lang('tbl_for_comment')
+        );
+
         if(!empty($thumbs))
         {
-            // Set the table template.
-            $data['tmpl'] = array (
-                'table_open' => '<table class="table table-hover">',
-            );
-
-            $this->table->set_template(element('tmpl', $data));
-
-            // Set the table headings.
-            $this->table->set_heading(
-                '',
-                lang('tbl_in_discussion'),
-                lang('tbl_given_by'),
-                lang('tbl_date'),
-                lang('tbl_for_comment')
-            );
 
             foreach($thumbs as $thumb)
             {
@@ -1087,6 +1088,7 @@ class Users extends Front_Controller {
             'avatar' => img( element('avatar', $data ) ),
             'total_discussions' => $this->discussions->count_by('poster', $user->username),
             'total_comments' => $this->comments->count_by('poster_id', $user->id),
+            'online' => ($this->users->user_online($user->id) == TRUE ? '<i class="fa fa-circle online" title="'.lang('txt_online').'"></i>' : '<i class="fa fa-circle offline" title="'.lang('txt_offline').'"></i>'),
             // Achievements.
             'achievements' => element( 'achievements', $data ),
             'tbl_thumbs' => $this->table->generate(),

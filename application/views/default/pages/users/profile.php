@@ -16,7 +16,7 @@
 
             <div class="col-md-12">
 
-                <p class="text-center"><strong>{username}</strong></p>
+                <p class="text-center">{online}&nbsp;<strong>{username}</strong></p>
 
                     {avatar}
 

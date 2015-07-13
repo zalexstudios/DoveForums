@@ -2,11 +2,7 @@
 
     {breadcrumbs}
 
-<div class="well well-sm">
-
-    <strong>{is_sticky}{is_closed}{discussion_name}</strong>
-
-</div>
+    <h4><strong>{is_sticky}{is_closed}{discussion_name}</strong></h4>
 
 <div class="btn-toolbar pagination-toolbar" role="toolbar">
 
@@ -61,7 +57,7 @@
 
             <div class="media-body">
 
-                <p>{poster}<br><span class="label label-success">{points} Xp</span></p>
+                <p>{online}&nbsp;{poster}<br><span class="label label-success">{points} Xp</span></p>
 
             </div>
 

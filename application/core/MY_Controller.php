@@ -49,6 +49,9 @@ class MY_Controller extends CI_Controller{
             $this->load->library('achievements', $config);
 
             $language = $user->language;
+
+            // Update the users last_activity.
+            $this->users->update_last_activity();
         } else {
 
             $config['group_id'] = 1;
@@ -142,6 +145,7 @@ class Front_Controller extends MY_Controller{
                 ),
             );
         }
+
         // Build the template data array.
         $data = array(
             // Navigation.
@@ -162,10 +166,12 @@ class Front_Controller extends MY_Controller{
             // Sidebar.
             'sidebar' => array(
                 'categories' => element( 'categories', $data ),
+
             ),
             // Footer.
             'footer' => array(
                 'copy_text' => 'Powered By '.anchor( 'http://www.doveforums.com', 'Dove Forums Lite').' &copy; 2011 - 2015 - Version '.$this->version,
+                'online_users' => $this->users->users_online(),
             ),
         );
 

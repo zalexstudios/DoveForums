@@ -209,7 +209,7 @@ class Discussions extends Front_Controller {
                         'message' => $row->message,
                         'avatar' => img( element('avatar', $data) ),
                         'points' => $user->points,
-                        'posted' => unix_to_human($row->posted),
+                        'posted' => timespan($row->posted, time()),
                         'btn_report' => anchor( site_url('comments/report_comment/'.$row->id.''), lang('btn_report'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_report_comment'))),
                         'btn_pm' => anchor( site_url('messages/send/'.$row->poster_id.''), lang('btn_pm'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_send_user_pm'))),
                         'btn_thumbs_up' => (!$check ? anchor( site_url('users/thumbs_up/'.$row->poster_id.'/'.$row->discussion_id.'/'.$row->id), lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up') )) : anchor('#', lang('btn_thumbs_up'), array('class' => 'btn btn-default btn-xs', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => lang('tip_thumbs_up'), 'disabled' => 'disabled' ))),

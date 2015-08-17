@@ -36,8 +36,6 @@
 
         </div>
 
-        <hr class="dashed" />
-
         <div class="row">
 
             <div class="col-md-3">
@@ -54,8 +52,6 @@
 
         </div>
 
-        <hr class="dashed" />
-
         <div class="row">
 
             <div class="col-md-3">
@@ -66,13 +62,11 @@
 
             <div class="col-md-9">
 
-                {joined}
+                {joined} <?php echo lang('txt_ago'); ?>
 
             </div>
 
         </div>
-
-        <hr class="dashed" />
 
         <div class="row">
 
@@ -84,13 +78,11 @@
 
             <div class="col-md-9">
 
-                {last_visit}
+                {last_visit} <?php echo lang('txt_ago'); ?>
 
             </div>
 
         </div>
-
-        <hr class="dashed" />
 
         <div class="row">
 
@@ -107,8 +99,6 @@
             </div>
 
         </div>
-
-        <hr class="dashed" />
 
         <div class="row">
 

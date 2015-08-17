@@ -1080,8 +1080,8 @@ class Users extends Front_Controller {
         $data['page'] = array(
             // User data.
             'username' => $user->username,
-            'joined' => unix_to_human($user->created_on ),
-            'last_visit' => unix_to_human($user->last_login),
+            'joined' => timespan($user->created_on, time()),
+            'last_visit' => timespan($user->last_login, time()),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'points' => $user->points,

@@ -2,12 +2,12 @@
 
 <footer>
 
+    <?php if($this->users->users_online()) { ?>
     <div class="row">
 
         <div class="col-md-12">
 
             <div class="panel panel-default">
-
 
                 <div class="panel-heading">
 
@@ -23,12 +23,13 @@
                     {/online_users}
 
                 </div>
-
+                
             </div>
 
         </div>
 
     </div>
+    <?php } ?>
 
     <p class="text-center text-muted"><small>{copy_text}</small></p>
 

@@ -69,7 +69,7 @@
 
                 <div class="media-body">
 
-                    <p class="text-muted"><small>{posted}</small></p>
+                    <p class="text-muted"><small>{posted}&nbsp;<?= lang('txt_ago'); ?></small></p>
 
                     <hr />
 

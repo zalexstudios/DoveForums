@@ -67,7 +67,7 @@ class Forums extends Front_Controller
                     'subject' => ($unread == TRUE ? anchor( site_url('discussions/view/'.$row->id), '<i class="fa fa-lightbulb-o"></i>&nbsp;<strong>'.$row->subject.'</strong>') : anchor( site_url('discussions/view/'.$row->id), $row->subject)),
                     'replies' => $row->replies,
                     'views' => $row->views,
-                    'last_comment' => unix_to_human($row->last_comment),
+                    'last_comment' => timespan($row->last_comment, time()),
                     'last_poster' => anchor( site_url('users/profile/'.$row->last_poster_id), $row->last_poster),
                     'category' => anchor( site_url('categories/'.$cat->slug.''), $cat->name ),
                     'avatar' => anchor( site_url('users/profile/'.$poster->id), img( element('avatar', $data) )),

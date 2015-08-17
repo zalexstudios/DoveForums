@@ -303,6 +303,21 @@ class Users extends Front_Controller {
                 {
                     // Create success message.
                     $this->messageci->set( $this->ion_auth->messages(), 'success' );
+
+                    // Get the user.
+                    $user = $this->users->get_by(array('id' => $register));
+
+                    // Email the sites admin.
+                    $data['email'] = array(
+                        'username' => $user->username,
+                        'subject' => lang('txt_new_user'),
+                        'user' => anchor( site_url('users/profile/'.$user->id), 'Here'),
+                        'site_author' => $this->config->item('site_author'),
+                        'site_name' => $this->config->item('site_name'),
+                    );
+
+                    $this->send_email($this->config->item('site_email'), 'default/emails/new_user', element('email', $data));
+
                 } else {
                     // Create error message.
                     $this->messageci->set( $this->ion_auth->errors(), 'error' );
@@ -441,7 +456,7 @@ class Users extends Front_Controller {
         $this->ion_auth->logout();
 
         // Mark all the discussions as read.
-        $this->discussions->mark_all();
+        $this->unread->mark_all();
 
         // Create a message.
         $this->messageci->set( $this->ion_auth->messages(), 'success' );

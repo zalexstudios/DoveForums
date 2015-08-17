@@ -498,6 +498,19 @@ class Discussions extends Front_Controller {
                     {
                         // Create a message.
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                        // Email the sites admin.
+                        $data['email'] = array(
+                            'username' => $this->session->userdata('username'),
+                            'discussion' => $discussion->subject,
+                            'reply' => anchor( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'Here'),
+                            'site_name' => $this->config->item('site_name'),
+                            'subject' => lang('txt_new_reply'),
+                        );
+
+                        $user = $this->users->get_by(array('username' => $discussion->poster));
+
+                        $this->send_email($user->email, 'default/emails/new_reply', element('email', $data));
                     }
                 }
                 else

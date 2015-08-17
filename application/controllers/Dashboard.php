@@ -296,6 +296,34 @@ class Dashboard extends Admin_Controller {
                 'type' => 'text',
                 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             ),
+            //4
+            array(
+                'id' => 'smtp_host',
+                'name' => 'smtp_host',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //5
+            array(
+                'id' => 'smtp_port',
+                'name' => 'smtp_port',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //6
+            array(
+                'id' => 'smtp_user',
+                'name' => 'smtp_user',
+                'class' => 'form-control',
+                'type' => 'text',
+            ),
+            //7
+            array(
+                'id' => 'smtp_pass',
+                'name' => 'smtp_pass',
+                'class' => 'form-control',
+                'type' => 'password',
+            )
         ),
         'add_edit_language' => array(
             //0
@@ -1293,6 +1321,19 @@ class Dashboard extends Admin_Controller {
                 '50' => lang('dd_50'),
             );
 
+            // Build the protocol options.
+            $protocol = array(
+                'smtp' => 'smtp',
+                'mail' => 'mail',
+                'sendmail' => 'sendmail',
+            );
+
+            // Build the mailtype options.
+            $mailtype = array(
+                'html' => 'html',
+                'text' => 'text',
+            );
+
             // Build the site language options.
             $language_options = $this->language->dropdown('code', 'language');
 
@@ -1312,6 +1353,13 @@ class Dashboard extends Admin_Controller {
                 'gravatar_size_field' => form_dropdown('gravatar_size', $gravatar_size, $this->settings->get_setting('gravatar_size'), 'class="form-control"'),
                 'discussions_per_page_field' => form_dropdown('discussions_per_page', $per_page, $this->settings->get_setting('discussions_per_page'), 'class="form-control"'),
                 'comments_per_page_field' => form_dropdown('comments_per_page', $per_page, $this->settings->get_setting('comments_per_page'), 'class="form-control"'),
+                'protocol_field' => form_dropdown('protocol', $protocol, $this->settings->get_setting('protocol'), 'class="form-control"'),
+                'mailtype_field' => form_dropdown('mailtype', $mailtype, $this->settings->get_setting('mailtype'), 'class="form-control"'),
+                'smtp_host_field' => form_input($this->form_fields['settings'][4], set_value($this->form_fields['settings'][4]['name'], $this->settings->get_setting('smtp_host'))),
+                'smtp_port_field' => form_input($this->form_fields['settings'][5], set_value($this->form_fields['settings'][5]['name'], $this->settings->get_setting('smtp_port'))),
+                'smtp_user_field' => form_input($this->form_fields['settings'][6], set_value($this->form_fields['settings'][6]['name'], $this->settings->get_setting('smtp_user'))),
+                'smtp_pass_field' => form_input($this->form_fields['settings'][7], set_value($this->form_fields['settings'][7]['name'], $this->settings->get_setting('smtp_pass'))),
+                'notify_new_registration_field' => form_checkbox('notify_new_registration', 1, set_value('notify_new_registration', $this->settings->get_setting('notify_new_registration'))),
                 // Errors.
                 'site_name_error' => form_error($this->form_fields['settings'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 'site_email_error' => form_error($this->form_fields['settings'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
@@ -1328,6 +1376,12 @@ class Dashboard extends Admin_Controller {
                 'gravatar_size_label' => form_label( lang('lbl_gravatar_size'), 'gravatar_size'),
                 'discussions_per_page_label' => form_label( lang('lbl_discussions_per_page'), 'discussions_per_page'),
                 'comments_per_page_label' => form_label( lang('lbl_comments_per_page'), 'comments_per_page'),
+                'protocol_label' => form_label( lang('lbl_protocol'), 'protocol'),
+                'mailtype_label' => form_label( lang('lbl_mailtype'), 'mailtype'),
+                'smtp_host_label' => form_label( lang('lbl_smtp_host'), $this->form_fields['settings'][4]['id']),
+                'smtp_port_label' => form_label( lang('lbl_smtp_port'), $this->form_fields['settings'][5]['id']),
+                'smtp_user_label' => form_label( lang('lbl_smtp_user'), $this->form_fields['settings'][6]['id']),
+                'smtp_pass_label' => form_label( lang('lbl_smtp_pass'), $this->form_fields['settings'][7]['id']),
                 // Buttons.
                 'btn_update_settings' => form_submit('submit', lang('btn_update_settings'), 'class="btn btn-primary btn-sm"'),
                 // Other
@@ -1350,6 +1404,12 @@ class Dashboard extends Admin_Controller {
                 'gravatar_size' => $this->input->post('gravatar_size'),
                 'discussions_per_page' => $this->input->post('discussions_per_page'),
                 'comments_per_page' => $this->input->post('comments_per_page'),
+                'protocol' => $this->input->post('protocol'),
+                'mailtype' => $this->input->post('mailtype'),
+                'smtp_host' => $this->input->post('smtp_host'),
+                'smtp_pass' => $this->input->post('smtp_pass'),
+                'smtp_user' => $this->input->post('smtp_user'),
+                'smtp_port' => $this->input->post('smtp_port'),
             );
 
             foreach($data as $k => $v)

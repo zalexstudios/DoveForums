@@ -242,6 +242,7 @@ class Install extends CI_Controller {
                 // Update the settings in the database.
                 $this->settings->add_setting('site_name', addslashes($this->input->post('site_title')), 'site', 'yes');
                 $this->settings->add_setting('site_email', $this->input->post('admin_email'), 'site', 'yes');
+                $this->settings->add_setting('site_author', '', 'site', 'yes');
                 $this->settings->add_setting('theme', 'yeti', 'site', 'yes');
                 $this->settings->add_setting('admin_theme', 'yeti', 'site', 'yes');
                 $this->settings->add_setting('gravatar_rating', 'x', 'gravatar', 'yes');
@@ -256,6 +257,15 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('recaptcha_site_key', $this->input->post('recaptcha_site_key'), 'site', 'yes');
                 $this->settings->add_setting('recaptcha_secret_key', $this->input->post('recaptcha_secret_key'), 'site', 'yes');
                 $this->settings->add_setting('recaptcha_lang', $this->input->post('recaptcha_lang'), 'site', 'yes');
+                $this->settings->add_setting('protocol', 'smtp', 'email', 'yes');
+                $this->settings->add_setting('smtp_host', '', 'email', 'yes');
+                $this->settings->add_setting('smtp_user', '', 'email', 'yes');
+                $this->settings->add_setting('smtp_pass', '', 'email', 'yes');
+                $this->settings->add_setting('smtp_port', '', 'email', 'yes');
+                $this->settings->add_setting('crlf', '"\r\n"', 'email', 'yes');
+                $this->settings->add_setting('newline', '"\r\n"', 'email', 'yes');
+                $this->settings->add_setting('mailtype', 'html', 'email', 'yes');
+                $this->settings->add_setting('notify_new_registration', 0, 'notifications', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

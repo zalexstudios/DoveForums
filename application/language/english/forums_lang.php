@@ -162,6 +162,11 @@ $lang['txt_edited'] = 'Edited';
 $lang['txt_profile'] = '%s`s Profile';
 $lang['txt_online'] = 'Online';
 $lang['txt_offline'] = 'Offline';
+$lang['txt_ago'] = 'Ago';
+$lang['txt_email'] = 'Email';
+$lang['txt_new_reply'] = 'New Reply!';
+$lang['txt_new_user'] = 'New User Registered!';
+$lang['txt_notifications'] = 'Notifications';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -193,6 +198,12 @@ $lang['lbl_points'] = 'Points:';
 $lang['lbl_condition'] = 'Condition:';
 $lang['lbl_action'] = 'Action:';
 $lang['lbl_achievement'] = 'Achievement:';
+$lang['lbl_protocol'] = 'Protocol:';
+$lang['lbl_mailtype'] = 'Mailtype:';
+$lang['lbl_smtp_host'] = 'Smtp Host:';
+$lang['lbl_smtp_port'] = 'Smtp Port:';
+$lang['lbl_smtp_user'] = 'Smtp User:';
+$lang['lbl_smtp_pass'] = 'Smtp Pass:';
 
 // Dropdown Menus.
 $lang['dd_default_reason'] = 'Pick Reason...';

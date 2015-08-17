@@ -17,13 +17,14 @@
 
                 <div class="panel-body">
 
-                    <p>
+                    <p class="small">
                     {online_users}
                         {user}
                     {/online_users}
+                    </p>
 
                 </div>
-                
+
             </div>
 
         </div>

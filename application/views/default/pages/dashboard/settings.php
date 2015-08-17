@@ -130,6 +130,85 @@
 
         </fieldset>
 
+        <fieldset>
+
+            <legend><?=lang('txt_email');?></legend>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        {protocol_label}
+                        {protocol_field}
+                    </div>
+
+                    <div class="form-group">
+                        {smtp_host_label}
+                        {smtp_host_field}
+                    </div>
+
+                    <div class="form-group">
+                        {smtp_user_label}
+                        {smtp_user_field}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        {mailtype_label}
+                        {mailtype_field}
+                    </div>
+
+                    <div class="form-group">
+                        {smtp_port_label}
+                        {smtp_port_field}
+                    </div>
+
+                    <div class="form-group">
+                        {smtp_pass_label}
+                        {smtp_pass_field}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+
+            <legend><?= lang('txt_notifications'); ?></legend>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+
+                        <div class="checkbox">
+
+                            <label>
+                                {notify_new_registration_field} Notify of new Registrations?
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+
+                </div>
+
+            </div>
+            
+        </fieldset>
+
         <div class="form-group">
             {btn_update_settings}
         </div>

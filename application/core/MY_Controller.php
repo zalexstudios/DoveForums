@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
-    public $version = '0.4.0';
+    public $version = '0.5.0';
 
     /**
      * Construct Functions
@@ -32,7 +32,7 @@ class MY_Controller extends CI_Controller{
         $this->load->model('unread_m', 'unread');
 
         // Load libraries.
-        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha'));
+        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha', 'email'));
 
         // See if a user is logged in, if so set their language preference.
         if ($this->ion_auth->logged_in() === TRUE)
@@ -81,6 +81,36 @@ class MY_Controller extends CI_Controller{
         }
 
         return preg_replace($pattern, $replace, $str);
+    }
+
+    public function send_email($recipients, $template, $data=array())
+    {
+        if($this->config->item('protocol') == 'smtp')
+        {
+            $this->email->initialize(array(
+                'protocol' => $this->config->item('protocol'),
+                'smtp_host' => $this->config->item('smtp_host'),
+                'smtp_user' => $this->config->item('smtp_user'),
+                'smtp_pass' => $this->config->item('smtp_pass'),
+                'smtp_port' => $this->config->item('smtp_port'),
+                'crlf' => $this->config->item('crlf'),
+                'newline' => $this->config->item('newline'),
+                'mailtype' => $this->config->item('mailtype')
+            ));
+        }
+
+        $this->email->from($this->config->item('site_email'), $this->config->item('site_name'));
+        $this->email->to($recipients);
+        $this->email->subject($data['subject']);
+        $this->email->message($this->parser->parse($template, $data));
+
+
+        if($this->email->send())
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
@@ -308,7 +338,7 @@ class Admin_Controller extends Front_Controller {
             // Content.
             'content' => $this->parser->parse('default/' . $page_template . '', $page_data, TRUE),
             // Footer.
-            'footer' => $this->parser->parse('default/sections/footer', element('footer', $data), TRUE),
+            'footer' => $this->parser->parse('default/sections/admin_footer', element('footer', $data), TRUE),
         );
 
         // Send all the data to the layout file.

@@ -30,6 +30,22 @@ This project is also been built on top of the latest Codeigniter & Twitter Boots
 
 If you would like to contribute to this project that would be great as I really would like to get this project back on track after so much time away from the community.
 
+<h2>Email Settings</h2>
+
+Version 0.5.0 adds Email Notifications.  I have only tested with with SMTP emails up to now.  I personally recommend <a href="https://sendgrid.com">SendGrid</a> as your SMTP host if you are unsure how to go about setting this up yourself.
+
+Sign up for a <strong>Free</strong> account, then log into your Dove Forums install with your administrator account, go to Dashboard->Settings and then enter the following information into the <strong>Email</strong> section :-
+
+<ul>
+<li>Protocol - smtp</li>
+<li>Smtp Host - smtp.sendgrid.net</li>
+<li>Smtp User - sendgridusername</li>
+<li>Smtp Pass - sendgridpassword</li>
+<li>Smtp Port - 587</li>
+</ul>
+
+After this information is entered click '<strong>Update Settings</strong>' and that's it!
+
 Regards
 Chris
 

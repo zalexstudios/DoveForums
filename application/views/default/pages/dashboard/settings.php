@@ -191,7 +191,7 @@
                         <div class="checkbox">
 
                             <label>
-                                {notify_new_registration_field} Notify of new Registrations?
+                                {notify_new_registration_field} <?= lang('txt_notify_new_registration'); ?>
                             </label>
 
                         </div>
@@ -206,7 +206,7 @@
                 </div>
 
             </div>
-            
+
         </fieldset>
 
         <div class="form-group">

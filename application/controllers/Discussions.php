@@ -478,6 +478,17 @@ class Discussions extends Front_Controller {
 
             if(!empty($this->_comment_id) && !empty($discussion_update) && !empty($category))
             {
+                // Email the discussion creator.
+                $data['email'] = array(
+                    'username' => $this->session->userdata('username'),
+                    'discussion' => $discussion->subject,
+                    'reply' => anchor( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'Here'),
+                    'site_name' => $this->config->item('site_name'),
+                    'subject' => lang('txt_new_reply'),
+                );
+
+                $user = $this->users->get_by(array('username' => $discussion->poster));
+
                 if($this->permission->has_permission('unlock_achievements'))
                 {
                     // Get the users comment count.
@@ -488,40 +499,45 @@ class Discussions extends Front_Controller {
 
                     if(is_array($achievement))
                     {
-                        // Create a message.
+                        // Create success message.
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
                         // Create achievement
                         $this->messageci->set( sprintf(lang('achievement_unlocked'), $achievement['points'], $achievement['name']),  'info');
+
+                        // Send an email to the discussion creator if they want to receive one.
+                        if($this->session->userdata('username') != $discussion->poster || $user->notify_of_replies == 1)
+                        {
+                            $this->send_email($user->email, 'default/emails/new_reply', element('email', $data));
+                        }
                     }
                     else
                     {
-                        // Create a message.
+                        // Create success message.
                         $this->messageci->set( lang('success_creating_comment'), 'success' );
 
-                        // Email the sites admin.
-                        $data['email'] = array(
-                            'username' => $this->session->userdata('username'),
-                            'discussion' => $discussion->subject,
-                            'reply' => anchor( site_url('discussions/view/'.$this->_discussion_id.'/#'.$this->_comment_id), 'Here'),
-                            'site_name' => $this->config->item('site_name'),
-                            'subject' => lang('txt_new_reply'),
-                        );
-
-                        $user = $this->users->get_by(array('username' => $discussion->poster));
-
-                        $this->send_email($user->email, 'default/emails/new_reply', element('email', $data));
+                        // Send an email to the discussion creator if they want to receive one.
+                        if($this->session->userdata('username') != $discussion->poster || $user->notify_of_replies == 1)
+                        {
+                            $this->send_email($user->email, 'default/emails/new_reply', element('email', $data));
+                        }
                     }
                 }
                 else
                 {
-                    // Create a message.
+                    // Create success message.
                     $this->messageci->set( lang('success_creating_comment'), 'success' );
+
+                    // Send an email to the discussion creator if they want to receive one.
+                    if($this->session->userdata('username') != $discussion->poster || $user->notify_of_replies == 1)
+                    {
+                        $this->send_email($user->email, 'default/emails/new_reply', element('email', $data));
+                    }
                 }
             }
             else
             {
-                // Create a message.
+                // Create error message.
                 $this->messageci->set( lang('error_creating_comment'), 'error' );
             }
 

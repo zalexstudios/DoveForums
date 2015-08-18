@@ -62,7 +62,7 @@
 
             <div class="col-md-9">
 
-                {joined} <?php echo lang('txt_ago'); ?>
+                {joined} <?= lang('txt_ago'); ?>
 
             </div>
 
@@ -72,13 +72,13 @@
 
             <div class="col-md-3">
 
-                <strong><?=lang('txt_last_visit');?></strong>
+                <strong><?= lang('txt_last_visit');?></strong>
 
             </div>
 
             <div class="col-md-9">
 
-                {last_visit} <?php echo lang('txt_ago'); ?>
+                {last_visit} <?= lang('txt_ago'); ?>
 
             </div>
 

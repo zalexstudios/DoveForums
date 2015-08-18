@@ -167,6 +167,8 @@ $lang['txt_email'] = 'Email';
 $lang['txt_new_reply'] = 'New Reply!';
 $lang['txt_new_user'] = 'New User Registered!';
 $lang['txt_notifications'] = 'Notifications';
+$lang['txt_notify_new_registration'] = 'Receive Email Notification on New User Registrations?';
+$lang['txt_notify_of_replies'] = 'Receive Email Notification on Reply to your Discussions?';
 
 // Labels
 $lang['lbl_username'] = 'Username:';

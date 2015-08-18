@@ -53,6 +53,37 @@
 
         </fieldset>
 
+        <fieldset>
+
+            <legend><?= lang('txt_notifications'); ?></legend>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+
+                        <div class="checkbox">
+
+                            <label>
+                                {notify_of_replies_field} <?= lang('txt_notify_of_replies'); ?>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+
+                </div>
+
+            </div>
+
+        </fieldset>
+
         <div class="form-group">
             {btn_update_settings}
         </div>

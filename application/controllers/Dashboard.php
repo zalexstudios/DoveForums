@@ -1410,6 +1410,7 @@ class Dashboard extends Admin_Controller {
                 'smtp_pass' => $this->input->post('smtp_pass'),
                 'smtp_user' => $this->input->post('smtp_user'),
                 'smtp_port' => $this->input->post('smtp_port'),
+                'notify_new_registration' => $this->input->post('notify_new_registration')
             );
 
             foreach($data as $k => $v)

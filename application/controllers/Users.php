@@ -304,19 +304,24 @@ class Users extends Front_Controller {
                     // Create success message.
                     $this->messageci->set( $this->ion_auth->messages(), 'success' );
 
-                    // Get the user.
-                    $user = $this->users->get_by(array('id' => $register));
+                    // See if the admin wants to receive these emails.
+                    if($this->config->item('notify_new_registration') == 1)
+                    {
+                        // Get the user.
+                        $user = $this->users->get_by(array('id' => $register));
 
-                    // Email the sites admin.
-                    $data['email'] = array(
-                        'username' => $user->username,
-                        'subject' => lang('txt_new_user'),
-                        'user' => anchor( site_url('users/profile/'.$user->id), 'Here'),
-                        'site_author' => $this->config->item('site_author'),
-                        'site_name' => $this->config->item('site_name'),
-                    );
+                        // Email the sites admin.
+                        $data['email'] = array(
+                            'username' => $user->username,
+                            'subject' => lang('txt_new_user'),
+                            'user' => anchor( site_url('users/profile/'.$user->id), 'Here'),
+                            'site_author' => $this->config->item('site_author'),
+                            'site_name' => $this->config->item('site_name'),
+                        );
 
-                    $this->send_email($this->config->item('site_email'), 'default/emails/new_user', element('email', $data));
+                        $this->send_email($this->config->item('site_email'), 'default/emails/new_user', element('email', $data));
+
+                    }
 
                 } else {
                     // Create error message.
@@ -937,6 +942,7 @@ class Users extends Front_Controller {
                 'first_name_field' => form_input( $this->form_fields['settings'][1], set_value( $this->form_fields['settings'][1]['name'], $user->first_name ) ),
                 'last_name_field' => form_input( $this->form_fields['settings'][2], set_value( $this->form_fields['settings'][2]['name'], $user->last_name ) ),
                 'language_field' => form_dropdown('language', $language_options, $user->language, 'class="form-control"'),
+                'notify_of_replies_field' => form_checkbox('notify_of_replies', 1, set_value('notify_of_replies', $user->notify_of_replies)),
                 // Labels.
                 'email_label' => form_label( lang('lbl_email'), $this->form_fields['settings'][0]['id']),
                 'first_name_label' => form_label( lang('lbl_first_name'), $this->form_fields['settings'][1]['id']),
@@ -959,6 +965,7 @@ class Users extends Front_Controller {
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'language' => $this->input->post('language'),
+                'notify_of_replies' => $this->input->post('notify_of_replies'),
             );
 
             $update = $this->ion_auth->update($this->session->userdata('user_id'), $data);

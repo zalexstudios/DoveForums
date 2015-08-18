@@ -195,6 +195,7 @@ class Install_M extends CI_Model {
               `report_user_id` int(11) NOT NULL,
               `points` int(11) DEFAULT 0,
               `last_activity` int(10) DEFAULT NULL,
+              `notify_of_replies` int(10) DEFAULT '0',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
         ";

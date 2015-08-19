@@ -266,6 +266,7 @@ class Install extends CI_Controller {
                 $this->settings->add_setting('newline', '"\r\n"', 'email', 'yes');
                 $this->settings->add_setting('mailtype', 'html', 'email', 'yes');
                 $this->settings->add_setting('notify_new_registration', 0, 'notifications', 'yes');
+                $this->settings->add_setting('version', '0.5.0', 'site', 'yes');
 
                 // Change the session driver.
                 $find = '$config[\'sess_driver\'] =';

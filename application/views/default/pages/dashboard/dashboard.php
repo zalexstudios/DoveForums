@@ -2,58 +2,47 @@
 
 {breadcrumbs}
 
-<div class="panel panel-default">
+<div class="row">
 
-    <div class="panel-heading">
+    <div class="col-md-12">
 
-        <h3 class="panel-title"><?=lang('tle_dashboard');?></h3>
+        <?php if($update == TRUE) { ?>
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><strong>A new update is available!</strong></p>
+                <p>Version: {version}</p>
+                <p>Click {download_link} to download.</p>
+            </div>
+        <?php } ?>
 
     </div>
 
-    <div class="panel-body">
+</div>
 
-        <div class="row">
+<div class="row">
 
-            <div class="col-md-3">
+    <div class="col-md-6">
 
-                <div class="panel panel-default">
+        <div class="panel panel-default">
 
-                    <div class="panel-heading">
+            <div class="panel-heading">
 
-                        <h4 class="panel-title"><i class="fa fa-users"></i> Users</h4>
-
-                    </div>
-
-                    <div class="panel-body">
-
-                        <p>Registered: <span class="label label-success">{user_count}</span></p>
-
-                        <hr class="dashed">
-
-                        <p>Reported: <span class="label label-warning">{reported_user_count}</span></p>
-
-                        <hr class="banned">
-
-                        <p>Banned: <span class="label label-danger">{banned_user_count}</span></p>
-
-                    </div>
-
-                    <div class="panel-footer text-center">
-
-                        <a class="btn btn-primary btn-sm">View All</a>
-
-                    </div>
-
-                </div>
+                <h4 class="panel-title"><i class="fa fa-newspaper-o"></i> Dove Forums News</h4>
 
             </div>
 
-            <div class="col-md-3">
+            <div class="panel-body">
 
 
             </div>
+
 
         </div>
+
+    </div>
+
+    <div class="col-md-6">
+
 
     </div>
 

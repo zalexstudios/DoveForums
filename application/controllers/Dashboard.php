@@ -396,17 +396,31 @@ class Dashboard extends Admin_Controller {
         // Build the breadcrumbs.
         $this->crumbs->add('Dashboard');
 
-        // Get the user count.
-        $users = $this->ion_auth->users()->result();
-        $user_count = count($users);
-        $banned_users = 0;
+        // Check for any updates.
+        // Get the current release versions.
+        $current_versions = file_get_contents('http://www.doveforums.com/downloads/current-release-versions.php');
+
+        if(!empty($current_versions)) {
+            $version_list = explode("\n", $current_versions);
+
+            foreach ($version_list as $vl) {
+                if ($vl > $this->version) {
+                    $update = TRUE;
+                    $version = $vl;
+                } else {
+                    $update = FALSE;
+                    $version = NULL;
+                }
+            }
+        }
+
 
         // Define the page data.
         $data['page'] = array(
             // Other
-            'user_count' => $user_count,
-            'reported_user_count' => 0,
-            'banned_user_count' => $banned_users,
+            'update' => $update,
+            'version' => $version,
+            'download_link' => anchor( site_url('dashboard/updates'), lang('txt_here'), array('class' => 'alert-link')),
             'breadcrumbs' => $this->crumbs->output(),
         );
 
@@ -2060,6 +2074,138 @@ class Dashboard extends Admin_Controller {
             'theme_description' => $theme->description,
             'theme_author' => $theme->author,
             'theme_image' => img($img),
+            // Other
+            'breadcrumbs' => $this->crumbs->output(),
+        );
+
+        $this->render( element('page', $data), element('title', $data), element('template', $data) );
+    }
+
+    public function updates($do_update=NULL)
+    {
+        // Define the page title.
+        $data['title'] = lang('tle_updates');
+
+        // Define the page template.
+        $data['template'] = 'pages/dashboard/updates';
+
+        // Build the breadcrumbs.
+        $this->crumbs->add(lang('crumb_dashboard'), 'dashboard');
+        $this->crumbs->add(lang('crumb_updates'));
+
+        // Get the current release versions.
+        $current_versions = file_get_contents('http://www.doveforums.com/downloads/current-release-versions.php');
+
+        if(!empty($current_versions))
+        {
+            $version_list = explode("\n", $current_versions);
+
+            foreach($version_list as $vl)
+            {
+                if($vl > $this->version)
+                {
+                    $update_found = $vl;
+                    $found = true;
+
+                    // Download the file if we do not have it.
+                    if(!is_file(APPPATH . 'updates/df_v_'.$vl.'.zip'))
+                    {
+                        $data['statuses'][]['status'] = lang('status_downloading_update');
+
+                        $new_update = file_get_contents('http://www.doveforums.com/downloads/updates/df_v_'.$vl.'.zip');
+
+                        if(!is_dir(APPPATH . 'updates'))
+                        {
+                            mkdir(APPPATH . 'updates');
+                        }
+
+                        $dl_handler = fopen(APPPATH . 'updates/df_v_'.$vl.'.zip', 'w');
+
+                        if(!fwrite($dl_handler, $new_update))
+                        {
+                            $data['statuses'][]['status'] = lang('status_downloaded_failed');
+                            exit();
+                        }
+
+                        fclose($dl_handler);
+
+                        $data['statuses'][]['status'] = lang('status_downloaded_saved');
+                    } else {
+                        $data['statuses'][]['status'] = lang('status_already_downloaded');
+                    }
+
+                    if($do_update == 1)
+                    {
+                        // Open the file.
+                        $zip_handle = zip_open(APPPATH . 'updates/df_v_'.$vl.'.zip');
+
+                        while ($aF = zip_read($zip_handle) )
+                        {
+                            $thisFileName = zip_entry_name($aF);
+                            $thisFileDir = dirname($thisFileName);
+
+                            //Continue if its not a file
+                            if ( substr($thisFileName,-1,1) == '/') continue;
+
+                            //Make the directory if we need to...
+                            if ( !is_dir ( FCPATH . $thisFileDir ) )
+                            {
+                                mkdir ( FCPATH . $thisFileDir );
+                            }
+
+                            //Overwrite the file
+                            if ( !is_dir(FCPATH . $thisFileName) ) {
+                                $contents = zip_entry_read($aF, zip_entry_filesize($aF));
+                                $contents = str_replace("\r\n", "\n", $contents);
+
+                                //If we need to run commands, then do it.
+                                if ( $thisFileName === 'upgrade.sql' )
+                                {
+                                    $upgradeExec = fopen('upgrade.sql','w');
+                                    fwrite($upgradeExec, $contents);
+                                    fclose($upgradeExec);
+                                    $this->db->query(file_get_contents('upgrade.sql'));
+                                    unlink('upgrade.sql');
+                                }
+                                else
+                                {
+                                    $updateThis = fopen(FCPATH . $thisFileName, 'w');
+                                    fwrite($updateThis, $contents);
+                                    fclose($updateThis);
+                                    unset($contents);
+                                }
+                            }
+                        }
+
+                        $updated = TRUE;
+
+                    } else {
+                        $data['statuses'][]['status'] = anchor( site_url('dashboard/updates/1'), lang('status_install_now'), array('class' => 'btn btn-xs btn-primary'));
+                        break;
+                    }
+                }
+            }
+
+            if($updated == TRUE)
+            {
+                $this->settings->edit_setting('version', $vl);
+
+                // Create success message.
+                $this->messageci->set( sprintf(lang('success_software_updated'), $vl), 'success');
+
+                // Redirect
+                redirect('dashboard/updates');
+            }
+            else if ($found != true) $data['statuses'][]['status'] = lang('status_up_to_date');
+        }
+        else echo 'failed';
+
+        // Define the page data.
+        $data['page'] = array(
+            'current_version' => $this->version,
+            'update_found' => $update_found,
+            'statuses' => element('statuses', $data),
+            'files' => element('files', $data),
             // Other
             'breadcrumbs' => $this->crumbs->output(),
         );

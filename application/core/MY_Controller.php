@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
-    public $version = '0.5.0';
+    public $version = '';
 
     /**
      * Construct Functions
@@ -30,6 +30,9 @@ class MY_Controller extends CI_Controller{
         $this->load->model('theme_m', 'themes');
         $this->load->model('thumb_m', 'thumbs');
         $this->load->model('unread_m', 'unread');
+
+        // Set the version.
+        $this->version = $this->config->item('version');
 
         // Load libraries.
         $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha', 'email'));
@@ -124,6 +127,9 @@ class Front_Controller extends MY_Controller{
     public function __construct()
     {
         parent::__construct();
+
+        // Set the version.
+        $this->version = $this->config->item('version');
 
         $this->theme = $this->themes->get_by('name', $this->config->item('theme'));
         $this->site_name = $this->config->item('site_name');
@@ -247,6 +253,9 @@ class Admin_Controller extends Front_Controller {
     {
         parent::__construct();
 
+        // Set the version.
+        $this->version = $this->config->item('version');
+
         $this->admin_theme      = $this->themes->get_by('name', $this->config->item('admin_theme'));
         $this->site_name        = $this->config->item('site_name');
         $this->tables           = $this->config->item('tables');
@@ -274,6 +283,23 @@ class Admin_Controller extends Front_Controller {
      */
     public function render( $page_data=array(), $page_title, $page_template )
     {
+        // Check for any updates.
+
+        // Get the current release versions.
+        $current_versions = file_get_contents('http://www.doveforums.com/downloads/current-release-versions.php');
+
+        if(!empty($current_versions)) {
+            $version_list = explode("\n", $current_versions);
+
+            foreach ($version_list as $vl) {
+                if ($vl > $this->version) {
+                    $update = TRUE;
+                } else {
+                    $update = FALSE;
+                }
+            }
+        }
+
         // See if any reports exist.
         $reports = $this->reports->count_by('zapped', NULL);
 
@@ -295,6 +321,8 @@ class Admin_Controller extends Front_Controller {
             ),
             // Sidebar.
             'sidebar' => array(
+                'home' => anchor( site_url('dashboard'), lang('lnk_dashboard')),
+                'updates' => ($update == TRUE ? anchor( site_url('dashboard/updates'), ''.lang('lnk_updates').'<span class="badge pull-right">'.lang('txt_new').'</span>') : anchor( site_url('dashboard/updates'), lang('lnk_updates'))),
                 'all_users' => anchor( site_url('dashboard/all_users'), lang('lnk_users')),
                 'add_user' => anchor( site_url('dashboard/add_user'), lang('lnk_add_user')),
                 'categories' => anchor( site_url('dashboard/categories'), lang('lnk_categories')),

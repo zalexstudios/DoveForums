@@ -6,7 +6,7 @@
 
 <body>
 <p>
-    <b>{username}</b> has replied to the discussion <b>{discussion}</b>.<br /><br />
+    <b>{username}</b> has replied to your discussion <b>{discussion}</b>.<br /><br />
     Click {reply} to view the reply.
     <br /><br/>Regards
     <br>{site_name}</p>

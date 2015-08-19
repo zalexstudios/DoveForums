@@ -2,6 +2,8 @@
 
 <ul class="list-group">
 
+    <li class="list-group-item">{home}</li>
+    <li class="list-group-item">{updates}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-tasks"></i> <?=lang('tle_categories');?></li>
     <li class="list-group-item">{categories}</li>
     <li class="list-group-item list-group-item-info"><i class="fa fa-comments-o"></i> <?=lang('tle_reports');?></li>

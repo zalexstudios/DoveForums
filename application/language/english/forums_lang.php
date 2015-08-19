@@ -88,6 +88,7 @@ $lang['lnk_close'] = '<i class="fa fa-lock"></i> Close';
 $lang['lnk_unstick'] = '<i class="fa fa-thumb-tack"></i> Unstick';
 $lang['lnk_open'] = '<i class="fa fa-unlock"></i> Open';
 $lang['lnk_mark_all'] = '<i class="fa fa-check"></i> Mark All As Read';
+$lang['lnk_updates'] = 'Updates';
 
 // Titles
 $lang['tle_recent_discussions'] = 'Recent Discussions';
@@ -124,6 +125,7 @@ $lang['tle_reports'] = 'Reports';
 $lang['tle_appearance'] = 'Appearance';
 $lang['tle_themes'] = 'Themes';
 $lang['tle_theme_details'] = 'Theme Details';
+$lang['tle_updates'] = 'Updates';
 
 // Static Text
 $lang['txt_no_discussions'] = 'No Discussions';
@@ -169,6 +171,7 @@ $lang['txt_new_user'] = 'New User Registered!';
 $lang['txt_notifications'] = 'Notifications';
 $lang['txt_notify_new_registration'] = 'Receive Email Notification on New User Registrations?';
 $lang['txt_notify_of_replies'] = 'Receive Email Notification on Reply to your Discussions?';
+$lang['txt_current_version'] = 'Current Version: V ';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -274,6 +277,7 @@ $lang['crumb_permissions'] = 'Permissions';
 $lang['crumb_reports'] = 'Reports';
 $lang['crumb_themes'] = 'Themes';
 $lang['crumb_theme_details'] = 'Theme Details';
+$lang['crumb_updates'] = 'Updates';
 
 // Success Messages.
 $lang['success_login'] = 'You have been logged in.';

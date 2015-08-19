@@ -171,7 +171,11 @@ $lang['txt_new_user'] = 'New User Registered!';
 $lang['txt_notifications'] = 'Notifications';
 $lang['txt_notify_new_registration'] = 'Receive Email Notification on New User Registrations?';
 $lang['txt_notify_of_replies'] = 'Receive Email Notification on Reply to your Discussions?';
-$lang['txt_current_version'] = 'Current Version: V ';
+$lang['txt_current_version'] = 'Current Version:';
+$lang['txt_version'] = 'version';
+$lang['txt_update_found'] = 'Update Found:';
+$lang['txt_new'] = 'New';
+$lang['txt_here'] = 'Here';
 
 // Labels
 $lang['lbl_username'] = 'Username:';
@@ -312,6 +316,7 @@ $lang['success_open_discussion'] = 'The discussion <strong>`%s`</strong> has bee
 $lang['success_unstick_discussion'] = 'The discussion <strong>`%s`</strong> is no longer sticky.';
 $lang['success_thumb_up'] = 'The user <strong>%s</strong> has been given a thumbs up.';
 $lang['success_mark_all'] = 'All discussions marked as read';
+$lang['success_software_updated'] = 'Dove Forums has been updated to version %s.';
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
@@ -419,3 +424,11 @@ $lang['tip_report_comment'] = 'Report this comment to a moderator.';
 $lang['tip_thumbs_up'] = 'Give this user a Thumbs Up.';
 $lang['tip_edit_comment'] = 'Edit Comment.';
 $lang['tip_delete_comment'] = 'Delete Comment.';
+
+// Statuses
+$lang['status_downloading_update'] = 'Downloading new update.';
+$lang['status_downloaded_saved'] = 'Updated downloaded & saved.';
+$lang['status_already_downloaded'] = 'Update downloaded.';
+$lang['status_downloaded_failed'] = 'Could not download new update. Operation aborted!';
+$lang['status_install_now'] = 'Install Now';
+$lang['status_up_to_date'] = 'You have the latest version of Dove Forums installed.';

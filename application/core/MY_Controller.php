@@ -4,6 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Controller extends CI_Controller{
 
     public $version = '';
+    public $site_name;
+    public $site_email;
+    private $theme;
+    private $admin_theme;
 
     /**
      * Construct Functions
@@ -20,7 +24,6 @@ class MY_Controller extends CI_Controller{
         $this->load->database();
 
         // Load Models.
-        //$this->load->model('forums_m', 'forums');
         $this->load->model('discussion_m', 'discussions');
         $this->load->model('category_m', 'categories');
         $this->load->model('comment_m', 'comments');
@@ -31,15 +34,21 @@ class MY_Controller extends CI_Controller{
         $this->load->model('thumb_m', 'thumbs');
         $this->load->model('unread_m', 'unread');
 
-        // Set the version.
+        // Set some config options.
         $this->version = $this->config->item('version');
+        $this->site_name = $this->config->item('site_name');
+        $this->site_email = $this->config->item('site_email');
+        $this->theme = $this->config->item('theme');
+        $this->admin_theme = $this->config->item('admin_theme');
 
         // Load libraries.
-        $this->load->library(array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha', 'email'));
+        $this->load->library(
+            array('session', 'parser', 'messageci', 'ion_auth', 'crumbs', 'form_validation', 'gravatar', 'pagination', 'table', 'user_agent', 'settings', 'recaptcha', 'email')
+        );
 
         // See if a user is logged in, if so set their language preference.
-        if ($this->ion_auth->logged_in() === TRUE)
-        {
+        if ($this->ion_auth->logged_in() === TRUE) {
+
             $user = $this->ion_auth->user()->row();
             $groups = $this->ion_auth->get_users_groups()->result();
             $config['group_id'] = $groups[0]->id;
@@ -55,9 +64,11 @@ class MY_Controller extends CI_Controller{
 
             // Update the users last_activity.
             $this->users->update_last_activity();
+
         } else {
 
             $config['group_id'] = 1;
+
             // Load the permissions library.
             $this->load->library('permission', $config);
 
@@ -72,8 +83,8 @@ class MY_Controller extends CI_Controller{
         $this->lang->load('ion_auth', $language);
     }
 
-    public function replace_links($str, $nofollow)
-    {
+    public function replace_links($str, $nofollow) {
+
         if(strpos($str, "rel")){
             $pattern = "/rel=([\"'])([^\\1]+?)\\1/";
             $replace = "rel=\\1\\2 $nofollow\\1";
@@ -88,19 +99,17 @@ class MY_Controller extends CI_Controller{
 
     public function send_email($recipients, $template, $data=array())
     {
-        if($this->config->item('protocol') == 'smtp')
-        {
-            $this->email->initialize(array(
-                'protocol' => $this->config->item('protocol'),
-                'smtp_host' => $this->config->item('smtp_host'),
-                'smtp_user' => $this->config->item('smtp_user'),
-                'smtp_pass' => $this->config->item('smtp_pass'),
-                'smtp_port' => $this->config->item('smtp_port'),
-                'crlf' => $this->config->item('crlf'),
-                'newline' => $this->config->item('newline'),
-                'mailtype' => $this->config->item('mailtype')
-            ));
-        }
+        // Set email config.
+        $config['protocol'] = $this->config->item('protocol');
+        $config['smtp_host'] = $this->config->item('smtp_host');
+        $config['smtp_user'] = $this->config->item('smtp_user');
+        $config['smtp_pass'] = $this->config->item('smtp_pass');
+        $config['smtp_port'] = $this->config->item('smtp_port');
+        $config['crlf'] = $this->config->item('crlf');
+        $config['newline'] = $this->config->item('newline');
+        $config['mailtype'] = $this->config->item('mailtype');
+
+        $this->email->initialize($config);
 
         $this->email->from($this->config->item('site_email'), $this->config->item('site_name'));
         $this->email->to($recipients);
@@ -110,9 +119,9 @@ class MY_Controller extends CI_Controller{
 
         if($this->email->send())
         {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 }
@@ -120,7 +129,7 @@ class MY_Controller extends CI_Controller{
 class Front_Controller extends MY_Controller{
 
     private $theme;
-    private $site_name;
+    public $site_name;
     public $tables = array();
     public $_unread = array();
 
@@ -216,6 +225,8 @@ class Front_Controller extends MY_Controller{
             'doctype' => doctype('html5'),
             'theme' => ($this->theme->name !== 'default' ? '<link href="'.$this->theme->url.'" rel="stylesheet">' : ''),
             'css' => array(
+                array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">'),
+                array( 'link' => '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">'),
                 array( 'link' => '<link href="'.base_url('themes/default/css/custom.css').'" rel="stylesheet">' ),
             ),
             'meta' => array(
@@ -223,6 +234,8 @@ class Front_Controller extends MY_Controller{
                 array( 'meta' => meta('description', $this->config->item('site_description')) ),
             ),
             'js' => array(
+                array( 'script' => '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>'),
+                array( 'script' => '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>'),
                 array( 'script' => '<script src="'.base_url('themes/default/js/plugins/ckeditor.js').'" type="text/javascript"></script>' ),
                 array( 'script' => '<script src="'.base_url('themes/default/js/forums.js').'"></script>' ),
             ),
@@ -246,7 +259,7 @@ class Front_Controller extends MY_Controller{
 class Admin_Controller extends Front_Controller {
 
     private $admin_theme;
-    private $site_name;
+    public $site_name;
     public $tables = array();
 
     public function __construct()

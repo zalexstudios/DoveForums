@@ -21,7 +21,10 @@
                 <div class="form-group">
 
                     {identity_label}
-                    {identity_field}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                        {identity_field}
+                    </div>
 
                 </div>
 
@@ -32,7 +35,10 @@
                 <div class="form-group">
 
                     {password_label}
-                    {password_field}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                        {password_field}
+                    </div>
 
                 </div>
 

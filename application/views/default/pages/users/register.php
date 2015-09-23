@@ -21,36 +21,11 @@
                 <div class="form-group <?php if(form_error('username')){echo 'has-error';} ?>">
 
                     {username_label}
-                    {username_field}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        {username_field}
+                    </div>
                     {username_error}
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="col-md-6">
-
-                <div class="form-group <?php if(form_error('password')){echo 'has-error';} ?>">
-
-                    {password_label}
-                    {password_field}
-                    {password_error}
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="form-group <?php if(form_error('confirm_password')){echo 'has-error';} ?>">
-
-                    {confirm_password_label}
-                    {confirm_password_field}
-                    {confirm_password_error}
 
                 </div>
 
@@ -65,7 +40,10 @@
                 <div class="form-group <?php if(form_error('email')){echo 'has-error';} ?>">
 
                     {email_label}
-                    {email_field}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                        {email_field}
+                    </div>
                     {email_error}
 
                 </div>
@@ -74,11 +52,14 @@
 
             <div class="col-md-6">
 
-                <div class="form-group <?php if(form_error('confirm_email')){echo 'has-error';} ?>">
+                <div class="form-group <?php if(form_error('password')){echo 'has-error';} ?>">
 
-                    {confirm_email_label}
-                    {confirm_email_field}
-                    {confirm_email_error}
+                    {password_label}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                        {password_field}
+                    </div>
+                    {password_error}
 
                 </div>
 

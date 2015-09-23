@@ -19,7 +19,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 
 // Buttons
-$lang['btn_new_discussion'] = '<i class="fa fa-check"></i> Start a new Discussion';
+$lang['btn_new_discussion'] = '<i class="fa fa-commenting-o"></i> Start a new Discussion';
 $lang['btn_reply_discussion'] = '<i class="fa fa-quote-left"></i> Reply to this Discussion';
 $lang['btn_thumbs_up'] = '<i class="fa fa-thumbs-o-up"></i>';
 $lang['btn_send_pm'] = '<i class="fa fa-envelope-o"></i>';

@@ -7,7 +7,7 @@ class Users extends Front_Controller {
         'login' => array(
             //0
             array(
-                'field' => 'identity',
+                'field' => 'email',
                 'rules' => 'required',
                 'label' => 'lang:rules_email',
             ),
@@ -27,29 +27,17 @@ class Users extends Front_Controller {
             ),
             //1
             array(
-                'field' => 'password',
-                'rules' => 'required|matches[confirm_password]',
-                'label' => 'lang:rules_password',
+                'field' => 'email',
+                'rules' => 'required|valid_email',
+                'label' => 'lang:rules_email',
             ),
             //2
             array(
-                'field' => 'confirm_password',
+                'field' => 'password',
                 'rules' => 'required',
-                'label' => 'lang:rules_confirm_password',
+                'label' => 'lang:rules_password',
             ),
             //3
-            array(
-                'field' => 'email',
-                'rules' => 'required|valid_email|matches[confirm_email]',
-                'label' => 'lang:rules_email',
-            ),
-            //4
-            array(
-                'field' => 'confirm_email',
-                'rules' => 'required|valid_email',
-                'label' => 'lang:rules_confirm_email',
-            ),
-            //5
             array(
                 'field' => 'g-recaptcha-response',
                 'rules' => 'required',
@@ -90,11 +78,13 @@ class Users extends Front_Controller {
         'login' => array(
             //0
             array(
-                'id' => 'identity',
-                'name' => 'identity',
+                'id' => 'email',
+                'name' => 'email',
                 'class' => 'form-control',
                 'type' => 'email',
                 'placeholder' => 'Email',
+                'tabindex' => 1,
+                'autocomplete' => 'email',
             ),
             //1
             array(
@@ -102,6 +92,7 @@ class Users extends Front_Controller {
                 'name' => 'password',
                 'class' => 'form-control',
                 'type' => 'password',
+                'tabindex' => 2,
             ),
         ),
         'register' => array(
@@ -111,34 +102,26 @@ class Users extends Front_Controller {
                 'name' => 'username',
                 'class' => 'form-control',
                 'type' => 'text',
+                'tabindex' => 1,
+                'placeholder' => 'Username'
             ),
             //1
-            array(
-                'id' => 'password',
-                'name' => 'password',
-                'class' => 'form-control',
-                'type' => 'password',
-            ),
-            //2
-            array(
-                'id' => 'confirm_password',
-                'name' => 'confirm_password',
-                'class' => 'form-control',
-                'type' => 'password',
-            ),
-            //3
             array(
                 'id' => 'email',
                 'name' => 'email',
                 'class' => 'form-control',
                 'type' => 'email',
+                'tabindex' => 2,
+                'autocomplete' => 'email',
+                'placeholder' => 'Email'
             ),
-            //4
+            //2
             array(
-                'id' => 'confirm_email',
-                'name' => 'confirm_email',
+                'id' => 'password',
+                'name' => 'password',
                 'class' => 'form-control',
-                'type' => 'email',
+                'type' => 'password',
+                'tabindex' => 3,
             ),
         ),
         'change_password' => array(
@@ -257,23 +240,17 @@ class Users extends Front_Controller {
                 'form_close' => form_close(),
                 // Fields.
                 'username_field' => form_input( $this->form_fields['register'][0], set_value( $this->form_fields['register'][0]['name'], $this->input->post('username') ) ),
-                'password_field' => form_input( $this->form_fields['register'][1], set_value( $this->form_fields['register'][1]['name'], $this->input->post('password') ) ),
-                'confirm_password_field' => form_input( $this->form_fields['register'][2], set_value( $this->form_fields['register'][2]['name'], $this->input->post('confirm_password') ) ),
-                'email_field' => form_input( $this->form_fields['register'][3], set_value( $this->form_fields['register'][3]['name'], $this->input->post('email') ) ),
-                'confirm_email_field' => form_input( $this->form_fields['register'][4], set_value( $this->form_fields['register'][4]['name'], $this->input->post('confirm_email') ) ),
+                'email_field' => form_input( $this->form_fields['register'][1], set_value( $this->form_fields['register'][1]['name'], $this->input->post('email') ) ),
+                'password_field' => form_input( $this->form_fields['register'][2], set_value( $this->form_fields['register'][2]['name'], $this->input->post('password') ) ),
                 'recaptcha_field' => $this->recaptcha->render(),
                 // Labels.
                 'username_label' => form_label( lang('lbl_username'), $this->form_fields['register'][0]['id']),
-                'password_label' => form_label( lang('lbl_password'), $this->form_fields['register'][1]['id']),
-                'confirm_password_label' => form_label( lang('lbl_confirm_password'), $this->form_fields['register'][2]['id']),
-                'email_label' => form_label( lang('lbl_email'), $this->form_fields['register'][3]['id']),
-                'confirm_email_label' => form_label( lang('lbl_confirm_email'), $this->form_fields['register'][4]['id']),
+                'email_label' => form_label( lang('lbl_email'), $this->form_fields['register'][1]['id']),
+                'password_label' => form_label( lang('lbl_password'), $this->form_fields['register'][2]['id']),
                 // Errors.
                 'username_error' => form_error($this->form_fields['register'][0]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'password_error' => form_error($this->form_fields['register'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'confirm_password_error' => form_error($this->form_fields['register'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'email_error' => form_error($this->form_fields['register'][3]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
-                'confirm_email_error' => form_error($this->form_fields['register'][4]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'email_error' => form_error($this->form_fields['register'][1]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
+                'password_error' => form_error($this->form_fields['register'][2]['name'], '<p class="text-danger"><i class="fa fa-exclamation-triangle"></i> ', '</p>'),
                 // Buttons.
                 'register_button' => form_submit('submit', lang('btn_register'), 'class="btn btn-primary btn-sm"'),
                 'breadcrumbs' => $this->crumbs->output(),
@@ -315,8 +292,8 @@ class Users extends Front_Controller {
                             'username' => $user->username,
                             'subject' => lang('txt_new_user'),
                             'user' => anchor( site_url('users/profile/'.$user->id), 'Here'),
-                            'site_author' => $this->config->item('site_author'),
-                            'site_name' => $this->config->item('site_name'),
+                            'site_author' => $this->site_author,
+                            'site_name' => $this->site_name,
                         );
 
                         $this->send_email($this->config->item('site_email'), 'default/emails/new_user', element('email', $data));
@@ -378,14 +355,14 @@ class Users extends Front_Controller {
                 'form_open' => form_open( site_url('users/login') ),
                 'form_close' => form_close(),
                 // Fields.
-                'identity_field' => form_input( $this->form_fields['login'][0], set_value( $this->form_fields['login'][0]['name'], $this->input->post('identity') ) ),
+                'identity_field' => form_input( $this->form_fields['login'][0], set_value( $this->form_fields['login'][0]['name'], $this->input->post('email') ) ),
                 'password_field' => form_input( $this->form_fields['login'][1] ),
                 // Labels.
                 'identity_label' => form_label( lang('lbl_email'), $this->form_fields['login'][0]['id'] ),
                 'password_label' => form_label( lang('lbl_password'), $this->form_fields['login'][1]['id'] ),
                 // Buttons.
-                'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary"'),
-                'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger')),
+                'btn_login' => form_submit( 'submit', lang('btn_login'), 'class="btn btn-primary btn-sm"'),
+                'btn_forgot_password' => anchor( site_url('users/forgot_password'), lang('btn_forgot_password'), array('class' => 'btn btn-danger btn-sm')),
                 // Other
                 'breadcrumbs' => $this->crumbs->output(),
             );
@@ -396,7 +373,7 @@ class Users extends Front_Controller {
         {
 
             // Form has been submitted, sanitize the data.
-            $identity = strip_tags( $this->security->xss_clean( $this->input->post('identity') ) );
+            $identity = strip_tags( $this->security->xss_clean( $this->input->post('email') ) );
             $password = strip_tags( $this->security->xss_clean( $this->input->post('password') ) );
 
             // Perform the login.

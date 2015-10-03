@@ -320,18 +320,18 @@ $lang['success_software_updated'] = 'Dove Forums был обновлен до в
 
 // Error Messages
 $lang['error_slug'] = 'There was no slug supplied, please try again!';
-$lang['error_login'] = 'Со входом на форум возникли проблемы, пожалуйста попробуйте ещё раз!';
-$lang['error_creating_comment'] = 'There has been a problem creating the comment, please try again!';
+$lang['error_login'] = 'Со входом на форум возникли проблемы, пожалуйста, попробуйте ещё раз!';
+$lang['error_creating_comment'] = 'При создании комментария возникли проблемы, пожалуйста, попробуйте ещё раз!';
 $lang['error_updating_discussions'] = 'There has been a problem updating the discussions table.';
 $lang['error_posting_comment'] = 'There has been a problem entering the comment into the comments table.';
-$lang['error_register'] = 'There has been a problem registering, please try again!.';
-$lang['error_login_required'] = 'Sorry, you need to be logged in to perform this action!.';
-$lang['error_delete_comment'] = 'There has been a problem deleting the comment!.';
+$lang['error_register'] = 'При регистрации возникли проблемы, пожалуйста, попробуйте ещё раз!.';
+$lang['error_login_required'] = 'Извините, вы должны войти для продолжения!.';
+$lang['error_delete_comment'] = 'При удалении комментария возникли проблемы!.';
 $lang['error_invalid_id'] = 'Invalid ID supplied!.';
-$lang['error_admin_required'] = 'You are not a Administrator!';
-$lang['error_user_activation'] = 'There was a problem activating the user.';
-$lang['error_user_deactivation'] = 'There was a problem deactivating the user.';
-$lang['error_add_user'] = 'There was a problem creating the user.';
+$lang['error_admin_required'] = 'Вы не являетесь Администратором!';
+$lang['error_user_activation'] = 'Возникли проблемы при активации пользователя.';
+$lang['error_user_deactivation'] = 'Возникли проблемы при деактивации пользователя.';
+$lang['error_add_user'] = 'Возникли проблемы при создании пользователя.';
 $lang['error_update_user'] = 'There was a problem updating the user <strong>%s</strong>.';
 $lang['error_delete_user'] = 'There was a problem deleting the user <strong>%s</strong>.';
 $lang['error_create_discussion'] = 'There was a problem creating your discussion.';

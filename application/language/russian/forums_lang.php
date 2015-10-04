@@ -66,7 +66,7 @@ $lang['lnk_logout'] = 'Выйти';
 $lang['lnk_profile'] = 'Профиль';
 $lang['lnk_settings'] = 'Установки';
 $lang['lnk_change_password'] = 'Изменить пароль';
-$lang['lnk_dashboard'] = 'Dashboard';
+$lang['lnk_dashboard'] = 'Панель Администратора';
 $lang['lnk_register'] = 'Регистрация';
 $lang['lnk_categories'] = 'Категории';
 $lang['lnk_all_categories'] = 'Все категории';
@@ -102,7 +102,7 @@ $lang['tle_login'] = 'Войти';
 $lang['tle_change_password'] = 'Изменить пароль';
 $lang['tle_forgot_password'] = 'Забыл пароль';
 $lang['tle_reset_password'] = 'Сбросить пароль';
-$lang['tle_dashboard'] = 'Dashboard';
+$lang['tle_dashboard'] = 'Панель Администратора';
 $lang['tle_users'] = 'Пользователи';
 $lang['tle_groups'] = 'Группы';
 $lang['tle_categories'] = 'Категории';
@@ -257,7 +257,7 @@ $lang['crumb_edit_comment'] = 'Редактировать комментарий
 $lang['crumb_report_comment'] = 'Жадлоба на комментарий';
 $lang['crumb_report_discussion'] = 'Жалоба на Тему';
 $lang['crumb_edit_discussion'] = 'Редактировать Тему';
-$lang['crumb_dashboard'] = 'Dashboard';
+$lang['crumb_dashboard'] = 'Панель Администратора';
 $lang['crumb_users'] = 'Пользователи';
 $lang['crumb_groups'] = 'Группы';
 $lang['crumb_categories'] = 'Категории';
@@ -364,7 +364,7 @@ $lang['error_already_thumbed'] = 'You have already given this user a thumbs up f
 $lang['error_mark_all'] = 'There was a problem marking all discussions as read!.';
 
 // Achievements.
-$lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Achievement Unlocked</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
+$lang['achievement_unlocked'] = '<div class="row"><div class="col-md-1"><i class="fa fa-trophy fa-3x"></i></div><div class="col-md-11"><strong>Достижения разблокированы</strong><br /><span class="badge">%sXP</span> - %s</span></div></div>';
 
 // Form Rules
 $lang['rules_comment'] = 'Комментарий';
@@ -426,9 +426,9 @@ $lang['tip_edit_comment'] = 'Редактировать комментарий.'
 $lang['tip_delete_comment'] = 'Удалить комментарий.';
 
 // Statuses
-$lang['status_downloading_update'] = 'Downloading new update.';
-$lang['status_downloaded_saved'] = 'Updated downloaded & saved.';
-$lang['status_already_downloaded'] = 'Update downloaded.';
-$lang['status_downloaded_failed'] = 'Could not download new update. Operation aborted!';
-$lang['status_install_now'] = 'Install Now';
-$lang['status_up_to_date'] = 'You have the latest version of Dove Forums installed.';
+$lang['status_downloading_update'] = 'Загружаются новые обновления.';
+$lang['status_downloaded_saved'] = 'Обновления загружены & сохранены.';
+$lang['status_already_downloaded'] = 'Обновления загружены.';
+$lang['status_downloaded_failed'] = 'Не возможно скачать обновления. Операция отменена!';
+$lang['status_install_now'] = 'Установить сейчас';
+$lang['status_up_to_date'] = 'Вы используйте последнюю версию Dove Forums.';
